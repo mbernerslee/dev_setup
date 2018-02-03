@@ -13,14 +13,14 @@ function install_neovim {
 }
 
 function minimally_configure_neovim {
-	mkdir ~/.config
-	mkdir ~/.config/nvim
-	touch ~/.config/nvim/init.vim
-	echo "inoremap jj <ESC>" >> ~/.config/nvim/init.vim
-	echo "set tabstop=2" >> ~/.config/nvim/init.vim
-	echo "set softtabstop=2" >> ~/.config/nvim/init.vim
-	echo "set expandtab" >> ~/.config/nvim/init.vim
-	echo "set shiftwidth=2" >> ~/.config/nvim/init.vim
+  mkdir ~/.config
+  mkdir ~/.config/nvim
+  touch ~/.config/nvim/init.vim
+  echo "inoremap jj <ESC>" >> ~/.config/nvim/init.vim
+  echo "set tabstop=2" >> ~/.config/nvim/init.vim
+  echo "set softtabstop=2" >> ~/.config/nvim/init.vim
+  echo "set expandtab" >> ~/.config/nvim/init.vim
+  echo "set shiftwidth=2" >> ~/.config/nvim/init.vim
 }
 
 function install_elixir {
@@ -55,23 +55,23 @@ function configure_postgress {
 }
 
 function configure_neovim_more {
-#  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-#    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-#  sudo apt-get install silversearcher-ag
-#  wget https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
-#  sudo dpkg -i fzy_0.9-1_amd64.deb
-#  rm fzy_0.9-1_amd64.deb
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  sudo apt-get install silversearcher-ag
+  wget https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
+  sudo dpkg -i fzy_0.9-1_amd64.deb
+  rm fzy_0.9-1_amd64.deb
   sudo apt-get update
   sudo apt-get install python3-pip -y
   pip3 install neovim
 }
 
-#install_neovim
-#minimally_configure_neovim
-#minimally_configure_bashrc
-#install_elixir
-#install_git
-#install_phoenix_with_node_6
-#install_postgress
-#configure_postgress
+install_neovim
+minimally_configure_neovim
+minimally_configure_bashrc
+install_elixir
+install_git
+install_phoenix_with_node_6
+install_postgress
+configure_postgress
 configure_neovim_more
