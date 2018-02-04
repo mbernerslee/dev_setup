@@ -12,6 +12,6 @@ while [ $done -ne 1 ]; do
     printf "%c" "."
   fi
 done
-
+sleep 1
 ssh berners@robobuddy
 #VBoxManage controlvm robobuddy acpipowerbutton
