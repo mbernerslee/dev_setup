@@ -2,14 +2,19 @@
 
 ## Manually setup sudo
 
-function minimally_configure_bashrc {
-  echo "alias c='clear;clear'" >> ~/.bashrc
+function configure_bashrc {
+  cat bashrc_additions >> ~/.bashrc
+  source ~/.bashrc
 }
 
 function install_neovim {
   sudo apt-get install neovim -y
   sudo apt-get install python-neovim -y
   sudo apt-get install python3-neovim -y
+}
+
+function install_tmux {
+  sudo apt-get install tmux -y
 }
 
 function install_elixir {
@@ -59,8 +64,9 @@ function configure_neovim {
   pip3 install neovim
 }
 
+configure_bashrc
 install_neovim
-minimally_configure_bashrc
+install_tmux
 install_elixir
 install_git
 install_phoenix_with_node_6
