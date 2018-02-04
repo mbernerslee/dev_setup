@@ -2,6 +2,9 @@
 
 ## Manually setup sudo
 
+## Manually change username@machine_name colour. see 
+## https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
+
 function configure_bashrc {
   cat bashrc_additions >> ~/.bashrc
   source ~/.bashrc
