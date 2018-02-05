@@ -67,6 +67,20 @@ function configure_neovim {
   pip3 install neovim
 }
 
+function install_hub {
+  if [ -f ~/bin/hub ]; then echo -e "\e[32mhub installed \e[0m" && return; fi
+  pushd .
+  cd /tmp
+  wget https://github.com/github/hub/releases/download/v2.2.1/hub-linux-amd64-2.2.1.tar.gz -O hub.tar.gz
+  tar xvf hub.tar.gz  
+  rm hub.tar.gz
+  if [ ! $(grep -m 1 'eval "$(hub alias -s)"' ~/.bashrc) ]; then echo 'eval "$(hub alias -s)"' >> ~/.bashrc; fi
+  if [ ! -d ~/bin ]; then mkdir ~/bin; fi
+  mv hub-linux-amd64-2.2.1/hub ~/bin
+  rm hub-linux-amd64-2.2.1 -rf 
+  popd
+}
+
 configure_bashrc
 install_neovim
 install_tmux
@@ -76,3 +90,4 @@ install_phoenix_with_node_6
 install_postgress
 configure_postgress
 configure_neovim
+install_hub
