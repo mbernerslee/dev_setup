@@ -74,7 +74,6 @@ function install_hub {
   wget https://github.com/github/hub/releases/download/v2.2.1/hub-linux-amd64-2.2.1.tar.gz -O hub.tar.gz
   tar xvf hub.tar.gz  
   rm hub.tar.gz
-  if [ ! $(grep -m 1 'eval "$(hub alias -s)"' ~/.bashrc) ]; then echo 'eval "$(hub alias -s)"' >> ~/.bashrc; fi
   if [ ! -d ~/bin ]; then mkdir ~/bin; fi
   mv hub-linux-amd64-2.2.1/hub ~/bin
   rm hub-linux-amd64-2.2.1 -rf 
