@@ -5,15 +5,25 @@
 ## Manually change username@machine_name colour. see 
 ## https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
 
+#TODO make name@machine color change scripted
+
 function configure_bashrc {
-  cat bashrc_additions >> ~/.bashrc
-  source ~/.bashrc
+  source_bashrc_additions="source ~/src/dev_setup/dev_machine_bashrc_additions"
+  if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then 
+    echo "$source_bashrc_additions" >> ~/.bashrc
+  fi
+  color_prompt="#force_color_prompt=yes"
+  #ps1=
+  #if [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ] && [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ]; then
+  #  echo "hi"
+  #fi
 }
 
 function install_neovim {
   sudo apt-get install neovim -y
   sudo apt-get install python-neovim -y
   sudo apt-get install python3-neovim -y
+  #sudo apt-get install xclip -y
 }
 
 function install_tmux {
