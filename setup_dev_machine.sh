@@ -1,9 +1,9 @@
 #! /bin/bash
 
-## Manually setup sudo
+# Manually setup sudo
 
-## Manually change username@machine_name colour. see 
-## https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
+# Manually change username@machine_name colour. see 
+# https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
 
 #TODO make name@machine color change scripted
 
@@ -23,7 +23,7 @@ function install_neovim {
   sudo apt-get install neovim -y
   sudo apt-get install python-neovim -y
   sudo apt-get install python3-neovim -y
-  #sudo apt-get install xclip -y
+  sudo apt-get install xclip -y
 }
 
 function install_tmux {

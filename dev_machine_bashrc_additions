@@ -47,3 +47,4 @@ diff() {
 }
 
 alias git=hub
+ln -sf ~/src/dev_setup/init.vim ~/.config/nvim/init.vim
