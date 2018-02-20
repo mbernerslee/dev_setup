@@ -1,5 +1,6 @@
 alias c='clear; clear'
-alias r='ssh berners@robobuddy'
+alias r='ssh berners@robobuddy -X'
+ln -sf ~/src/dev_setup/start_robobuddy_dev.sh ~/start_robobuddy_dev.sh
 
 # link (symlink?) scripts in this folder to fun from ~ (or anywhere)?
 # source bashrc additions instead of splicing them onto the end of the file

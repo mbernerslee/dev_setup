@@ -12,7 +12,7 @@ function configure_bashrc {
   if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then 
     echo "$source_bashrc_additions" >> ~/.bashrc
   fi
-  color_prompt="#force_color_prompt=yes"
+  #color_prompt="#force_color_prompt=yes"
   #ps1=
   #if [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ] && [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ]; then
   #  echo "hi"
