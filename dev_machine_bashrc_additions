@@ -13,8 +13,8 @@ t() {
   no_colour='\033[0m'
   if mix test; then
     echo -e "${green}mix test ... worked!${no_colour}"
-    if mix compile --warnings-as-errors; then
-      echo -e "${green}mix compile --warnings-as-errors ... worked!${no_colour}"
+    if mix compile --warnings-as-errors --force; then
+      echo -e "${green}mix compile --warnings-as-errors --force ... worked!${no_colour}"
       cd assets
       if npm run lint; then
         echo -e "${green}npm run lint ... worked!${no_colour}"
