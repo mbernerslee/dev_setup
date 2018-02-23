@@ -1,4 +1,4 @@
-alias c='clear; clear'
+alias c='tput reset'
 
 # Makes colours work for tmux
 export TERM="xterm-256color"
