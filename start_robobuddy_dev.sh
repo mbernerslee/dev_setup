@@ -2,12 +2,12 @@
 
 vboxmanage startvm robobuddy --type headless
 done=0
-echo "Waiting for robobuddy to awaken"
+echo "Waiting for robobuddy to reply to pings"
 while [ $done -ne 1 ]; do
   ping -c 1 robobuddy &>/dev/null
   if [ $? -eq 0 ]; then
     let done=1
-    printf "robobuddy is alive!\n"
+    printf "robobuddy replied!"
   else
     printf "%c" "."
   fi
