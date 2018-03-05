@@ -17,6 +17,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
 nnoremap <C-p> :FuzzyOpen<CR>
+nnoremap <F5> :syntax on<CR>
 
 "Colour scheme
 set background=dark
