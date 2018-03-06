@@ -7,35 +7,6 @@ alias tmux="TERM=screen-256color-bce tmux"
 grepex() {
   grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex"
 }
-t() {
-  red='\033[0;31m'
-  green='\033[0;32m'
-  no_colour='\033[0m'
-  if mix test; then
-    echo -e "${green}mix test ... worked!${no_colour}"
-    if mix compile --warnings-as-errors --force; then
-      echo -e "${green}mix compile --warnings-as-errors --force ... worked!${no_colour}"
-      cd assets
-      if npm run lint; then
-        echo -e "${green}npm run lint ... worked!${no_colour}"
-        if npm run jest; then
-          cd -
-          echo -e "${green}npm run jest ... worked!${no_colour}"
-          echo -e "${green}Congrats, everything worked.... for now. Don't get cocky I'm watching you!${no_colour}"
-        else
-          echo -e "${red} Broken JS Tests! You can't write Javascript can you.... verbal warning. Don't do this again.${no_colour}"
-        fi
-      else
-        cd -
-        echo -e "${red} JS Linting Errors! Javascript is a respectible language and you can't write it obviously... Jesus${no_colour}"
-      fi
-    else
-      echo -e "${red} Failed to compile! Yooouuu suuuckkkkkk${no_colour}"
-    fi
-  else
-    echo -e "${red} Tests Failed! What is this, amateure hour?${no_colour}"
-  fi
-}
 tw() {
   mix test.watch "$1"
 }
@@ -44,6 +15,9 @@ tws() {
 }
 diff() {
   git diff master >> diff; vim diff; rm diff
+}
+diffhead() {
+  git diff head >> diff; vim diff; rm diff
 }
 
 alias git=hub
