@@ -17,7 +17,7 @@ diff() {
   git diff master >> diff; vim diff; rm diff
 }
 diffhead() {
-  git diff head >> diff; vim diff; rm diff
+  git diff HEAD >> diff; vim diff; rm diff
 }
 
 alias git=hub

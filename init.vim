@@ -27,6 +27,9 @@ colorscheme solarized
 set number
 set ruler
 
+"Remove whitespace at the end ofthe line
+autocmd BufWritePre * :%s/\s\+$//e
+
 set clipboard+=unnamedplus
 " " Copy to clipboard
 vnoremap  <leader>y  "+y
