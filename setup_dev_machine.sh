@@ -44,7 +44,7 @@ function install_git {
   fi
   cd ~/src
   sudo apt-get install git -y
-  git clone https://github.com/mbernerslee/dev_setup.git
+  git clone git@github.com:mbernerslee/dev_setup.git
 }
 
 function install_phoenix_with_node_6 {
