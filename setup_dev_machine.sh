@@ -42,9 +42,14 @@ function install_git {
   if [ ! -d "~/src" ]; then
     mkdir ~/src
   fi
-  cd ~/src
+  
   sudo apt-get install git -y
-  git clone git@github.com:mbernerslee/dev_setup.git
+  
+  if [ ! -d "~/src/dev_setup" ]; then
+    cd ~/src
+    git clone git@github.com:mbernerslee/dev_setup.git
+    cd ~
+  fi
 }
 
 function install_phoenix_with_node_6 {
