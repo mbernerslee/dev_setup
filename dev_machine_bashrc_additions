@@ -19,6 +19,9 @@ diff() {
 diffhead() {
   git diff HEAD >> diff; vim diff; rm diff
 }
+constant_testing() {
+~/src/constant_testing/constant_testing.sh
+}
 
 alias git=hub
 ln -sf ~/src/dev_setup/init.vim ~/.config/nvim/init.vim
