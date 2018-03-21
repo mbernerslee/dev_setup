@@ -43,3 +43,34 @@ sudo apt-get install google-chrome-stable virtualbox-5.2 sublime-text spotify-cl
 sudo apt-get install openssh-server -y
 clone_dev_setup
 configure_bashrc
+
+name='robobuddy'
+os='debian_64'
+sizeDisk=102400
+isoDir='~/isos/'
+createPath='~/virtualbox/'
+isoPath=$isoDir/debian-9.4.0-amd64-netinst.iso
+if [ ! -f $isoPath ]; then
+  wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.4.0-amd64-netinst.iso -P $isoDir -nc    
+fi
+
+if ! VBoxManage list -l hostonlyifs | grep vboxnet0
+then
+  VBoxManage hostonlyif create
+fi
+
+VBoxManage createhd --filename $createPath$name'/'$name.vdi --size $sizeDisk
+VBoxManage createvm --basefolder $createPath --name $name --ostype $os --register
+VBoxManage storagectl $name --name "IDE Controller" --add ide
+VBoxManage storageattach $name --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium $isoPath
+VBoxManage storagectl $name --name "SATA Controller" --add sata --controller IntelAHCI
+VBoxManage storageattach $name --storagectl "SATA Controller" --port 0  --device 0 --type hdd --medium $createPath$name'/'$name.vdi
+VBoxManage modifyvm $name --boot1 dvd --boot2 disk --boot3 none --boot4 none
+VBoxManage modifyvm $name --memory 4096 --vram 32
+VBoxManage modifyvm $name --nic1 bridged --bridgeadapter1 wlp4s0 
+#VBoxManage modifyvm $name --nic2 hostonly --hostonlyadapter1 vboxnet0
+#VBoxHeadless -s $name
+
+# Manually set up host only adapter in virtualbox
+
+# Manually set up password-less ssh
