@@ -39,7 +39,7 @@ function install_elixir {
 }
 
 function install_git {
-  pushd `pwd`
+  pushd .
   if [ ! -d "~/src" ]; then
     mkdir ~/src
   fi
