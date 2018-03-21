@@ -39,6 +39,7 @@ function install_elixir {
 }
 
 function install_git {
+  pushd `pwd`
   if [ ! -d "~/src" ]; then
     mkdir ~/src
   fi
@@ -48,8 +49,8 @@ function install_git {
   if [ ! -d "~/src/dev_setup" ]; then
     cd ~/src
     git clone git@github.com:mbernerslee/dev_setup.git
-    cd ~
-  fi
+  fi  
+  popd
 }
 
 function install_phoenix_with_node_6 {
