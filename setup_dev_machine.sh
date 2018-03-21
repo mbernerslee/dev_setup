@@ -39,7 +39,12 @@ function install_elixir {
 }
 
 function install_git {
+  if [ ! -d "~/src" ]; then
+    mkdir ~/src
+  fi
+  cd ~/src
   sudo apt-get install git -y
+  git clone https://github.com/mbernerslee/dev_setup.git
 }
 
 function install_phoenix_with_node_6 {
@@ -90,11 +95,11 @@ function install_hub {
   popd
 }
 
+install_git
 configure_bashrc
 install_neovim
 install_tmux
 install_elixir
-install_git
 install_phoenix_with_node_6
 install_postgress
 configure_postgress
