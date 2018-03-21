@@ -73,9 +73,9 @@ function configure_postgress {
 }
 
 function configure_neovim {
-  #mkdir ~/.config
-  #mkdir ~/.config/nvim
-  #touch ~/.config/nvim/init.vim
+  mkdir ~/.config
+  mkdir ~/.config/nvim
+  touch ~/.config/nvim/init.vim
   #cat init.vim >> ~/.config.init.vim
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -86,6 +86,7 @@ function configure_neovim {
   sudo apt-get update
   sudo apt-get install python3-pip -y
   pip3 install neovim
+  nvim +'PlugInstall --sync' +qa
 }
 
 function install_hub {
