@@ -14,4 +14,5 @@ while [ $done -ne 1 ]; do
 done
 sleep 5
 ssh berners@robobuddy -X
+#ass
 #VBoxManage controlvm robobuddy acpipowerbutton
