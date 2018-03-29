@@ -20,7 +20,7 @@ diffhead() {
   git diff HEAD >> diff; vim diff; rm diff
 }
 constant_testing() {
-~/src/constant_testing/constant_testing.sh
+~/src/constant_testing/constant_testing.sh $1
 }
 
 alias git=hub
