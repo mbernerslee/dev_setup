@@ -1,6 +1,6 @@
 alias c='clear; clear'
 #alias r='ssh berners@robobuddy -X'
-alias r='ssh berners@robobuddy -t \'cd ~/src/platform_v2; tmux; bash\''
+alias r="ssh berners@robobuddy -t 'cd ~/src/platform_v2; tmux; bash'"
 ln -sf ~/src/dev_setup/start_robobuddy_dev.sh ~/start_robobuddy_dev.sh
 
 # link (symlink?) scripts in this folder to fun from ~ (or anywhere)?
