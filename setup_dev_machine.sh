@@ -2,14 +2,14 @@
 
 # Manually setup sudo
 
-# Manually change username@machine_name colour. see 
+# Manually change username@machine_name colour. see
 # https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
 
 #TODO make name@machine color change scripted
 
 function configure_bashrc {
   source_bashrc_additions="source ~/src/dev_setup/dev_machine_bashrc_additions"
-  if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then 
+  if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then
     echo "$source_bashrc_additions" >> ~/.bashrc
   fi
   #color_prompt="#force_color_prompt=yes"
@@ -43,13 +43,13 @@ function install_git {
   if [ ! -d "~/src" ]; then
     mkdir ~/src
   fi
-  
+
   sudo apt-get install git -y
-  
+
   if [ ! -d "~/src/dev_setup" ]; then
     cd ~/src
     git clone git@github.com:mbernerslee/dev_setup.git
-  fi  
+  fi
   popd
 }
 
@@ -94,21 +94,21 @@ function install_hub {
   pushd .
   cd /tmp
   wget https://github.com/github/hub/releases/download/v2.2.1/hub-linux-amd64-2.2.1.tar.gz -O hub.tar.gz
-  tar xvf hub.tar.gz  
+  tar xvf hub.tar.gz
   rm hub.tar.gz
   if [ ! -d ~/bin ]; then mkdir ~/bin; fi
   mv hub-linux-amd64-2.2.1/hub ~/bin
-  rm hub-linux-amd64-2.2.1 -rf 
+  rm hub-linux-amd64-2.2.1 -rf
   popd
 }
 
-install_git
+#install_git
 configure_bashrc
-install_neovim
-install_tmux
-install_elixir
-install_phoenix_with_node_6
-install_postgress
-configure_postgress
-configure_neovim
-install_hub
+#install_neovim
+#install_tmux
+#install_elixir
+#install_phoenix_with_node_6
+#install_postgress
+#configure_postgress
+#configure_neovim
+#install_hub

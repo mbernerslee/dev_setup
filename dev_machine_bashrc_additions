@@ -12,7 +12,7 @@ tw() {
 tws() {
   mix test.watch --stale
 }
-diff() {
+diffmaster() {
   git diff master >> diff; vim diff; rm diff
 }
 diffhead() {
