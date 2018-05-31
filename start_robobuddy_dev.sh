@@ -13,6 +13,5 @@ while [ $done -ne 1 ]; do
   fi
 done
 sleep 5
-ssh berners@robobuddy -X
-#ass
+ssh berners@robobuddy -X -t 'cd ~/src/platform_v2; tmux; bash'
 #VBoxManage controlvm robobuddy acpipowerbutton
