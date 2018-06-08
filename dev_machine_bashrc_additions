@@ -22,7 +22,6 @@ constant_testing() {
 ~/src/constant_testing/constant_testing.sh $1
 }
 
-alias git=hub
-ln -sf ~/src/dev_setup/init.vim ~/.config/nvim/init.vim
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
+ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
 export ERL_AFLAGS="-kernel shell_history enabled"

@@ -19,15 +19,19 @@ function configure_bashrc {
   fi
 }
 
-function install_neovim {
-  sudo apt-get install neovim -y
-  sudo apt-get install python-neovim -y
-  sudo apt-get install python3-neovim -y
-  sudo apt-get install xclip -y
-}
-
 function install_tmux {
   sudo apt-get install tmux -y
+}
+
+function install_vim {
+  sudo apt update
+  sudo apt install vim
+}
+
+function configure_vim {
+  touch ~/.vimrc
+  wget https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
+  sudo dpkg -i fzy_0.9-1_amd64.deb
 }
 
 function install_elixir {
@@ -38,14 +42,15 @@ function install_elixir {
   rm erlang-solutions_1.0_all.deb
 }
 
-function install_git {
-  pushd .
+function create_src_folder {
   if [ ! -d "~/src" ]; then
     mkdir ~/src
   fi
+}
 
+function install_git {
+  pushd .
   sudo apt-get install git -y
-
   if [ ! -d "~/src/dev_setup" ]; then
     cd ~/src
     git clone git@github.com:mbernerslee/dev_setup.git
@@ -72,11 +77,21 @@ function configure_postgress {
   sudo -u postgres psql -c "alter user postgres with password 'postgres';"
 }
 
+function install_constant_testing {
+  if [ ! -d "~/src/constant_testing" ]; then
+    pushd .
+    cd ~/src
+    git clone git@github.com:danturn/constant_testing.git
+    popd
+  fi
+}
+
+# Here to docuement what I setup I used to have
 function configure_neovim {
   mkdir ~/.config
   mkdir ~/.config/nvim
   touch ~/.config/nvim/init.vim
-  #cat init.vim >> ~/.config.init.vim
+  cat init.vim >> ~/.config.init.vim
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   sudo apt-get install silversearcher-ag
@@ -89,26 +104,15 @@ function configure_neovim {
   nvim +'PlugInstall --sync' +qa
 }
 
-function install_hub {
-  if [ -f ~/bin/hub ]; then echo -e "\e[32mhub installed \e[0m" && return; fi
-  pushd .
-  cd /tmp
-  wget https://github.com/github/hub/releases/download/v2.2.1/hub-linux-amd64-2.2.1.tar.gz -O hub.tar.gz
-  tar xvf hub.tar.gz
-  rm hub.tar.gz
-  if [ ! -d ~/bin ]; then mkdir ~/bin; fi
-  mv hub-linux-amd64-2.2.1/hub ~/bin
-  rm hub-linux-amd64-2.2.1 -rf
-  popd
-}
-
-install_git
-configure_bashrc
-install_neovim
-install_tmux
-install_elixir
-install_phoenix_with_node_6
-install_postgress
-configure_postgress
-configure_neovim
-install_hub
+#create_src_folder
+#install_git
+#configure_bashrc
+#install_tmux
+#install_vim
+configure_vim
+#install_elixir
+#install_phoenix_with_node_6
+#install_postgress
+#configure_postgress
+#install_constant_testing
+#sudo apt autoremove -y
