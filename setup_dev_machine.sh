@@ -12,11 +12,11 @@ function configure_bashrc {
   if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then
     echo "$source_bashrc_additions" >> ~/.bashrc
   fi
-  #color_prompt="#force_color_prompt=yes"
-  #ps1=
-  #if [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ] && [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ]; then
-  #  echo "hi"
-  #fi
+  color_prompt="#force_color_prompt=yes"
+  ps1=
+  if [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ] && [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ]; then
+    echo "hi"
+  fi
 }
 
 function install_neovim {
@@ -102,13 +102,13 @@ function install_hub {
   popd
 }
 
-#install_git
+install_git
 configure_bashrc
-#install_neovim
-#install_tmux
-#install_elixir
-#install_phoenix_with_node_6
-#install_postgress
-#configure_postgress
-#configure_neovim
-#install_hub
+install_neovim
+install_tmux
+install_elixir
+install_phoenix_with_node_6
+install_postgress
+configure_postgress
+configure_neovim
+install_hub
