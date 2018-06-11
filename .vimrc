@@ -21,6 +21,8 @@ endif
 " Install plugins with Plug
 call plug#begin('~/.vim/plugged')
   Plug 'altercation/vim-colors-solarized'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'slashmili/alchemist.vim'
 call plug#end()
 
 " Fuzzy Finder
@@ -39,6 +41,9 @@ nnoremap <C-p> :call FzyCommand("find -type f", ":e")<cr>
 nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
 nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
 nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
+
+" Alchamist configuration
+inoremap <C-p> <C-x><C-o>
 
 "Colour scheme
 set background=dark
