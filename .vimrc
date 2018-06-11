@@ -1,3 +1,28 @@
+" General stuff
+inoremap jj <ESC>
+set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
+map <CR> :noh<CR>
+set number
+set ruler
+
+"Remove whitespace at the end ofthe line
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Automatically instal Plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Install plugins with Plug
+call plug#begin('~/.vim/plugged')
+  Plug 'altercation/vim-colors-solarized'
+call plug#end()
+
 " Fuzzy Finder
 function! FzyCommand(choice_command, vim_command)
   try
@@ -10,15 +35,13 @@ function! FzyCommand(choice_command, vim_command)
     exec a:vim_command . ' ' . output
   endif
 endfunction
-
+nnoremap <C-p> :call FzyCommand("find -type f", ":e")<cr>
 nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
 nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
 nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
 
-" General stuff
-inoremap jj <ESC>
-set tabstop=2
-set softtabstop=2
-set expandtab
-set shiftwidth=2
-map <CR> :noh<CR>
+"Colour scheme
+set background=dark
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+colorscheme solarized

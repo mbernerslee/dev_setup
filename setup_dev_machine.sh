@@ -30,8 +30,21 @@ function install_vim {
 
 function configure_vim {
   touch ~/.vimrc
+  pushd .
+  if [ ! -d "~/.vim/colors" ]; then
+    if [ ! -d "~/.vim" ]; then
+      mkdir ~/.vim
+    fi
+    mkdir ~/.vim/colors
+  fi
+  cd ~/.vim/colors
+  if [ ! -f solarized.vim ]; then
+    wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+  fi
+  popd
   wget https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
   sudo dpkg -i fzy_0.9-1_amd64.deb
+  rm fzy_0.9-1_amd64.deb
 }
 
 function install_elixir {
@@ -104,15 +117,15 @@ function configure_neovim {
   nvim +'PlugInstall --sync' +qa
 }
 
-#create_src_folder
-#install_git
-#configure_bashrc
-#install_tmux
-#install_vim
+create_src_folder
+install_git
+configure_bashrc
+install_tmux
+install_vim
 configure_vim
-#install_elixir
-#install_phoenix_with_node_6
-#install_postgress
-#configure_postgress
-#install_constant_testing
-#sudo apt autoremove -y
+install_elixir
+install_phoenix_with_node_6
+install_postgress
+configure_postgress
+install_constant_testing
+sudo apt autoremove -y
