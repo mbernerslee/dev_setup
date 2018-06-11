@@ -7,6 +7,7 @@ set shiftwidth=2
 map <CR> :noh<CR>
 set number
 set ruler
+set hlsearch
 
 "Remove whitespace at the end ofthe line
 autocmd BufWritePre * :%s/\s\+$//e
