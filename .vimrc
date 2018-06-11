@@ -44,7 +44,7 @@ nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
 nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
 
 " Alchamist configuration
-inoremap <tab> <C-x><C-o>
+"inoremap <tab> <C-x><C-o>
 
 "Colour scheme
 set background=dark
