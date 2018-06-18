@@ -24,27 +24,12 @@ call plug#begin('~/.vim/plugged')
   Plug 'altercation/vim-colors-solarized'
   Plug 'sheerun/vim-polyglot'
   Plug 'slashmili/alchemist.vim'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+  Plug 'junegunn/fzf.vim'
 call plug#end()
 
-" Fuzzy Finder
-function! FzyCommand(choice_command, vim_command)
-  try
-    let output = system(a:choice_command . " | fzy ")
-  catch /Vim:Interrupt/
-    " Swallow errors from ^C, allow redraw! below
-  endtry
-  redraw!
-  if v:shell_error == 0 && !empty(output)
-    exec a:vim_command . ' ' . output
-  endif
-endfunction
-nnoremap <C-p> :call FzyCommand("find -type f", ":e")<cr>
-nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
-nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
-nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
-
-" Alchamist configuration
-"inoremap <tab> <C-x><C-o>
+" fzf fuzzy finder configuration
+noremap <C-p> :Files<cr>
 
 "Colour scheme
 set background=dark

@@ -42,9 +42,6 @@ function configure_vim {
     wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
   fi
   popd
-  wget https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
-  sudo dpkg -i fzy_0.9-1_amd64.deb
-  rm fzy_0.9-1_amd64.deb
 }
 
 function install_elixir {
