@@ -31,17 +31,14 @@ function install_vim {
 function configure_vim {
   touch ~/.vimrc
   pushd .
-  if [ ! -d "~/.vim/colors" ]; then
-    if [ ! -d "~/.vim" ]; then
-      mkdir ~/.vim
-    fi
-    mkdir ~/.vim/colors
-  fi
+  mkdir -p ~/.vim/colors
   cd ~/.vim/colors
   if [ ! -f solarized.vim ]; then
     wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
   fi
   popd
+
+  sudo apt-get install ack -y
 }
 
 function install_elixir {

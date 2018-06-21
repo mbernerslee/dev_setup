@@ -24,12 +24,13 @@ call plug#begin('~/.vim/plugged')
   Plug 'altercation/vim-colors-solarized'
   Plug 'sheerun/vim-polyglot'
   Plug 'slashmili/alchemist.vim'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " fzf fuzzy finder configuration
 noremap <C-p> :Files<cr>
+let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 
 "Colour scheme
 set background=dark
