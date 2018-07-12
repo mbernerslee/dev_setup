@@ -13,10 +13,10 @@ tws() {
   mix test.watch --stale
 }
 diffmaster() {
-  git diff master >> diff; vim diff; rm diff
+  git diff master $1 >> ~/diffmaster; vim ~/diffmaster; rm ~/diffmaster
 }
 diffhead() {
-  git diff HEAD >> diff; vim diff; rm diff
+  git diff HEAD >> ~/diffhead; vim ~/diffhead; rm ~/diffhead
 }
 constant_testing() {
 ~/src/constant_testing/constant_testing.sh $1
