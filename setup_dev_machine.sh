@@ -111,6 +111,13 @@ function configure_neovim {
   nvim +'PlugInstall --sync' +qa
 }
 
+function install_elm {
+  wget "https://github.com/elm/compiler/releases/download/0.19.0/binaries-for-linux.tar.gz"
+  tar xzf binaries-for-linux.tar.gz
+  sudo mv elm /usr/local/bin/
+  rm binaries-for-linux.tar.gz
+}
+
 create_src_folder
 install_git
 configure_bashrc
@@ -122,4 +129,5 @@ install_phoenix_with_node_6
 install_postgress
 configure_postgress
 install_constant_testing
+install_elm
 sudo apt autoremove -y
