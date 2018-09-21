@@ -25,3 +25,4 @@ constant_testing() {
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
 export ERL_AFLAGS="-kernel shell_history enabled"
+PATH=~/src/platform_v2/assets/node_modules/.bin:$PATH

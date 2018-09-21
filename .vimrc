@@ -26,7 +26,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'slashmili/alchemist.vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
-  Plug 'elmcast/elm-vim'
 call plug#end()
 
 " fzf fuzzy finder configuration
