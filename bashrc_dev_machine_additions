@@ -27,3 +27,5 @@ ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
 export ERL_AFLAGS="-kernel shell_history enabled"
 PATH=~/src/platform_v2/assets/node_modules/.bin:$PATH
 alias p='python3';
+export GOROOT=/usr/local/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
