@@ -1,8 +1,5 @@
 alias c='tput reset'
 
-# Makes colours work for tmux
-export TERM="screen-256color"
-
 grepex() {
   grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex"
 }

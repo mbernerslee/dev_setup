@@ -8,6 +8,7 @@ map <CR> :noh<CR>
 set number
 set ruler
 set hlsearch
+set nocompatible
 
 "Remove whitespace at the end ofthe line
 autocmd BufWritePre * :%s/\s\+$//e
@@ -37,3 +38,4 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
+
