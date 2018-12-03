@@ -16,7 +16,10 @@ diffhead() {
   git diff HEAD >> ~/diffhead; vim ~/diffhead; rm ~/diffhead
 }
 constant_testing() {
-~/src/constant_testing/constant_testing.sh $1
+  ~/src/constant_testing/constant_testing.sh $1
+}
+rmswap() {
+  find . -name "*.swp" -exec rm {} \;
 }
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
