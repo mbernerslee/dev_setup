@@ -9,9 +9,14 @@ set number
 set ruler
 set hlsearch
 set nocompatible
+set autoread
 
 "Remove whitespace at the end ofthe line
 autocmd BufWritePre * :%s/\s\+$//e
+
+"Run mix format for elixir files on save
+autocmd BufWritePost *.exs silent :!mix format %
+autocmd BufWritePost *.ex silent :!mix format %
 
 " Automatically instal Plug
 if empty(glob('~/.vim/autoload/plug.vim'))
