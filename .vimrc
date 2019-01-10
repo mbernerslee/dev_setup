@@ -15,8 +15,8 @@ set autoread
 autocmd BufWritePre * :%s/\s\+$//e
 
 "Run mix format for elixir files on save
-autocmd BufWritePost *.exs silent :!mix format %
-autocmd BufWritePost *.ex silent :!mix format %
+let g:mix_format_on_save = 1
+let g:mix_format_silent_errors = 1
 
 " Automatically instal Plug
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -32,6 +32,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'slashmili/alchemist.vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
+  Plug 'mhinz/vim-mix-format'
 call plug#end()
 
 " fzf fuzzy finder configuration
