@@ -16,7 +16,7 @@ diffhead() {
   git diff HEAD >> ~/diffhead; vim ~/diffhead; rm ~/diffhead
 }
 constant_testing() {
-  ~/src/constant_testing/constant_testing.sh $1
+  ~/src/constant_testing/constant_testing $1
 }
 rmswap() {
   find . -name "*.swp" -exec rm {} \;
