@@ -18,13 +18,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 let g:mix_format_on_save = 1
 let g:mix_format_silent_errors = 1
 
-" Automatically instal Plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 " Install plugins with Plug
 call plug#begin('~/.vim/plugged')
   Plug 'altercation/vim-colors-solarized'

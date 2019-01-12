@@ -25,7 +25,7 @@ function install_tmux {
 
 function install_vim {
   sudo apt update
-  sudo apt install vim
+  sudo apt install vim -y
 }
 
 function configure_vim {
@@ -36,7 +36,12 @@ function configure_vim {
   if [ ! -f solarized.vim ]; then
     wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
   fi
+  if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
   popd
+  vim +'PlugInstall --sync' +qa
 
   sudo apt-get install ack -y
 }
@@ -50,9 +55,7 @@ function install_elixir {
 }
 
 function create_src_folder {
-  if [ ! -d "~/src" ]; then
-    mkdir ~/src
-  fi
+  mkdir -p ~/src
 }
 
 function install_git {
@@ -118,16 +121,29 @@ function install_elm {
   rm binaries-for-linux.tar.gz
 }
 
-create_src_folder
-install_git
-configure_bashrc
-install_tmux
-install_vim
-configure_vim
-install_elixir
-install_phoenix_with_node_6
-install_postgress
-configure_postgress
-install_constant_testing
-install_elm
-sudo apt autoremove -y
+function install_curl {
+  sudo apt install curl -y
+}
+
+function install_beautifier_prerequisites {
+  sudo apt install bc -y
+}
+
+# install beautifier pre-requisitie package 'bc'
+install_beautifier_prerequisites
+. ./beautifier
+
+run_action create_src_folder
+run_action install_git
+run_action configure_bashrc
+run_action install_tmux
+run_action install_vim
+run_action install_curl
+run_action configure_vim
+run_action install_elixir
+run_action install_phoenix_with_node_6
+run_action install_postgress
+run_action configure_postgress
+run_action install_constant_testing
+run_action install_elm
+#sudo apt autoremove -y
