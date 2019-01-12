@@ -24,11 +24,10 @@ function configure_bashrc {
   if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then
     echo "$source_bashrc_additions" >> ~/.bashrc
   fi
-  color_prompt="#force_color_prompt=yes"
-  ps1=
-  if [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ] && [ `grep -c "$color_prompt" ~/.bashrc` -eq 0 ]; then
-    echo "hi"
-  fi
+  # change user@machine:~ colour to yellow
+  sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/g' ~/.bashrc
+  sed -i 's/\[\\033\[01;32m\\\]\\u/\[\\033\[01;33m\\\]\\u/g' ~/.bashrc
+
 }
 
 function install_tmux {
@@ -158,4 +157,4 @@ run_action install_postgress
 run_action configure_postgress
 run_action install_constant_testing
 run_action install_elm
-#sudo apt autoremove -y
+sudo apt autoremove -y
