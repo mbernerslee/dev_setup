@@ -2,6 +2,18 @@
 
 # Manually setup sudo
 
+#su
+#apt install sudo
+#usermod -aG sudo berners
+#exit (exit super user that is)
+#sudo install git -y
+#cd ~
+#ssh-keygen -t rsa -b 4096 -C "matthewbernerslee@gmail.com"
+# copy public key (~/.ssh/id_rsa.pub) to github to allow cloning
+
+# Cygwin **important**
+# for cygwin colors to be correct Options -> Terminal -> Type -> xterm-256color. apply & save. restart cygwin
+
 # Manually change username@machine_name colour. see
 # https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
 
