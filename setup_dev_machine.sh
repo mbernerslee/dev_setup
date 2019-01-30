@@ -14,20 +14,34 @@
 # Cygwin **important**
 # for cygwin colors to be correct Options -> Terminal -> Type -> xterm-256color. apply & save. restart cygwin
 
-# Manually change username@machine_name colour. see
-# https://askubuntu.com/questions/123268/changing-colors-for-user-host-directory-information-in-terminal-command-prompt
-
-#TODO make name@machine color change scripted
+#TODO make all commands impenpotent
 
 function configure_bashrc {
   source_bashrc_additions="source ~/src/dev_setup/bashrc_dev_machine_additions"
   if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then
     echo "$source_bashrc_additions" >> ~/.bashrc
   fi
-  # change user@machine:~ colour to yellow
+
+  sed -i "s/PS1='\([^']*\)'/PS1=\"\1\"/g" ~/.bashrc
+
+  if [ `grep -c "parse_git_branch()" ~/.bashrc` -eq 0 ];
+  then
+    printf -v prepend "%q" " git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'"
+
+    sed -i "1s;^;}\n;" ~/.bashrc
+    sed -i "1s;^;$prepend\n;" ~/.bashrc
+    sed -i "1s;^;parse_git_branch() {\n;" ~/.bashrc
+  fi
+
+  if [ `grep -c "(parse_git_branch)" ~/.bashrc` -eq 0 ];
+  then
+    find_substring='w\\\[\\033\[00m\\\]\\\$'
+    replace_substring='w\\\[\\033\[35m\\\]\\\$\(parse_git_branch\)\\\[\\033\[00m\\\]\\\$'
+    sed -i "s/$find_substring/$replace_substring/g" ~/.bashrc
+  fi
+
   sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/g' ~/.bashrc
   sed -i 's/\[\\033\[01;32m\\\]\\u/\[\\033\[01;33m\\\]\\u/g' ~/.bashrc
-
 }
 
 function install_tmux {
@@ -140,7 +154,6 @@ function install_beautifier_prerequisites {
   sudo apt install bc -y
 }
 
-# install beautifier pre-requisitie package 'bc'
 install_beautifier_prerequisites
 . ./beautifier
 
