@@ -19,14 +19,20 @@ let g:mix_format_on_save = 1
 let g:mix_format_silent_errors = 1
 
 " Install plugins with Plug
+" elm-vim MUST BE before vim-polyglot because of a bug
+" https://github.com/ElmCast/elm-vim/issues/133#issuecomment-333317387
 call plug#begin('~/.vim/plugged')
   Plug 'altercation/vim-colors-solarized'
+  Plug 'Hermanverschooten/elm-vim', { 'branch' : 'run_format_in_elm_root' }
   Plug 'sheerun/vim-polyglot'
   Plug 'slashmili/alchemist.vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
   Plug 'mhinz/vim-mix-format'
 call plug#end()
+
+"disable polyglot for elm only
+let g:polyglot_disabled = ['elm']
 
 " fzf fuzzy finder configuration
 noremap <C-p> :Files<cr>
