@@ -21,6 +21,9 @@ constant_testing() {
 rmswap() {
   find . -name "*.swp" -exec rm {} \;
 }
+elm_watch() {
+  ~/src/elm_watch/elm_watch $1
+}
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
