@@ -154,6 +154,15 @@ function install_beautifier_prerequisites {
   sudo apt install bc -y
 }
 
+function install_elm_watch {
+  if [ ! -d "~/src/elm_watch" ]; then
+    pushd .
+    cd ~/src
+    git clone git@github.com:mbernerslee/elm_watch.git
+    popd
+  fi
+}
+
 install_beautifier_prerequisites
 . ./beautifier
 
@@ -170,4 +179,5 @@ run_action install_postgress
 run_action configure_postgress
 run_action install_constant_testing
 run_action install_elm
+run_action install_elm_watch
 sudo apt autoremove -y
