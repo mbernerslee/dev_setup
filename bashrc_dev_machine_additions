@@ -3,11 +3,8 @@ alias c='tput reset'
 grepex() {
   grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex"
 }
-tw() {
-  mix test.watch "$1"
-}
-tws() {
-  mix test.watch --stale
+replaceex() {
+  find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" \) -exec sed -i "s/$1/$2/g" {} +
 }
 diffmaster() {
   git diff master $1 >> ~/diffmaster; vim ~/diffmaster; rm ~/diffmaster
