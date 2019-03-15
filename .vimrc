@@ -29,6 +29,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
   Plug 'mhinz/vim-mix-format'
+  Plug 'elmcast/elm-vim'
 call plug#end()
 
 "disable polyglot for elm only
@@ -43,3 +44,9 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
+
+command! -nargs=1 Silent
+      \   execute 'silent !' . <q-args>
+      \ | execute 'redraw!'
+
+autocmd BufWritePost *.elm :Silent ~/src/platform/assets/node_modules/elm-format/bin/elm-format <afile> --elm-version=0.19 --yes
