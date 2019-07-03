@@ -1,4 +1,5 @@
 " General stuff
+set noswapfile
 inoremap jj <ESC>
 set tabstop=2
 set softtabstop=2
