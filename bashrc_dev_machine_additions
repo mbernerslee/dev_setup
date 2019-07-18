@@ -21,6 +21,9 @@ rmswap() {
 elm_watch() {
   ~/src/elm_watch/elm_watch $1
 }
+killslack() {
+  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
+}
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
