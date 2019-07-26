@@ -24,6 +24,9 @@ elm_watch() {
 killslack() {
   for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 }
+whitehat_wifi() {
+  sudo cat /etc/NetworkManager/system-connections/WhiteHat | grep psk=
+}
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
