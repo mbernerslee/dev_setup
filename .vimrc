@@ -31,6 +31,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'mhinz/vim-mix-format'
   Plug 'elmcast/elm-vim'
+  Plug 'antew/vim-elm-analyse'
 call plug#end()
 
 "disable polyglot for elm only
@@ -41,9 +42,10 @@ noremap <C-p> :Files<cr>
 let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 
 "Colour scheme
-set background=dark
+syntax on
+set t_Co=256
 let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+set background=light
 colorscheme solarized
 
 command! -nargs=1 Silent
