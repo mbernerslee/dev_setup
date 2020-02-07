@@ -15,9 +15,6 @@ diffhead() {
 rmswap() {
   find . -name "*.swp" -exec rm {} \;
 }
-elm_watch() {
-  ~/src/elm_watch/elm_watch $1
-}
 killslack() {
   for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 }
