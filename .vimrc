@@ -45,7 +45,7 @@ let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 syntax on
 set t_Co=256
 let g:solarized_termcolors=256
-set background=light
+set background=dark
 colorscheme solarized
 
 command! -nargs=1 Silent
