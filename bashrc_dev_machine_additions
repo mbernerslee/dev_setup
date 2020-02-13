@@ -6,6 +6,9 @@ grepex() {
 replaceex() {
   find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" \) -exec sed -i "s/$1/$2/g" {} +
 }
+replacelm() {
+  find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
+}
 diffmaster() {
   git diff master $1 >> ~/diffmaster; vim ~/diffmaster; rm ~/diffmaster
 }
