@@ -25,7 +25,7 @@ whitehat_wifi() {
   sudo cat /etc/NetworkManager/system-connections/WhiteHat | grep psk=
 }
 constant_testing() {
-  ~/src/constant_testing/constant_testing
+  ~/src/constant_testing/constant_testing $@
 }
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
