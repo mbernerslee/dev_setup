@@ -27,6 +27,12 @@ whitehat_wifi() {
 constant_testing() {
   ~/src/constant_testing/constant_testing $@
 }
+start_pairing() {
+  tmux new -s pairing
+}
+join_pairing() {
+  tmux a -t pairing
+}
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
