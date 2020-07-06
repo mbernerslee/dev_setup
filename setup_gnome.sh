@@ -51,6 +51,27 @@ function install_slack {
   fi
 }
 
+function install_discord {
+  dpkg -l | grep "discord"
+  if [[ $? == 0 ]]; then
+    echo "discord is already installed"
+  else
+    wget https://dl.discordapp.net/apps/linux/0.0.10/discord-0.0.10.deb
+    sudo apt install ./discord-0.0.10.deb -y
+    rm discord-0.0.10.deb
+  fi
+}
+function install_steam {
+  dpkg -l | grep "steam-devices"
+  if [[ $? == 0 ]]; then
+    echo "steam is already installed"
+  else
+    echo "deb http://deb.debian.org/debian/ buster main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    sudo apt update
+    sudo apt install steam -y
+  fi
+}
+
 function configure_gnome {
   #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
   GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
@@ -82,3 +103,5 @@ run_action install_zoom
 run_action install_dconf_editor
 run_action configure_gnome
 run_action install_slack
+run_action install_discord
+run_action install_steam
