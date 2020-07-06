@@ -36,60 +36,36 @@ function install_zoom {
   fi
 }
 
+function install_dconf_editor {
+  sudo apt install dconf-editor -y
+}
+
 function configure_gnome {
   GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
   gsettings list-keys org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/
 
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-show-menubar true
+  gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy never
-  gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ audible-bell false
   gsettings set org.gnome.desktop.wm.keybindings switch-applications []
+  gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward []
+  gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
+  dconf write /org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/use-theme-colors false
 
-  #gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings
+  #gsettings get org.gnome.Terminal.ProfilesList default
 
-  gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name
-  gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command
-  gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding
+  #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'gnome-terminal'
 
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ name 'Terminal'
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ command 'gnome-terminal'
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ binding '<Super>t'
-  gsettings unset org.gnome.settings-daemon.plugins.media-keys custom-keybindings
-
-#  custom_keybindings=('Terminal' 'gnome-terminal' '<Super>t' 'Terminal2' 'gnome-terminal' '<Super>n')
-#  new_custom_keybindings_list=()
-#  i=0
-#  j=0
-#  while [ $i -lt ${#custom_keybindings[@]} ]
-#  do
-#    echo $i
-#    echo $j
-#  echo ${new_custom_keybindings_list[@]}
-#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ name ${custom_keybindings[$i]}
-#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ command ${custom_keybindings[$i+1]}
-#  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/ binding ${custom_keybindings[$i+2]}
-#  new_custom_keybindings_list=( "${new_custom_keybindings_list[@]}" "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$j/")
-#  i=$(( $i + 3 ))
-#  j=$(( $j + 1 ))
-#  done
-#
-#  echo $new_custom_keybindings_list
-
-  #gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name
-  #gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command
-  #gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding
-
-  #gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy
-  #gsettings range org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy
-  #gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy never
-}
-
-function custom_keybindings {
-  ('Terminal', 'gnome-terminal', '<Super>t')
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super>t'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
 }
 
 sudo echo "a prompt for sudo" >/dev/null
 run_action install_chrome
 run_action install_spotify
 run_action install_zoom
+run_action install_dconf_editor
 run_action configure_gnome
