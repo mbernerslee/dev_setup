@@ -40,9 +40,23 @@ function install_dconf_editor {
   sudo apt install dconf-editor -y
 }
 
+function install_slack {
+  dpkg -l | grep "slack-desktop"
+  if [[ $? == 0 ]]; then
+    echo "slack already installed"
+  else
+    wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.4.3-amd64.deb
+    sudo apt install ./slack-desktop-4.4.3-amd64.deb
+    rm slack-desktop-4.4.3-amd64.deb
+  fi
+}
+
 function configure_gnome {
+  #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
   GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
-  gsettings list-keys org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/
+  #gsettings list-keys org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/
+  #gsettings get org.gnome.Terminal.ProfilesList default
+  #TODO set keyboard layout to UK
 
   gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy never
@@ -53,11 +67,6 @@ function configure_gnome {
   gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
   dconf write /org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/use-theme-colors false
 
-  #TODO set keyboard layout to UK
-
-  #gsettings get org.gnome.Terminal.ProfilesList default
-
-  #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Terminal'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'gnome-terminal'
 
@@ -71,3 +80,4 @@ run_action install_spotify
 run_action install_zoom
 run_action install_dconf_editor
 run_action configure_gnome
+run_action install_slack
