@@ -53,6 +53,8 @@ function configure_gnome {
   gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
   dconf write /org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/use-theme-colors false
 
+  #TODO set keyboard layout to UK
+
   #gsettings get org.gnome.Terminal.ProfilesList default
 
   #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
