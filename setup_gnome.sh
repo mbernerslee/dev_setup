@@ -57,6 +57,7 @@ function configure_gnome {
   #gsettings list-keys org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/
   #gsettings get org.gnome.Terminal.ProfilesList default
   #TODO set keyboard layout to UK
+  #TODO make Ctrl = zoom in on a terminal (or everywhere?)
 
   gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy never
