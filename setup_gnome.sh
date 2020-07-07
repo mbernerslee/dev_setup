@@ -37,7 +37,12 @@ function install_zoom {
 }
 
 function install_dconf_editor {
-  sudo apt install dconf-editor -y
+  dpkg -l | grep "dconf-editor"
+  if [[ $? == 0 ]]; then
+    echo "dconf-editor already installed"
+  else
+    sudo apt install dconf-editor -y
+  fi
 }
 
 function install_slack {
@@ -69,6 +74,17 @@ function install_steam {
     echo "deb http://deb.debian.org/debian/ buster main contrib non-free" | sudo tee -a /etc/apt/sources.list
     sudo apt update
     sudo apt install steam -y
+  fi
+}
+
+function install_minecraft {
+  dpkg -l | grep "minecraft-launcher"
+  if [[ $? == 0 ]]; then
+    echo "minecraft already installed"
+  else
+    wget https://launcher.mojang.com/download/Minecraft.deb
+    sudo apt install ./Minecraft.deb
+    rm Minecraft.deb
   fi
 }
 
@@ -105,3 +121,4 @@ run_action configure_gnome
 run_action install_slack
 run_action install_discord
 run_action install_steam
+run_action install_minecraft
