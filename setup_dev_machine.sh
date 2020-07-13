@@ -72,11 +72,14 @@ function configure_vim {
 }
 
 function install_elixir {
-  wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
-  sudo apt-get update
-  sudo apt-get install esl-erlang -y
-  sudo apt-get install elixir -y
-  rm erlang-solutions_1.0_all.deb
+  if ! dpkg -l elixir
+  then
+    wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
+    rm -f erlang-solutions_2.0_all.deb
+    sudo apt update
+    sudo apt install esl-erlang -y
+    sudo apt install elixir -y
+  fi
 }
 
 function create_src_folder {
@@ -85,7 +88,7 @@ function create_src_folder {
 
 function install_git {
   pushd .
-  sudo apt-get install git -y
+  sudo apt install git -y
   if [ ! -d "~/src/dev_setup" ]; then
     cd ~/src
     git clone git@github.com:mbernerslee/dev_setup.git
