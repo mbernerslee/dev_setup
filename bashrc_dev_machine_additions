@@ -1,10 +1,10 @@
 alias c='tput reset'
 
 grepex() {
-  grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex"
+  grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex --include="*.html.leex"
 }
 replaceex() {
-  find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" \) -exec sed -i "s/$1/$2/g" {} +
+  find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" -o -name "*.leex" \) -exec sed -i "s/$1/$2/g" {} +
 }
 replacelm() {
   find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
