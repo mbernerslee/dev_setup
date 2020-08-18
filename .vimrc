@@ -11,6 +11,8 @@ set ruler
 set hlsearch
 set nocompatible
 set autoread
+"newline indetation problem fixer https://stackoverflow.com/questions/30408178/indenting-after-newline-following-new-indent-level-vim
+set autoindent
 
 "Remove whitespace at the end ofthe line
 autocmd BufWritePre * :%s/\s\+$//e
