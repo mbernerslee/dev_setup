@@ -74,8 +74,10 @@ function configure_vim {
 function install_elixir {
   if ! dpkg -l elixir
   then
-    wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
-    rm -f erlang-solutions_2.0_all.deb
+    echo "deb https://packages.erlang-solutions.com/debian buster contrib" | sudo tee /etc/apt/sources.list.d/erlang-solutions.list
+    wget https://packages.erlang-solutions.com/debian/erlang_solutions.asc
+    sudo apt-key add erlang_solutions.asc
+    rm erlang_solutions.asc
     sudo apt update
     sudo apt install esl-erlang -y
     sudo apt install elixir -y
