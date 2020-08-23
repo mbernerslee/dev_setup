@@ -76,6 +76,7 @@ function install_elixir {
   then
     echo "deb https://packages.erlang-solutions.com/debian buster contrib" | sudo tee /etc/apt/sources.list.d/erlang-solutions.list
     wget https://packages.erlang-solutions.com/debian/erlang_solutions.asc
+    sudo apt install gnupg2
     sudo apt-key add erlang_solutions.asc
     rm erlang_solutions.asc
     sudo apt update
