@@ -7,24 +7,6 @@ echo_overwriting_last_line() {
   echo -e "\e[1A\e[K$1"
 }
 
-ssh_if_pingable() {
-  ping -n 1 -w 2 beastyboi > /dev/null
-  result=$?
-  if [[ $result == 0 ]]; then 
-    echo "He replied to pings!"
-    ssh_to_beastyboi
-  else
-    if [[ $ping_attempt == 1 ]]; then  
-      echo "He no reply to pings after 2ms. trying again...(attempt $ping_attempt)"
-    else
-      echo_overwriting_last_line "He no reply to pings after 2ms. trying again...(attempt $ping_attempt)"
-    fi
-    ping_attempt=$(expr $ping_attempt + 1)
-    ssh_if_pingable
-    echo "ssh now!"
-  fi
-}
-
 ssh_to_beastyboi() {
   ssh -o ConnectTimeout=1 berners@beastyboi 2> /dev/null
   result=$? 
@@ -45,4 +27,4 @@ ssh_to_beastyboi() {
 
 echo "powering on beastyboi"
 cmd /C "start_beastyboi.bat" > /dev/null
-ssh_if_pingable
+ssh_to_beastyboi
