@@ -1,6 +1,5 @@
 #!/bin/bash
 
-ping_attempt=1
 ssh_attempt=1
 
 echo_overwriting_last_line() {
@@ -9,13 +8,16 @@ echo_overwriting_last_line() {
 
 ssh_to_beastyboi() {
   ssh -o ConnectTimeout=1 berners@beastyboi 2> /dev/null
-  result=$? 
-  if [[ $result == 0 ]]; then 
+  result=$?
+  if [[ $result == 0 ]]; then
+    if [[ $ssh_attempt != 1 ]]; then
+      update_previous_ssh_attempts_count $ssh_attempt
+    fi
     exit 0
   elif [[ $result == 130 ]]; then
     exit 0
   else
-    if [[ $ssh_attempt == 1 ]]; then  
+    if [[ $ssh_attempt == 1 ]]; then
       echo "Attempting to ssh...(attempt $ssh_attempt)"
     else
       echo_overwriting_last_line "Attempting to ssh...(attempt $ssh_attempt)"
@@ -25,6 +27,18 @@ ssh_to_beastyboi() {
   fi
 }
 
+update_previous_ssh_attempts_count() {
+  echo  "$1" > start_beastyboi_previous_attempt_counts
+}
+
+display_previous_ssh_attempts_count() {
+  previous_count=`cat start_beastyboi_previous_attempt_counts 2> /dev/null`
+  if [[ $previous_count != "" ]]; then
+    echo "Last time it took $previous_count attempt(s) to ssh after powering on..."
+  fi
+}
+
 echo "powering on beastyboi"
 cmd /C "start_beastyboi.bat" > /dev/null
+display_previous_ssh_attempts_count
 ssh_to_beastyboi
