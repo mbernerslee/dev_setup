@@ -31,7 +31,7 @@ constant_testing() {
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
 export ERL_AFLAGS="-kernel shell_history enabled"
-PATH=~/src/platform/apps/gb/assets/node_modules/.bin:$PATH
+PATH=~/src/platform/assets/node_modules/.bin:$PATH
 alias p='python3';
 export GOROOT=/usr/local/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
