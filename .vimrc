@@ -21,6 +21,9 @@ autocmd BufWritePre * :%s/\s\+$//e
 let g:mix_format_on_save = 1
 let g:mix_format_silent_errors = 1
 
+"disable polyglot for elm only
+let g:polyglot_disabled = ['elm']
+
 " Install plugins with Plug
 " elm-vim MUST BE before vim-polyglot because of a bug
 " https://github.com/ElmCast/elm-vim/issues/133#issuecomment-333317387
@@ -35,9 +38,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'elmcast/elm-vim'
   Plug 'antew/vim-elm-analyse'
 call plug#end()
-
-"disable polyglot for elm only
-let g:polyglot_disabled = ['elm']
 
 " fzf fuzzy finder configuration
 noremap <C-p> :Files<cr>

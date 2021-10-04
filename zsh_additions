@@ -1,0 +1,5 @@
+function git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)%f %1 \$ '
