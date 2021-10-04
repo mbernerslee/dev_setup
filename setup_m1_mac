@@ -40,14 +40,19 @@ function configure_zprofile {
 
 install_brew() {
   echo_in_magenta "installing brew..."
-  echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
-  additions='eval "$(/opt/homebrew/bin/brew shellenv)"'
-  if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
-    echo "$additions" >> ~/.zprofile
+  which brew > /dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo_in_green "brew already installed"
+  else
+    echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
+    additions='eval "$(/opt/homebrew/bin/brew shellenv)"'
+    if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
+      echo "$additions" >> ~/.zprofile
+    fi
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    source ~/.zprofile
+    echo_in_green "brew installed"
   fi
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-  source ~/.zprofile
-  echo_in_green "brew installed"
 }
 
 generate_ssh_keys() {
@@ -113,3 +118,5 @@ configure_vim
 
 brew install tmux -q
 configure_tmux
+
+brew install slack -q
