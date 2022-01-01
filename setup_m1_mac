@@ -1,0 +1,122 @@
+#!/bin/zsh
+
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+NOCOLOR="\033[0m"
+MAGENTA="\033[35m"
+
+echo_in_magenta() {
+  echo "${MAGENTA}$1${NOCOLOR}"
+}
+
+echo_in_green() {
+  echo "${GREEN}$1${NOCOLOR}"
+}
+
+echo_in_red() {
+  echo "${RED}$1${NOCOLOR}"
+}
+
+function configure_zprofile {
+  echo_in_magenta "Configuring ~/.zprofile..."
+  additions="source ~/src/dev_setup/bashrc_dev_machine_additions"
+  if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
+    echo "$additions" >> ~/.zprofile
+  fi
+
+  more_additions="source ~/src/dev_setup/zsh_additions"
+  if [ `grep -c "$more_additions" ~/.zprofile` -eq 0 ]; then
+    echo "$more_additions" >> ~/.zprofile
+    echo "i did it"
+  fi
+
+  source_zprofile="source ~/.zprofile"
+  if [ `grep -c "$source_zprofile" ~/.zshrc` -eq 0 ]; then
+    echo "$source_zprofile" >> ~/.zshrc
+  fi
+
+  echo_in_green "configured ~/.zprofile"
+}
+
+install_brew() {
+  echo_in_magenta "installing brew..."
+  which brew > /dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo_in_green "brew already installed"
+  else
+    echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
+    additions='eval "$(/opt/homebrew/bin/brew shellenv)"'
+    if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
+      echo "$additions" >> ~/.zprofile
+    fi
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    source ~/.zprofile
+    echo_in_green "brew installed"
+  fi
+}
+
+generate_ssh_keys() {
+  echo_in_magenta "Running generate_ssh_keys..."
+  if [ -f ~/.ssh/id_rsa.pub ]; then
+    echo_in_green "already have SSH keys"
+  else
+    echo_in_magenta "Generating SSH keys..."
+    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''
+  fi
+}
+
+configure_tmux() {
+  echo_in_magenta "Configuring tmux..."
+  if [ -d ~/src/dev_setup ]; then
+    ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
+    echo_in_green "tmux configured"
+  else
+    echo_in_red "~/src/dev_setup does not exist, so bailing"
+    exit 1
+  fi
+}
+
+configure_vim() {
+  touch ~/.vimrc
+  pushd .
+  mkdir -p ~/.vim/colors
+  cd ~/.vim/colors
+
+  brew install wget -q
+
+  if [ ! -f solarized.vim ]; then
+    wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+  fi
+  if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+  popd
+  vim +'PlugInstall --sync' +qa
+
+  brew install ack -q
+
+  if [ -d ~/src/dev_setup ]; then
+    ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
+  else
+    echo_in_red "~/src/dev_setup does not exist, so bailing"
+    exit 1
+  fi
+}
+
+
+install_brew
+generate_ssh_keys
+
+configure_zprofile
+
+brew install git -q
+brew install google-chrome -q
+
+brew install vim -q
+configure_vim
+
+brew install tmux -q
+configure_tmux
+
+brew install slack -q

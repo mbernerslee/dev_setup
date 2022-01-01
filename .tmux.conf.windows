@@ -1,0 +1,10 @@
+set -sg escape-time 0
+set -g default-terminal "xterm-256color"
+set-option -g repeat-time 0
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+#command to get current window string to make blow command work
+#tmux lsw -F "#{window_active} #{window_layout}" | grep "^1" | cut -d " " -f2
+bind b split-window -v \; select-layout "5b79,424x79,0,0{284x79,0,0,0,139x79,285,0,1}"

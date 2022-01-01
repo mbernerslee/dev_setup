@@ -1,0 +1,37 @@
+alias c='tput reset'
+
+grepex() {
+  grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex" --include="*.html.leex"
+}
+replaceex() {
+  find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" -o -name "*.leex" \) -exec sed -i "s/$1/$2/g" {} +
+}
+replacelm() {
+  find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
+}
+diffmaster() {
+  git diff master $1 >> ~/diffmaster; vim ~/diffmaster; rm ~/diffmaster
+}
+diffhead() {
+  git diff HEAD >> ~/diffhead; vim ~/diffhead; rm ~/diffhead
+}
+rmswap() {
+  find . -name "*.swp" -exec rm {} \;
+}
+killslack() {
+  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
+}
+whitehat_wifi() {
+  sudo cat /etc/NetworkManager/system-connections/WhiteHat | grep psk=
+}
+constant_testing() {
+  ~/src/constant_testing/constant_testing $@
+}
+
+ln -sf ~/src/dev_setup/.tmux.conf.windows ~/.tmux.conf
+ln -sf ~/src/dev_setup/.vimrc.windows ~/.vimrc
+export ERL_AFLAGS="-kernel shell_history enabled"
+PATH=~/src/platform/assets/node_modules/.bin:$PATH
+alias p='python3';
+export GOROOT=/usr/local/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH

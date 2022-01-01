@@ -1,0 +1,32 @@
+#! /bin/bash
+
+function configure_bashrc {
+  touch ~/.bashrc
+  source_bashrc_additions="source ~/src/dev_setup/bashrc_cygwin"
+  if [ `grep -c "$source_bashrc_additions" ~/.bashrc` -eq 0 ]; then
+    echo "$source_bashrc_additions" >> ~/.bashrc
+  fi
+}
+
+function configure_vim {
+  touch ~/.vimrc
+  pushd .
+  mkdir -p ~/.vim/colors
+  cd ~/.vim/colors
+  if [ ! -f solarized.vim ]; then
+    curl https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim --output solarized.vim
+  fi
+  if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    echo "HELLO DAVE"
+    mkdir -p ~/.vim/autoload
+    pushd .
+    cd ~/.vim/autoload
+    curl https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim --output plug.vim
+    popd
+  fi
+  popd
+  vim +'PlugInstall --sync' +qa
+}
+
+configure_bashrc
+configure_vim
