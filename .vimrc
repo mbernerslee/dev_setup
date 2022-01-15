@@ -43,6 +43,8 @@ call plug#end()
 noremap <C-p> :Files<cr>
 let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 
+command FormatJson %!jq .
+
 "Colour scheme
 syntax on
 set t_Co=256
