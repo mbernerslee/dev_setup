@@ -120,3 +120,5 @@ brew install tmux -q
 configure_tmux
 
 brew install slack -q
+brew install --cask zoom -q
+brew install --cask visual-studio-code -q
