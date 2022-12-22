@@ -18,8 +18,8 @@ set autoindent
 autocmd BufWritePre * :%s/\s\+$//e
 
 "Run mix format for elixir files on save
-let g:mix_format_on_save = 1
-let g:mix_format_silent_errors = 1
+"let g:mix_format_on_save = 1
+"let g:mix_format_silent_errors = 1
 
 "disable polyglot for elm only
 let g:polyglot_disabled = ['elm']
@@ -34,9 +34,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'slashmili/alchemist.vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
-  Plug 'mhinz/vim-mix-format'
   Plug 'elmcast/elm-vim'
   Plug 'antew/vim-elm-analyse'
+  Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " fzf fuzzy finder configuration
@@ -44,6 +44,9 @@ noremap <C-p> :Files<cr>
 let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 
 command FormatJson %!jq .
+
+" Rust autoformat on save
+let g:rustfmt_autosave = 1
 
 "Colour scheme
 syntax on
@@ -57,3 +60,4 @@ command! -nargs=1 Silent
       \ | execute 'redraw!'
 
 autocmd BufWritePost *.elm :Silent ~/src/platform/assets/node_modules/elm-format/bin/elm-format <afile> --elm-version=0.19 --yes
+autocmd BufWritePost *.ex,*.exs,*.heex,*.eex silent execute "!mix format %"
