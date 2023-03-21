@@ -28,15 +28,16 @@ let g:polyglot_disabled = ['elm']
 " elm-vim MUST BE before vim-polyglot because of a bug
 " https://github.com/ElmCast/elm-vim/issues/133#issuecomment-333317387
 call plug#begin('~/.vim/plugged')
-  Plug 'altercation/vim-colors-solarized'
-  Plug 'Hermanverschooten/elm-vim', { 'branch' : 'run_format_in_elm_root' }
-  Plug 'sheerun/vim-polyglot'
-  Plug 'slashmili/alchemist.vim'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  Plug 'junegunn/fzf.vim'
-  Plug 'elmcast/elm-vim'
-  Plug 'antew/vim-elm-analyse'
-  Plug 'rust-lang/rust.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'Hermanverschooten/elm-vim', { 'branch' : 'run_format_in_elm_root' }
+Plug 'sheerun/vim-polyglot'
+Plug 'slashmili/alchemist.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'elmcast/elm-vim'
+Plug 'antew/vim-elm-analyse'
+Plug 'rust-lang/rust.vim'
+Plug 'mhinz/vim-mix-format'
 call plug#end()
 
 " fzf fuzzy finder configuration
@@ -60,4 +61,8 @@ command! -nargs=1 Silent
       \ | execute 'redraw!'
 
 autocmd BufWritePost *.elm :Silent ~/src/platform/assets/node_modules/elm-format/bin/elm-format <afile> --elm-version=0.19 --yes
-autocmd BufWritePost *.ex,*.exs,*.heex,*.eex silent execute "!mix format %"
+" attempt at running mix format on save - no good
+" autocmd BufWritePost *.ex,*.exs,*.heex,*.eex silent execute "!mix format %"
+
+" vim-mix-format automatically run on file save
+let g:mix_format_on_save = 1
