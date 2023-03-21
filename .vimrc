@@ -29,15 +29,16 @@ let g:polyglot_disabled = ['elm']
 " https://github.com/ElmCast/elm-vim/issues/133#issuecomment-333317387
 call plug#begin('~/.vim/plugged')
 Plug 'altercation/vim-colors-solarized'
-Plug 'Hermanverschooten/elm-vim', { 'branch' : 'run_format_in_elm_root' }
+"Plug 'Hermanverschooten/elm-vim', { 'branch' : 'run_format_in_elm_root' }
 Plug 'sheerun/vim-polyglot'
-Plug 'slashmili/alchemist.vim'
+"Plug 'slashmili/alchemist.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'elmcast/elm-vim'
-Plug 'antew/vim-elm-analyse'
+"Plug 'elmcast/elm-vim'
+"Plug 'antew/vim-elm-analyse'
 Plug 'rust-lang/rust.vim'
-Plug 'mhinz/vim-mix-format'
+"Plug 'mhinz/vim-mix-format'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 " fzf fuzzy finder configuration
@@ -65,4 +66,8 @@ autocmd BufWritePost *.elm :Silent ~/src/platform/assets/node_modules/elm-format
 " autocmd BufWritePost *.ex,*.exs,*.heex,*.eex silent execute "!mix format %"
 
 " vim-mix-format automatically run on file save
-let g:mix_format_on_save = 1
+"let g:mix_format_on_save = 1
+
+"dence-analysis/ale
+let g:ale_fixers = { 'elixir': ['mix_format'], '*.html.heex': ['mix_format'] }
+let g:ale_fix_on_save = 1
