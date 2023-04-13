@@ -16,6 +16,7 @@ set autoread
 "newline indetation problem fixer https://stackoverflow.com/questions/30408178/indenting-after-newline-following-new-indent-level-vim
 set autoindent
 let mapleader = "\<Space>"
+"in normal mode map <leader>d to delete without wrecking the regular 'yank' "buffer (and so on)
 nnoremap <leader>d "_d
 xnoremap <leader>d "_d
 xnoremap <leader>p "_dP
