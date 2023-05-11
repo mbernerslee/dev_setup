@@ -104,6 +104,15 @@ configure_vim() {
   fi
 }
 
+configure_neovim() {
+  if [ -d ~/src/dev_setup ]; then
+    ln -sf ~/src/dev_setup/nvim ~/.config/nvim
+  else
+    echo_in_red "~/src/dev_setup does not exist, so bailing"
+    exit 1
+  fi
+}
+
 
 install_brew
 generate_ssh_keys
@@ -115,6 +124,9 @@ brew install google-chrome -q
 
 brew install vim -q
 configure_vim
+
+brew install neovim -q
+configure_neovim
 
 brew install tmux -q
 configure_tmux

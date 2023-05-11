@@ -4,3 +4,4 @@ function git_branch() {
 autoload -Uz compinit && compinit
 
 PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)%f %1 \$ '
+alias vim=nvim
