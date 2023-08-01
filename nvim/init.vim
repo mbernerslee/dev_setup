@@ -13,7 +13,7 @@ set shiftwidth=2
 map <CR> :noh<CR>
 set number
 "set relative line numbers (or rather 'hybrid' since it has the current asbolute line number
-"set relativenumber
+set relativenumber
 set ruler
 set hlsearch
 set nocompatible
