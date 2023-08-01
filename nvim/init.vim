@@ -13,7 +13,7 @@ set shiftwidth=2
 map <CR> :noh<CR>
 set number
 "set relative line numbers (or rather 'hybrid' since it has the current asbolute line number
-set relativenumber
+"set relativenumber
 set ruler
 set hlsearch
 set nocompatible
@@ -57,8 +57,8 @@ command FormatJson %!jq .
 let g:rustfmt_autosave = 1
 
 "awesome-vim-colorschemes
-":colorscheme solarized8_flat
-:colorscheme mountaineer
+:colorscheme solarized8_flat
+":colorscheme mountaineer
 
 " air-line
 "let g:airline_powerline_fonts = 1
