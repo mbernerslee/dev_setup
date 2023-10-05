@@ -48,6 +48,9 @@ Plug 'dense-analysis/ale'
 call plug#end()
 
 " fzf fuzzy finder configuration
+"     search for only git tracked files
+noremap <C-[> :GFiles<cr>
+"     search for all files (including .gitignored ones, like deps/ in elixir projects)
 noremap <C-p> :Files<cr>
 let $FZF_DEFAULT_COMMAND = 'ack -g ""'
 
@@ -68,6 +71,9 @@ command! -nargs=1 Silent
       \ | execute 'redraw!'
 
 autocmd BufWritePost *.elm :Silent ~/src/platform/assets/node_modules/elm-format/bin/elm-format <afile> --elm-version=0.19 --yes
+
+"for turning on spellcheck
+"set spell spelllang=en_gb
 
 "dence-analysis/ale
 let g:ale_fixers = { 'elixir': ['mix_format'], '*.html.heex': ['mix_format'] }
