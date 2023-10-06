@@ -49,7 +49,7 @@ call plug#end()
 
 " fzf fuzzy finder configuration
 "     search for only git tracked files
-noremap <C-[> :GFiles<cr>
+"noremap <C-[> :GFiles<cr>
 "     search for all files (including .gitignored ones, like deps/ in elixir projects)
 noremap <C-p> :Files<cr>
 let $FZF_DEFAULT_COMMAND = 'ack -g ""'
