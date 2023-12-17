@@ -37,3 +37,4 @@ alias p='python3';
 export GOROOT=/usr/local/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 #export APP_HOST=beastyboi
+alias vim=nvim
