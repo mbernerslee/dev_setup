@@ -40,19 +40,39 @@ call plug#begin()
 Plug 'https://github.com/rafi/awesome-vim-colorschemes'
 Plug 'vim-airline/vim-airline' "for the swanky looking bar at the bottom
 Plug 'sheerun/vim-polyglot' "syntax highlighting for many many languages
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'dense-analysis/ale'
+"telescope
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
+Plug 'nvim-lua/plenary.nvim' "dependency of telescope
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "recommended by telescope
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' } "reccomended by telescope
 
 call plug#end()
 
-" fzf fuzzy finder configuration
-"     search for only git tracked files
-"noremap <C-[> :GFiles<cr>
-"     search for all files (including .gitignored ones, like deps/ in elixir projects)
-noremap <C-p> :Files<cr>
-let $FZF_DEFAULT_COMMAND = 'ack -g ""'
+" Telescope keybindings
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+"[S]earch [S]elect Telescope
+nnoremap <leader>ss <cmd>Telescope builtin<cr>
+"Search [G]it [F]iles
+nnoremap <leader>gf <cmd>Telescope git_files<cr>
+"[S]earch [F]iles
+nnoremap <leader>sf <cmd>Telescope find_files<cr>
+"[S]earch [H]elp
+nnoremap <leader>sh <cmd>Telescope help_tags<cr>
+"[S]earch current [W]ord
+nnoremap <leader>sw <cmd>Telescope grep_string<cr>
+"[S]earch by [G]rep
+nnoremap <leader>sg <cmd>Telescope live_grep<cr>
+"[S]earch [D]iagnostics
+nnoremap <leader>sd <cmd>Telescope diagnostics<cr>
+"[S]earch [R]esume
+nnoremap <leader>sr <cmd>Telescope resume<cr>
+
+
+"NOPE telescope stuff that requires plugs I don't have right now
+"vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
+"vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 
 command FormatJson %!jq .
 
