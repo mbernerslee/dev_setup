@@ -75,14 +75,51 @@ require('lazy').setup({
   --  Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
 
+  -------------
+  -- Colorscheme graveyard
+  -------------
+
+  --{
+  --  -- Theme inspired by Atom
+  --  'navarasu/onedark.nvim',
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'onedark'
+  --  end,
+  --},
+
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'gruvbox'
     end,
   },
+
+  --{
+  --  "mhartington/oceanic-next",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'OceanicNext'
+  --  end,
+  --},
+
+  --{
+  --  "Th3Whit3Wolf/one-nvim",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'one-nvim'
+  --  end,
+  --},
+
+  --{
+  --  "EdenEast/nightfox.nvim",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'nordfox'
+  --  end,
+  --},
+
 
   {
     -- Set lualine as statusline
@@ -91,7 +128,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'gruvbox',
         component_separators = '|',
         section_separators = '',
       },
@@ -239,6 +276,7 @@ vim.o.nocompatible = true
 vim.o.autoread = true
 vim.o.autoindent = true
 vim.o.termguicolours = true
+--vim.o.background = 'dark'
 
 --"in normal mode map <leader>d to delete without wrecking the regular 'yank' "buffer (and so on)
 vim.api.nvim_set_keymap("n", "<leader>d", "_d", { noremap = true })
@@ -253,7 +291,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   command = [[:%s/\s\+$//e]]
 })
 
-vim.cmd.colorscheme 'onedark'
+--vim.cmd.colorscheme 'onedark'
 --color scheme below is from 'https://github.com/rafi/awesome-vim-colorschemes', so need that if you want to use
 --vim.cmd.colorscheme 'solarized8_flat'
 
