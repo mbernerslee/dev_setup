@@ -28,6 +28,53 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
+  --
+  -------------
+  -- Colorscheme graveyard
+  -------------
+
+  --{
+  --  -- Theme inspired by Atom
+  --  'navarasu/onedark.nvim',
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'onedark'
+  --  end,
+  --},
+
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'gruvbox'
+    end,
+  },
+
+  --{
+  --  "mhartington/oceanic-next",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'OceanicNext'
+  --  end,
+  --},
+
+  --{
+  --  "Th3Whit3Wolf/one-nvim",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'one-nvim'
+  --  end,
+  --},
+
+  --{
+  --  "EdenEast/nightfox.nvim",
+  --  priority = 1000,
+  --  config = function()
+  --    vim.cmd.colorscheme 'nordfox'
+  --  end,
+  --},
+
+
 
   -- Git related plugins
   'tpope/vim-fugitive',
@@ -74,52 +121,6 @@ require('lazy').setup({
 
   --  Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
-
-  -------------
-  -- Colorscheme graveyard
-  -------------
-
-  --{
-  --  -- Theme inspired by Atom
-  --  'navarasu/onedark.nvim',
-  --  priority = 1000,
-  --  config = function()
-  --    vim.cmd.colorscheme 'onedark'
-  --  end,
-  --},
-
-  {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'gruvbox'
-    end,
-  },
-
-  --{
-  --  "mhartington/oceanic-next",
-  --  priority = 1000,
-  --  config = function()
-  --    vim.cmd.colorscheme 'OceanicNext'
-  --  end,
-  --},
-
-  --{
-  --  "Th3Whit3Wolf/one-nvim",
-  --  priority = 1000,
-  --  config = function()
-  --    vim.cmd.colorscheme 'one-nvim'
-  --  end,
-  --},
-
-  --{
-  --  "EdenEast/nightfox.nvim",
-  --  priority = 1000,
-  --  config = function()
-  --    vim.cmd.colorscheme 'nordfox'
-  --  end,
-  --},
-
 
   {
     -- Set lualine as statusline
@@ -445,55 +446,55 @@ mason_lspconfig.setup_handlers {
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
-
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  completion = {
-    completeopt = 'menu,menuone,noinsert',
-  },
-  mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'path' },
-  },
-}
+--local cmp = require 'cmp'
+--local luasnip = require 'luasnip'
+--require('luasnip.loaders.from_vscode').lazy_load()
+--luasnip.config.setup {}
+--
+--cmp.setup {
+--  snippet = {
+--    expand = function(args)
+--      luasnip.lsp_expand(args.body)
+--    end,
+--  },
+--  completion = {
+--    completeopt = 'menu,menuone,noinsert',
+--  },
+--  mapping = cmp.mapping.preset.insert {
+--    ['<C-n>'] = cmp.mapping.select_next_item(),
+--    ['<C-p>'] = cmp.mapping.select_prev_item(),
+--    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+--    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--    ['<C-Space>'] = cmp.mapping.complete {},
+--    ['<CR>'] = cmp.mapping.confirm {
+--      behavior = cmp.ConfirmBehavior.Replace,
+--      select = true,
+--    },
+--    ['<Tab>'] = cmp.mapping(function(fallback)
+--      if cmp.visible() then
+--        cmp.select_next_item()
+--      elseif luasnip.expand_or_locally_jumpable() then
+--        luasnip.expand_or_jump()
+--      else
+--        fallback()
+--      end
+--    end, { 'i', 's' }),
+--    ['<S-Tab>'] = cmp.mapping(function(fallback)
+--      if cmp.visible() then
+--        cmp.select_prev_item()
+--      elseif luasnip.locally_jumpable(-1) then
+--        luasnip.jump(-1)
+--      else
+--        fallback()
+--      end
+--    end, { 'i', 's' }),
+--  },
+--  sources = {
+--    { name = 'nvim_lsp' },
+--    { name = 'luasnip' },
+--    { name = 'path' },
+--  },
+--}
 
 -- autoformat files on save
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
