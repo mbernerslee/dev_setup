@@ -23,11 +23,13 @@ vim.o.nocompatible = true
 vim.o.autoread = true
 vim.o.autoindent = true
 vim.o.termguicolours = true
+vim.opt.completeopt = { "menu" }
 --vim.o.background = 'dark'
 
 --in normal mode map <leader>d to delete without wrecking the regular 'yank' "buffer (and so on)
 vim.api.nvim_set_keymap("n", "<leader>d", "_d", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>p", "_dP", { noremap = true })
+vim.api.nvim_set_keymap("i", "<C-P>", "<C-X><C-O>", { noremap = true })
 
 --don't jump to the next search when you hit *, stay where you are
 vim.api.nvim_set_keymap("n", "*", "*``", { noremap = true })
