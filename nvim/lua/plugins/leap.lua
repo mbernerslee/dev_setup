@@ -1,7 +1,7 @@
 return {
   "https://github.com/ggandor/leap.nvim.git",
   dependencies = {
-    "repeat.vim",
+    "git@github.com:tpope/vim-repeat.git",
   },
   config = function()
     require("leap").create_default_mappings()
