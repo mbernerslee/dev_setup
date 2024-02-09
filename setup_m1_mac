@@ -106,24 +106,42 @@ configure_vim() {
 
 configure_neovim() {
   if [ -d ~/src/dev_setup ]; then
-    ln -sf ~/src/dev_setup/nvim ~/.config/nvim
+    echo_in_magenta "Checking ~/src/dev_setup/nvim ~/.config/nvim symlink..."
+    dest=$(realpath ~/src/dev_setup/nvim)
+    link=$(readlink ~/.config/nvim 2>&1)
+    if [ $? -eq 0 ]; then
+      if [ "$link" = "$dest" ]; then
+        echo_in_green "already in place!"
+      else
+        echo_in_red "broken!"
+        exit 1
+      fi
+    else
+      ln -sf ~/src/dev_setup/nvim ~/.config/nvim
+      if [ $? -eq 0 ]; then
+        echo_in_green "created successfully!"
+      else
+        echo_in_red "creation attempt failed!"
+        exit 1
+      fi
+    fi
   else
     echo_in_red "~/src/dev_setup does not exist, so bailing"
     exit 1
   fi
 }
 
+configure_starship() {
+  ln -sf ~/src/dev_setup/starship.toml ~/.config/starship.toml
+}
 
 install_brew
 generate_ssh_keys
 
-configure_zprofile
-
 brew install git -q
 brew install google-chrome -q
 
-brew install vim -q
-configure_vim
+brew tap homebrew/cask-fonts && brew install --cask font-jetbrains-mono-nerd-font -q
 
 brew install neovim -q
 configure_neovim
@@ -131,6 +149,11 @@ configure_neovim
 brew install tmux -q
 configure_tmux
 
+brew install starship -q
+configure_starship
+
 brew install slack -q
 brew install --cask zoom -q
 brew install --cask visual-studio-code -q
+
+configure_zprofile
