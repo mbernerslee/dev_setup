@@ -31,8 +31,7 @@
 #$line_break$character"""
 
 format = """
-[](color_orange)\
-[](bg:color_yellow fg:color_orange)\
+[](color_yellow)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
