@@ -143,6 +143,8 @@ brew install google-chrome -q
 
 brew tap homebrew/cask-fonts && brew install --cask font-jetbrains-mono-nerd-font -q
 
+brew install --cask iterm2 -q
+
 brew install neovim -q
 configure_neovim
 
@@ -155,5 +157,8 @@ configure_starship
 brew install slack -q
 brew install --cask zoom -q
 brew install --cask visual-studio-code -q
+
+brew install zoxide -q
+brew install rg -q
 
 configure_zprofile
