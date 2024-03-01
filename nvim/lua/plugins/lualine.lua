@@ -10,6 +10,8 @@ return {
         section_separators = '',
       },
       sections = {
+        lualine_a = { 'mode' },
+        lualine_b = {},
         lualine_c = {
           {
             'filename',
@@ -22,6 +24,9 @@ return {
             -- 4: Filename and parent dir, with tilde as the home directory
           }
         },
+        lualine_x = { 'filetype' },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' },
       },
       inactive_sections = {
         lualine_a = {},
