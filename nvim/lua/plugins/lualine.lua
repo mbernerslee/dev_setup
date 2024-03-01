@@ -21,9 +21,11 @@ return {
             -- 3: Absolute path, with tilde as the home directory
             -- 4: Filename and parent dir, with tilde as the home directory
           }
-        }
-      }
+        },
+      },
       inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
         lualine_c = {
           {
             'filename',
@@ -35,7 +37,10 @@ return {
             -- 3: Absolute path, with tilde as the home directory
             -- 4: Filename and parent dir, with tilde as the home directory
           }
-        }
+        },
+        lualine_x = { 'location' },
+        lualine_y = {},
+        lualine_z = {}
       }
     }
     )
