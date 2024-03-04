@@ -66,7 +66,8 @@ return {
         --the other reccommended way to do it
         --
         --async=true in an attempt to not freeze neovim when formatting elixir files fails because it can't compile the code
-        vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({async=true})]]
+        --vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({async=true})]]
+        vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
 
         -- Create a command `:Format` local to the LSP buffer
         --vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
