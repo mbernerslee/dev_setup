@@ -1,0 +1,12 @@
+#!/bin/bash
+
+result=$(grep -rl "$1" "${@:2}" | head -1)
+
+if [[ "$result" = "" ]]; then
+  echo "No results"
+  exit 1
+else
+  echo "$result"
+  echo "$1"
+  nvim $result +/"$1"
+fi
