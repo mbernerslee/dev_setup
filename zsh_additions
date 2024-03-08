@@ -1,12 +1,16 @@
 function git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
+
+function parse_git_dirty() {
+  [[ -n "$(git status -s 2> /dev/null)" ]] && echo "*"
+}
 autoload -Uz compinit && compinit
 
-PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)%f %1 \$ '
+PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ '
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 alias vim=nvim
-eval "$(starship init zsh)"
+#eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 export FZF_DEFAULT_COMMAND='rg --files'

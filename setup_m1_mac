@@ -131,9 +131,9 @@ configure_neovim() {
   fi
 }
 
-configure_starship() {
-  ln -sf ~/src/dev_setup/starship.toml ~/.config/starship.toml
-}
+#configure_starship() {
+#  ln -sf ~/src/dev_setup/starship.toml ~/.config/starship.toml
+#}
 
 install_brew
 generate_ssh_keys
@@ -151,8 +151,8 @@ configure_neovim
 brew install tmux -q
 configure_tmux
 
-brew install starship -q
-configure_starship
+#brew install starship -q
+#configure_starship
 
 brew install slack -q
 brew install --cask zoom -q
