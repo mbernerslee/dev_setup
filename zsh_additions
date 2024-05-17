@@ -5,6 +5,16 @@ function git_branch() {
 function parse_git_dirty() {
   [[ -n "$(git status -s 2> /dev/null)" ]] && echo "*"
 }
+
+function git_prune_branches() {
+  branches=$(git branch | grep -v \* | xargs)
+  if [[ $branches == "" ]]; then
+    echo "No branches to prune"
+  else
+    git branch -D "$branches"
+  fi
+}
+
 autoload -Uz compinit && compinit
 
 PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ '
