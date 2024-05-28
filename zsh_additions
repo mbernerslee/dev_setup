@@ -7,12 +7,7 @@ function parse_git_dirty() {
 }
 
 function git_prune_branches() {
-  branches=$(git branch | grep -v \* | xargs)
-  if [[ $branches == "" ]]; then
-    echo "No branches to prune"
-  else
-    git branch -D "$branches"
-  fi
+  git branch | grep -v \* | xargs git branch -D
 }
 
 autoload -Uz compinit && compinit
