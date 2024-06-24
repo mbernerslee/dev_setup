@@ -10,7 +10,7 @@ function git_prune_branches() {
   git branch | grep -v \* | xargs git branch -D
 }
 
-function grep_mix_test_pid {
+function kill_mix_test {
   mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
 
   while IFS= read -r mix_test_pid
