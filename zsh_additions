@@ -13,11 +13,15 @@ function git_prune_branches() {
 function kill_mix_test {
   mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
 
-  while IFS= read -r mix_test_pid
-    do
-      echo "killing mix test pid $mix_test_pid"
-      kill -9 $mix_test_pid
-  done <<< "$mix_test_pids"
+  if [[ "$mix_test_pids" -eq "" ]]; then
+    echo "mix test is not running"
+  else
+    while IFS= read -r mix_test_pid
+      do
+        echo "killing mix test pid $mix_test_pid"
+        kill -9 $mix_test_pid
+    done <<< "$mix_test_pids"
+  fi
 }
 
 autoload -Uz compinit && compinit
