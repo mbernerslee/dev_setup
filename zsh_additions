@@ -10,6 +10,16 @@ function git_prune_branches() {
   git branch | grep -v \* | xargs git branch -D
 }
 
+function grep_mix_test_pid {
+  mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
+
+  while IFS= read -r mix_test_pid
+    do
+      echo "killing mix test pid $mix_test_pid"
+      kill -9 $mix_test_pid
+  done <<< "$mix_test_pids"
+}
+
 autoload -Uz compinit && compinit
 
 PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ '
