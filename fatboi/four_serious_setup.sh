@@ -72,6 +72,14 @@ install_lua() {
   sudo apt install lua5.4
 }
 
+install_nerdfont() {
+  wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
+  && cd ~/.local/share/fonts \
+  && unzip JetBrainsMono.zip \
+  && rm JetBrainsMono.zip \
+  && fc-cache -fv
+}
+
 #install_lua_rocks() {
 # curl -LO https://luarocks.github.io/luarocks/releases/luarocks-3.11.1.tar.gz
 # tar -xf luarocks-3.11.1.tar.gz
@@ -82,6 +90,7 @@ install_lua() {
 
 #sudo apt update
 sudo apt install build-essential libreadline-dev unzip curl wget gcc -y
+install_nerdfont
 install_lua
 #install_lua_rocks
 install_ripgrep
