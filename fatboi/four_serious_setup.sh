@@ -151,12 +151,84 @@ install_zoxide() {
   fi
 }
 
+install_asdf() {
+  echo_in_magenta "asdf - checking"
+  which asdf >/dev/null
+  if [[ $? -eq 0 ]]; then
+    echo_in_green "asdf - already installed"
+    asdf --version
+  else
+    echo_in_magenta "asdf - installing.."
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+  fi
+}
+
+install_asdf_plugins() {
+  echo_in_magenta "asdf plugins - checking"
+
+  need_plugins=false
+
+  plugins=$(asdf plugin list)
+  [[ ! -n $(echo $plugins | grep "erlang") ]] && need_plugins=true
+  [[ ! -n $(echo $plugins | grep "elixir") ]] && need_plugins=true
+
+  if [[ "$need_plugins" = "false" ]]; then
+    echo_in_green "asdf plugins - already installed"
+  else
+    echo_in_magenta "asdf plugins - installing.."
+    asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+    if [[ $? -eq 0 ]]; then
+      echo_in_green "asdf plugins - install successful"
+    else
+      echo_in_red "asdf plugins - install failed"
+      exit 1
+    fi
+  fi
+}
+
+configure_asdf() {
+  echo_in_magenta "asdf tool-versions symlink - checking"
+  if [ -d ~/src/dev_setup ]; then
+    dest=$(realpath ~/src/dev_setup/fatboi/.tool-versions)
+    link=$(readlink ~/.tool-versions 2>&1)
+    if [ $? -eq 0 ]; then
+      if [ "$link" = "$dest" ]; then
+        echo_in_green "asdf tool-versions symlink - already in place!"
+      else
+        echo_in_red "asdf tool-versions symlink - broken!"
+        exit 1
+      fi
+    else
+      ln -sf ~/src/dev_setup/fatboi/.tool-versions ~/.tool-versions
+      if [ $? -eq 0 ]; then
+        echo_in_green "asdf tool-versions symlink - created successfully!"
+      else
+        echo_in_red "asdf tool-versions symlink - creation failed!"
+        exit 1
+      fi
+    fi
+  else
+    echo_in_red "asdf tool-versions symlink - ~/src/dev_setup does not exist, so bailing"
+    exit 1
+  fi
+}
+
+install_asdf_packages() {
+  echo_in_magenta "Running asdf install"
+  asdf install
+}
+
 sudo_apt_update
 sudo_apt_install_packages
 install_nerdfont
 install_ripgrep
 install_neovim
 install_zoxide
+install_asdf
+install_asdf_plugins
+configure_asdf
+install_asdf_packages
 configure_neovim
 configure_tmux
 add_bashrc_additions
