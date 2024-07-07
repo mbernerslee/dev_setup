@@ -16,7 +16,7 @@ add_line_if_missing() {
 }
 
 install_neovim() {
-  echo_in_magenta "neovim - checking if install required"
+  echo_in_magenta "neovim - checking"
   which nvim >/dev/null
   if [[ $? -eq 0 ]]; then
     echo_in_green "neovim - already installed"
@@ -30,7 +30,7 @@ install_neovim() {
 }
 
 install_ripgrep() {
-  echo_in_magenta "ripgrep - checking if install required"
+  echo_in_magenta "ripgrep - checking"
   which rg >/dev/null
   if [[ $? -eq 0 ]]; then
     echo_in_green "ripgrep - already installed"
@@ -71,7 +71,7 @@ configure_neovim() {
 }
 
 install_nerdfont() {
-  echo_in_magenta "nerdfont - checking if install required"
+  echo_in_magenta "nerdfont - checking"
   if [ -f ~/.local/share/fonts/JetBrainsMonoNerdFont-Medium.ttf ]; then
     echo_in_green "nerdfont - already installed"
   else
@@ -85,7 +85,7 @@ install_nerdfont() {
 }
 
 sudo_apt_install_packages() {
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
@@ -97,7 +97,7 @@ sudo_apt_update() {
 
 add_bashrc_additions() {
   bashrc_line="source $SCRIPT_DIR/bashrc_additions"
-  echo_in_magenta "bashrc additions - checking if they're added already"
+  echo_in_magenta "bashrc additions - checking"
   if [ `grep -c "$bashrc_line" ~/.bashrc` -eq 0 ]; then
     echo_in_magenta "bashrc additions - adding them.."
     echo "$bashrc_line" >> ~/.bashrc
@@ -113,14 +113,6 @@ add_bashrc_additions() {
 }
 
 configure_tmux() {
-  #echo_in_magenta "Configuring tmux..."
-  #if [ -d ~/src/dev_setup ]; then
-  #  ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
-  #  echo_in_green "tmux configured"
-  #else
-  #  echo_in_red "~/src/dev_setup does not exist, so bailing"
-  #  exit 1
-  #fi
   echo_in_magenta "tmux config symlink - checking"
   if [ -d ~/src/dev_setup ]; then
     dest=$(realpath ~/src/dev_setup/.tmux.conf)
@@ -147,11 +139,24 @@ configure_tmux() {
   fi
 }
 
+install_zoxide() {
+  echo_in_magenta "zoxide - checking"
+  which zoxide >/dev/null
+  if [[ $? -eq 0 ]]; then
+    echo_in_green "zoxide - already installed"
+    zoxide --version
+  else
+    echo_in_magenta "zoxide - installing.."
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  fi
+}
+
 sudo_apt_update
 sudo_apt_install_packages
 install_nerdfont
 install_ripgrep
 install_neovim
+install_zoxide
 configure_neovim
 configure_tmux
 add_bashrc_additions

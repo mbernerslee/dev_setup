@@ -74,3 +74,5 @@ PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGE
 alias vim=nvim
 alias c='tput reset'
 export FZF_DEFAULT_COMMAND='rg --files'
+export PATH=~/.local/bin:$PATH
+eval "$(zoxide init bash)"
