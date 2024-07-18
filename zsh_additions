@@ -10,6 +10,9 @@ function git_prune_branches() {
   git branch | grep -v \* | xargs git branch -D
 }
 
+# find and replace on macOS
+# find test \( -name "*.exs" -o -name "*.ex" \) -exec sed -i '' "s/DataCase/Support.DataCase/g" {} +
+
 function kill_mix_test {
   mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
 
