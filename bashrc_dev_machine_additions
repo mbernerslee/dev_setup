@@ -27,6 +27,15 @@ whitehat_wifi() {
 constant_testing() {
   ~/src/constant_testing/constant_testing $@
 }
+function git_prune_branches() {
+  branches=$(git branch | grep -v \*)
+
+  if [[ "$branches" == "" ]]; then
+    echo "No branches to prune"
+  else
+    git branch -D $branches
+  fi
+}
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
