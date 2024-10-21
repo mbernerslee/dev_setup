@@ -117,6 +117,7 @@ install_neovim() {
     tar xzf nvim-macos-arm64.tar.gz
     mv ./nvim-macos-arm64/ ~/
     rm -rf nvim-macos-arm64.tar.gz
+    sudo ln -sf ~/nvim-macos-arm64/bin/nvim /usr/local/bin/nvim
   fi
 }
 
@@ -148,34 +149,46 @@ configure_neovim() {
   fi
 }
 
+install_asdf() {
+  brew install coreutils curl git -q
+  brew install asdf -q
+}
+
+install_asdf_plugins() {
+  for plugin in elixir erlang nodejs ruby ; asdf plugin add $plugin
+}
+
 #configure_starship() {
 #  ln -sf ~/src/dev_setup/starship.toml ~/.config/starship.toml
 #}
 
-install_brew
-generate_ssh_keys
+#install_brew
+#generate_ssh_keys
+#
+#brew install git -q
+#brew install google-chrome -q
+#
+#brew install --cask font-jetbrains-mono-nerd-font -q
+#
+#brew install --cask iterm2 -q
+#
+#install_neovim
+#configure_neovim
+#
+#brew install tmux -q
+#configure_tmux
+#
+#brew install starship -q
+#configure_starship
 
-brew install git -q
-brew install google-chrome -q
+install_asdf
+install_asdf_plugins
 
-brew install --cask font-jetbrains-mono-nerd-font -q
-
-brew install --cask iterm2 -q
-
-install_neovim
-configure_neovim
-
-brew install tmux -q
-configure_tmux
-
-brew install starship -q
-configure_starship
-
-brew install slack -q
-brew install --cask zoom -q
-brew install --cask visual-studio-code -q
-
-brew install zoxide -q
-brew install rg -q
+#brew install slack -q
+#brew install --cask zoom -q
+#brew install --cask visual-studio-code -q
+#
+#brew install zoxide -q
+#brew install rg -q
 
 configure_zprofile
