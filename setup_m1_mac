@@ -18,6 +18,8 @@ echo_in_red() {
 }
 
 function configure_zprofile {
+  touch ~/.zshrc
+  touch ~/.zprofile
   echo_in_magenta "Configuring ~/.zprofile..."
   additions="source ~/src/dev_setup/bashrc_dev_machine_additions"
   if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
@@ -104,6 +106,20 @@ configure_vim() {
   fi
 }
 
+install_neovim() {
+  which nvim > /dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo_in_green "neovim already installed"
+    nvim --version
+  else
+    echo_in_magenta "installing neovim..."
+    curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz
+    tar xzf nvim-macos-arm64.tar.gz
+    mv ./nvim-macos-arm64/ ~/
+    rm -rf nvim-macos-arm64.tar.gz
+  fi
+}
+
 configure_neovim() {
   if [ -d ~/src/dev_setup ]; then
     echo_in_magenta "Checking ~/src/dev_setup/nvim ~/.config/nvim symlink..."
@@ -117,6 +133,7 @@ configure_neovim() {
         exit 1
       fi
     else
+      mkdir -p ~/.config/nvim
       ln -sf ~/src/dev_setup/nvim ~/.config/nvim
       if [ $? -eq 0 ]; then
         echo_in_green "created successfully!"
@@ -141,18 +158,18 @@ generate_ssh_keys
 brew install git -q
 brew install google-chrome -q
 
-brew tap homebrew/cask-fonts && brew install --cask font-jetbrains-mono-nerd-font -q
+brew install --cask font-jetbrains-mono-nerd-font -q
 
 brew install --cask iterm2 -q
 
-brew install neovim -q
+install_neovim
 configure_neovim
 
 brew install tmux -q
 configure_tmux
 
-#brew install starship -q
-#configure_starship
+brew install starship -q
+configure_starship
 
 brew install slack -q
 brew install --cask zoom -q

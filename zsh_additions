@@ -29,10 +29,16 @@ function kill_mix_test {
 
 autoload -Uz compinit && compinit
 
-PROMPT='%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ '
+function set_prompt() {
+  PROMPT="%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ "
+}
+precmd_functions+=(set_prompt)
+
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
-alias vim=nvim
+alias nvim=~/nvim-macos-arm64/bin/nvim
+alias vim=~/nvim-macos-arm64/bin/nvim
 #eval "$(starship init zsh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 export FZF_DEFAULT_COMMAND='rg --files'
