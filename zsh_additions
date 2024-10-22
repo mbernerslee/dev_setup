@@ -91,6 +91,10 @@ export FZF_DEFAULT_COMMAND='rg --files'
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export PATH=~/.rbenv/bin:$PATH
 
+# Make `psql` connect to a running docker container on the normal 5432 port with the user postgres
+export PGHOST="127.0.0.1"
+export PGUSER="postgres"
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/libexec/asdf.sh

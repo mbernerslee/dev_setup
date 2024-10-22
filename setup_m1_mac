@@ -22,7 +22,7 @@ function configure_zprofile {
   echo_in_magenta "Configuring ~/.zshrc..."
 
   zsh_additions="source ~/src/dev_setup/zsh_additions"
-  if [ `grep -c "$zsh_additions" ~/.zprofile` -eq 0 ]; then
+  if [ `grep -c "$zsh_additions" ~/.zshrc` -eq 0 ]; then
     echo "$zsh_additions" >> ~/.zshrc
   fi
 
@@ -147,11 +147,40 @@ function install_asdf_plugins() {
   for plugin in elixir erlang nodejs ruby ; asdf plugin add $plugin
 }
 
+function install_erlang_25() {
+  brew install wxwidgets
+  brew install openjdk
+
+  path_addition='export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"'
+  if [ `grep -c "$path_addition" ~/.zshrc` -eq 0 ]; then
+    echo "$path_addition" >> ~/.zshrc
+    source ~/.zshrc
+  fi
+
+  brew install fop
+
+  export CC=clang
+  export CPP="clang -E"
+  export EGREP=egrep
+  export KERL_BUILD_DOCS=yes
+  export KERL_INSTALL_MANPAGES=yes
+  export KERL_USE_AUTOCONF=0
+
+  export KERL_CONFIGURE_OPTIONS="--disable-silent-rules --enable-dynamic-ssl-lib --enable-kernel-poll --without-javac --without-odbc --with-ssl=$(brew --prefix openssl) --disable-jit"
+
+  asdf install erlang 25.1.2
+}
+
+function install_psql_client() {
+  brew install libpq
+  brew link --force libpq
+}
+
 install_brew
 generate_ssh_keys
 
 brew install git -q
-brew install google-chrome -q
+#brew install google-chrome -q
 brew install --cask font-jetbrains-mono-nerd-font -q
 brew install --cask iterm2 -q
 
@@ -164,11 +193,14 @@ configure_tmux
 install_asdf
 install_asdf_plugins
 
-brew install slack -q
-brew install --cask zoom -q
-brew install --cask visual-studio-code -q
+install_erlang_25
+install_psql_client
 
-brew install zoxide -q
+#brew install slack -q
+#brew install --cask zoom -q
+#brew install --cask visual-studio-code -q
+
+#brew install zoxide -q
 brew install rg -q
 
 configure_zprofile
