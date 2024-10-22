@@ -1,5 +1,39 @@
-function git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+function grepex() {
+  grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex" --include="*.html.leex"
+}
+
+function replaceex() {
+  find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" -o -name "*.leex" \) -exec sed -i "s/$1/$2/g" {} +
+}
+
+function replacelm() {
+  find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
+}
+
+function diffmaster() {
+  git diff master | vim -
+}
+
+function diffhead() {
+  git diff HEAD | vim -
+}
+
+function rmswap() {
+  find . -name "*.swp" -exec rm {} \;
+}
+
+function killslack() {
+  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
+}
+
+function git_prune_branches() {
+  branches=$(git branch | grep -v \*)
+
+  if [[ "$branches" == "" ]]; then
+    echo "No branches to prune"
+  else
+    git branch -D $branches
+  fi
 }
 
 function parse_git_dirty() {
@@ -10,8 +44,16 @@ function git_prune_branches() {
   git branch | grep -v \* | xargs git branch -D
 }
 
+function git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+
 # find and replace on macOS
 # find test \( -name "*.exs" -o -name "*.ex" \) -exec sed -i '' "s/DataCase/Support.DataCase/g" {} +
+
+# find and replace across multiple files
+# find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 
 function kill_mix_test {
   mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
@@ -27,20 +69,29 @@ function kill_mix_test {
   fi
 }
 
-autoload -Uz compinit
-compinit
-
 function set_prompt() {
   PROMPT="%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ "
 }
+
 precmd_functions+=(set_prompt)
 
-#find and replace across multiple files
-#find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
+autoload -Uz compinit
+compinit
+
+alias c='tput reset'
 alias vim=~/nvim-macos-arm64/bin/nvim
-#eval "$(starship init zsh)"
+alias p='python3';
+alias vim=nvim
+
+ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
+
+export ERL_AFLAGS="-kernel shell_history enabled"
+export GOROOT=/usr/local/go
+export FZF_DEFAULT_COMMAND='rg --files'
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+export PATH=~/.rbenv/bin:$PATH
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
-export FZF_DEFAULT_COMMAND='rg --files'
-export PATH=~/.rbenv/bin:$PATH
 . $(brew --prefix asdf)/libexec/asdf.sh
+

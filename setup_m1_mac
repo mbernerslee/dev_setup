@@ -5,42 +5,31 @@ GREEN="\033[1;32m"
 NOCOLOR="\033[0m"
 MAGENTA="\033[35m"
 
-echo_in_magenta() {
+function echo_in_magenta() {
   echo "${MAGENTA}$1${NOCOLOR}"
 }
 
-echo_in_green() {
+function echo_in_green() {
   echo "${GREEN}$1${NOCOLOR}"
 }
 
-echo_in_red() {
+function echo_in_red() {
   echo "${RED}$1${NOCOLOR}"
 }
 
 function configure_zprofile {
   touch ~/.zshrc
-  touch ~/.zprofile
-  echo_in_magenta "Configuring ~/.zprofile..."
-  additions="source ~/src/dev_setup/bashrc_dev_machine_additions"
-  if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
-    echo "$additions" >> ~/.zprofile
-  fi
+  echo_in_magenta "Configuring ~/.zshrc..."
 
-  more_additions="source ~/src/dev_setup/zsh_additions"
-  if [ `grep -c "$more_additions" ~/.zprofile` -eq 0 ]; then
-    echo "$more_additions" >> ~/.zprofile
-    echo "i did it"
-  fi
-
-  source_zprofile="source ~/.zprofile"
-  if [ `grep -c "$source_zprofile" ~/.zshrc` -eq 0 ]; then
-    echo "$source_zprofile" >> ~/.zshrc
+  zsh_additions="source ~/src/dev_setup/zsh_additions"
+  if [ `grep -c "$zsh_additions" ~/.zprofile` -eq 0 ]; then
+    echo "$zsh_additions" >> ~/.zshrc
   fi
 
   echo_in_green "configured ~/.zprofile"
 }
 
-install_brew() {
+function install_brew() {
   echo_in_magenta "installing brew..."
   which brew > /dev/null 2>&1
   if [ $? -eq 0 ]; then
@@ -57,7 +46,7 @@ install_brew() {
   fi
 }
 
-generate_ssh_keys() {
+function generate_ssh_keys() {
   echo_in_magenta "Running generate_ssh_keys..."
   if [ -f ~/.ssh/id_rsa.pub ]; then
     echo_in_green "already have SSH keys"
@@ -67,7 +56,7 @@ generate_ssh_keys() {
   fi
 }
 
-configure_tmux() {
+function configure_tmux() {
   echo_in_magenta "Configuring tmux..."
   if [ -d ~/src/dev_setup ]; then
     ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
@@ -78,7 +67,7 @@ configure_tmux() {
   fi
 }
 
-configure_vim() {
+function configure_vim() {
   touch ~/.vimrc
   pushd .
   mkdir -p ~/.vim/colors
@@ -106,7 +95,7 @@ configure_vim() {
   fi
 }
 
-install_neovim() {
+function install_neovim() {
   which nvim > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     echo_in_green "neovim already installed"
@@ -121,7 +110,7 @@ install_neovim() {
   fi
 }
 
-configure_neovim() {
+function configure_neovim() {
   if [ -d ~/src/dev_setup ]; then
     echo_in_magenta "Checking ~/src/dev_setup/nvim ~/.config/nvim symlink..."
     dest=$(realpath ~/src/dev_setup/nvim)
@@ -149,46 +138,37 @@ configure_neovim() {
   fi
 }
 
-install_asdf() {
+function install_asdf() {
   brew install coreutils curl git -q
   brew install asdf -q
 }
 
-install_asdf_plugins() {
+function install_asdf_plugins() {
   for plugin in elixir erlang nodejs ruby ; asdf plugin add $plugin
 }
 
-#configure_starship() {
-#  ln -sf ~/src/dev_setup/starship.toml ~/.config/starship.toml
-#}
+install_brew
+generate_ssh_keys
 
-#install_brew
-#generate_ssh_keys
-#
-#brew install git -q
-#brew install google-chrome -q
-#
-#brew install --cask font-jetbrains-mono-nerd-font -q
-#
-#brew install --cask iterm2 -q
-#
-#install_neovim
-#configure_neovim
-#
-#brew install tmux -q
-#configure_tmux
-#
-#brew install starship -q
-#configure_starship
+brew install git -q
+brew install google-chrome -q
+brew install --cask font-jetbrains-mono-nerd-font -q
+brew install --cask iterm2 -q
+
+install_neovim
+configure_neovim
+
+brew install tmux -q
+configure_tmux
 
 install_asdf
 install_asdf_plugins
 
-#brew install slack -q
-#brew install --cask zoom -q
-#brew install --cask visual-studio-code -q
-#
-#brew install zoxide -q
-#brew install rg -q
+brew install slack -q
+brew install --cask zoom -q
+brew install --cask visual-studio-code -q
+
+brew install zoxide -q
+brew install rg -q
 
 configure_zprofile
