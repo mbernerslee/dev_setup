@@ -176,31 +176,55 @@ function install_psql_client() {
   brew link --force libpq
 }
 
-install_brew
-generate_ssh_keys
+function install_docker() {
+  HOMEBREW_PREFIX="$(brew --prefix)"
 
-brew install git -q
-#brew install google-chrome -q
-brew install --cask font-jetbrains-mono-nerd-font -q
-brew install --cask iterm2 -q
+  # Install Docker CLI
+  brew install docker
 
-install_neovim
-configure_neovim
+  mkdir -p ~/.docker/cli-plugins
 
-brew install tmux -q
-configure_tmux
+  brew install docker-buildx
+  ln -sfn $HOMEBREW_PREFIX/opt/docker-buildx/bin/docker-buildx ~/.docker/cli-plugins/docker-buildx
 
-install_asdf
-install_asdf_plugins
+  brew install docker-compose
+  ln -sfn $HOMEBREW_PREFIX/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
 
-install_erlang_25
-install_psql_client
+  brew install colima
+
+  ## Optionally add --edit if you want to adjust CPU count or RAM size from the defaults, might be a good idea
+  ##colima start --arch host --vm-type=vz --vz-rosetta
+
+  brew services start colima
+}
+
+#install_brew
+#generate_ssh_keys
+#
+#brew install git -q
+##brew install google-chrome -q
+#brew install --cask font-jetbrains-mono-nerd-font -q
+#brew install --cask iterm2 -q
+#
+#install_neovim
+#configure_neovim
+#
+#brew install tmux -q
+#configure_tmux
+#
+#install_asdf
+#install_asdf_plugins
+#
+#install_erlang_25
+#install_psql_client
+
+install_docker
 
 #brew install slack -q
 #brew install --cask zoom -q
 #brew install --cask visual-studio-code -q
 
 #brew install zoxide -q
-brew install rg -q
-
-configure_zprofile
+#brew install rg -q
+#
+#configure_zprofile

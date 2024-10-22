@@ -11,11 +11,11 @@ function replacelm() {
 }
 
 function diffmaster() {
-  git diff master | vim -
+  git diff master | nvim -
 }
 
 function diffhead() {
-  git diff HEAD | vim -
+  git diff HEAD | nvim -
 }
 
 function rmswap() {
@@ -90,6 +90,16 @@ export GOROOT=/usr/local/go
 export FZF_DEFAULT_COMMAND='rg --files'
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export PATH=~/.rbenv/bin:$PATH
+
+# Hack to make the polyglot_watcher_v2 work in any dir when using ASDF
+p_tool_versions=$(cat ~/src/polyglot_watcher_v2/.tool-versions 2> /dev/null)
+p_elixir_version=$(echo $p_tool_versions | grep "elixir" | awk '{print $2}')
+p_erlang_version=$(echo $p_tool_versions | grep "erlang" | awk '{print $2}')
+
+if [[ $p_elixir_version != "" ]] && [[ $p_erlang_version != !! ]] then;
+  alias polyglot_watcher_v2="ASDF_ERLANG_VERSION=$p_erlang_version ASDF_ELIXIR_VERSION=$p_elixir_version polyglot_watcher_v2"
+fi
+
 
 # Make `psql` connect to a running docker container on the normal 5432 port with the user postgres
 export PGHOST="127.0.0.1"
