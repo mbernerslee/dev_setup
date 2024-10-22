@@ -198,6 +198,11 @@ function install_docker() {
   brew services start colima
 }
 
+function install_task() {
+  brew install go-task/tap/go-task
+  brew install go-task
+}
+
 #install_brew
 #generate_ssh_keys
 #
@@ -219,6 +224,7 @@ function install_docker() {
 #install_psql_client
 
 install_docker
+install_task
 
 #brew install slack -q
 #brew install --cask zoom -q
