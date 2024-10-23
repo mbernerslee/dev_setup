@@ -198,6 +198,10 @@ function install_docker() {
   brew services start colima
 }
 
+function install_aws_cli_tooling() {
+  brew install awscli aws-sso-util aws-vault
+}
+
 function install_task() {
   brew install go-task/tap/go-task
   brew install go-task
@@ -225,6 +229,9 @@ function install_task() {
 
 install_docker
 install_task
+install_aws_cli_tooling
+
+brew install imagemagick -q
 
 #brew install slack -q
 #brew install --cask zoom -q
