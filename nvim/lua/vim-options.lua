@@ -39,3 +39,20 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*" },
   command = [[:%s/\s\+$//e]]
 })
+
+-- Run mix format on file save
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.{ex,exs}", -- Elixir source and script files
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    vim.fn.jobstart({ 'mix', 'format', vim.api.nvim_buf_get_name(bufnr) }, {
+      on_exit = function(_, code)
+        if code == 0 then
+          vim.api.nvim_buf_call(bufnr, function()
+            vim.cmd('silent! edit!')
+          end)
+        end
+      end
+    })
+  end
+})
