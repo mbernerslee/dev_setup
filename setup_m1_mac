@@ -17,16 +17,18 @@ function echo_in_red() {
   echo "${RED}$1${NOCOLOR}"
 }
 
-function configure_zprofile {
-  touch ~/.zshrc
-  echo_in_magenta "Configuring ~/.zshrc..."
-
-  zsh_additions="source ~/src/dev_setup/zsh_additions"
+function append_to_zshrc_if_missing() {
+  zsh_additions="$1"
   if [ `grep -c "$zsh_additions" ~/.zshrc` -eq 0 ]; then
     echo "$zsh_additions" >> ~/.zshrc
   fi
+}
 
-  echo_in_green "configured ~/.zprofile"
+function configure_zshrc() {
+  touch ~/.zshrc
+  echo_in_magenta "Configuring ~/.zshrc..."
+  append_to_zshrc_if_missing "source ~/src/dev_setup/zsh_additions"
+  echo_in_green "configured ~/.zshrc"
 }
 
 function install_brew() {
@@ -37,11 +39,11 @@ function install_brew() {
   else
     echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > /dev/null
     additions='eval "$(/opt/homebrew/bin/brew shellenv)"'
-    if [ `grep -c "$additions" ~/.zprofile` -eq 0 ]; then
-      echo "$additions" >> ~/.zprofile
+    if [ `grep -c "$additions" ~/.zshrc` -eq 0 ]; then
+      echo "$additions" >> ~/.zshrc
     fi
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    source ~/.zprofile
+    source ~/.zshrc
     echo_in_green "brew installed"
   fi
 }
@@ -147,7 +149,7 @@ function install_asdf_plugins() {
   for plugin in elixir erlang nodejs ruby ; asdf plugin add $plugin
 }
 
-function install_erlang_25() {
+function install_erlang_25_and_dependencies() {
   brew install wxwidgets
   brew install openjdk
 
@@ -207,29 +209,55 @@ function install_task() {
   brew install go-task
 }
 
-#install_brew
-#generate_ssh_keys
-#
-#brew install git -q
-##brew install google-chrome -q
-#brew install --cask font-jetbrains-mono-nerd-font -q
-#brew install --cask iterm2 -q
-#
-#install_neovim
-#configure_neovim
-#
-#brew install tmux -q
-#configure_tmux
-#
-#install_asdf
-#install_asdf_plugins
-#
-#install_erlang_25
-#install_psql_client
+# https://thevaluable.dev/fzf-shell-integration/
+function configure_fzf() {
+  completion_zsh_path=$(find /opt/homebrew -regex '.*fzf.*shell\/completion\.zsh')
+
+  if [[ $? -eq 0 ]]; then
+    echo $completion_zsh_path
+    append_to_zshrc_if_missing "source $completion_zsh_path"
+  else
+    echo_in_red "Failed to find the the fzf completion.zsh file"
+    exit 1
+  fi
+
+  key_bindings_zsh_path=$(find /opt/homebrew -regex '.*fzf.*shell\/key-bindings\.zsh')
+
+  if [[ $? -eq 0 ]]; then
+    echo $key_bindings_zsh_path
+    append_to_zshrc_if_missing "source $key_bindings_zsh_path"
+  else
+    echo_in_red "Failed to find the the fzf key-bindings.zsh file"
+    exit 1
+  fi
+}
+
+install_brew
+generate_ssh_keys
+
+brew install git -q
+#brew install google-chrome -q
+brew install --cask font-jetbrains-mono-nerd-font -q
+brew install --cask iterm2 -q
+
+install_neovim
+configure_neovim
+
+brew install tmux -q
+configure_tmux
+
+install_asdf
+install_asdf_plugins
+
+install_erlang_25_and_dependencies
+install_psql_client
 
 install_docker
 install_task
 install_aws_cli_tooling
+
+brew install fzf -q
+configure_fzf
 
 brew install imagemagick -q
 
@@ -237,7 +265,7 @@ brew install imagemagick -q
 #brew install --cask zoom -q
 #brew install --cask visual-studio-code -q
 
-#brew install zoxide -q
-#brew install rg -q
-#
-#configure_zprofile
+brew install zoxide -q
+brew install rg -q
+
+configure_zshrc
