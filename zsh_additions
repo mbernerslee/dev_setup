@@ -109,3 +109,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/libexec/asdf.sh
 
+# Increase history size
+HISTFILESIZE=1000000000 HISTSIZE=1000000
+
+# Appends the last command to the history and reloads the history after each command. This is so that history can be effectively shared between tmux panes, non-tmux shell sessions, and so on...
+# https://stackoverflow.com/questions/12247777/share-history-between-panes-windows
+export PROMPT_COMMAND="history -a; history -n"
