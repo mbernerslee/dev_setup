@@ -261,6 +261,7 @@ configure_fzf
 
 brew install imagemagick -q
 
+rew install gcalcli -q
 #brew install slack -q
 #brew install --cask zoom -q
 #brew install --cask visual-studio-code -q
