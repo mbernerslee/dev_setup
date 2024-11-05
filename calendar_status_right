@@ -21,12 +21,14 @@ function next_meeting_warning_message() {
   hours=$(($minutes_until_meeting / 60))
   minutes=$(($minutes_until_meeting % 60))
 
-  if [[ $minutes_until_meeting -eq 60 ]]; then
+  if [[ $minutes_until_meeting -lt 4 ]]; then
+    echo_red "$minutes mins | $meeting_title"
+  elif [[ $minutes_until_meeting -eq 60 ]]; then
     echo "1 hr | $meeting_title"
   elif [[ $minutes_until_meeting -lt 60 ]]; then
     echo "$minutes min | $meeting_title"
-  elif [[ $minutes_until_meeting -lt 4 ]]; then
-    echo_red "$minutes mins | $meeting_title"
+  elif [[ $minutes_until_meeting -lt 120 ]]; then
+    echo "1 hr $minutes mins | $meeting_title"
   else
     echo "$hours hrs $minutes min | $meeting_title"
   fi
