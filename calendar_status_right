@@ -1,18 +1,64 @@
 #!/bin/bash
 
+#TODO symlink this in a setup script, instead of copying it to ~/.conf/tmux/
 
 # https://www.howtogeek.com/410442/how-to-display-the-date-and-time-in-the-linux-terminal-and-use-it-in-bash-scripts/
 function pretty_datetime() {
-  date +"%A %d %B %X"
+  date +"%a %d/%m/%y %H:%M"
 }
 
-echo "placeholder $(pretty_datetime)"
+function echo_red() {
+  RED='\033[0;31m'
+  NC='\033[0m' # No Color
+  echo -e "${RED}$1${NC}"
+}
 
-#TODO update only every 15s, and don't show the the seconds in the time
-#TODO take the output of the below, parse it, and echo how long til next meeting in the bar
-#TODO error handling: no auth, can't format output, and so on
-#TODO symlink this file to ~/.config/tmux/calendar_status_right
+function next_meeting_warning_message() {
+  minutes_until_meeting="$1"
+  meeting_title="${@:2}"
 
-#next_event=$(gcalcli --nocolor agenda --nostarted --tsv | head -2 | tail -1)
-#
-#echo $next_event
+  hours=$(($minutes_until_meeting / 60))
+  minutes=$(($minutes_until_meeting % 60))
+
+  if [[ $minutes_until_meeting -gt 120 ]]; then
+    echo "$hours hrs $minutes min | $meeting_title"
+  elif [[ $minutes_until_meeting -gt 60 ]]; then
+    echo "$hours hr $minutes min | $meeting_title"
+  elif [[ $minutes_until_meeting -lt 4 ]]; then
+    echo_red "$minutes mins | $meeting_title"
+  else
+    echo "$hours hr $minutes min | $meeting_title"
+  fi
+}
+
+function next_meeting() {
+  next_event=$(gcalcli --nocolor agenda --nostarted --tsv | head -2 | tail -1)
+
+  # 2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup
+  #next_event="2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup"
+
+  today=$(date +"%Y-%m-%d")
+  meeting_start_day=$(echo $next_event | awk '{print $1}')
+
+  if [[ "$meeting_start_day" == "$today" ]]; then
+    meeting_start_time=$(echo $next_event | awk '{print $2}')
+    meeting_title=$(echo $next_event | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}')
+
+    meeting_start_hour=$(echo $meeting_start_time | awk -F':' '{print $1}' | sed 's/^0//')
+    meeting_start_minute=$(echo $meeting_start_time | awk -F':' '{print $2}' | sed 's/^0//')
+
+    current_hour=$(date +"%-H")
+    current_minute=$(date +"%-M")
+
+    current_mins_since_day_start=$((current_hour * 60 + $current_minute))
+    meeting_start_mins_since_day_start=$((meeting_start_hour * 60 + $meeting_start_minute))
+
+    minutes_until_meeting=$(($meeting_start_mins_since_day_start - $current_mins_since_day_start))
+
+    echo "$(next_meeting_warning_message $minutes_until_meeting $meeting_title) | $(pretty_datetime)"
+  else
+    echo "No more meetings today | $(pretty_datetime)"
+  fi
+}
+
+next_meeting
