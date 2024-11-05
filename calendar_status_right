@@ -1,17 +1,17 @@
 #!/bin/bash
 # Runs on an apple silicon arm machine. Probably won't on proper linux.
 
-#TODO symlink this in a setup script, instead of copying it to ~/.conf/tmux/
-
 # https://www.howtogeek.com/410442/how-to-display-the-date-and-time-in-the-linux-terminal-and-use-it-in-bash-scripts/
 function pretty_datetime() {
   date +"%a %d/%m/%y %H:%M"
 }
 
-function echo_red() {
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
-  echo -e "${RED}$1${NC}"
+function tmux_style_reset() {
+  tmux set -g status-right-style 'fg=black bg=#458588 dim'
+}
+
+function tmux_style_emphasised() {
+  tmux set -g status-right-style 'fg=#ff0000 bg=#ffffff bold'
 }
 
 function next_meeting_warning_message() {
@@ -22,9 +22,8 @@ function next_meeting_warning_message() {
   minutes=$(($minutes_until_meeting % 60))
 
   if [[ $minutes_until_meeting -lt 4 ]]; then
-    #TODO this does not work. have to run a tmux command to set the color instead
-    # https://unix.stackexchange.com/questions/60968/tmux-bottom-status-bar-color-change
-    echo_red "$minutes mins | $meeting_title"
+    tmux_style_emphasised
+    echo "$minutes mins | $meeting_title"
   elif [[ $minutes_until_meeting -eq 60 ]]; then
     echo "1 hr | $meeting_title"
   elif [[ $minutes_until_meeting -lt 60 ]]; then
@@ -44,6 +43,8 @@ function next_meeting() {
 
   today=$(date +"%Y-%m-%d")
   meeting_start_day=$(echo $next_event | awk '{print $1}')
+
+  tmux_style_reset
 
   if [[ "$meeting_start_day" == "$today" ]]; then
     meeting_start_time=$(echo $next_event | awk '{print $2}')
