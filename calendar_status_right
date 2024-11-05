@@ -22,6 +22,8 @@ function next_meeting_warning_message() {
   minutes=$(($minutes_until_meeting % 60))
 
   if [[ $minutes_until_meeting -lt 4 ]]; then
+    #TODO this does not work. have to run a tmux command to set the color instead
+    # https://unix.stackexchange.com/questions/60968/tmux-bottom-status-bar-color-change
     echo_red "$minutes mins | $meeting_title"
   elif [[ $minutes_until_meeting -eq 60 ]]; then
     echo "1 hr | $meeting_title"
