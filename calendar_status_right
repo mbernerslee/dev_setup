@@ -1,4 +1,5 @@
 #!/bin/bash
+# Runs on an apple silicon arm machine. Probably won't on proper linux.
 
 #TODO symlink this in a setup script, instead of copying it to ~/.conf/tmux/
 
