@@ -38,7 +38,7 @@ function git_prune_branches() {
 
 function todos() {
   master=$(git branch | grep \* | sed 's/^\* //')
-  git diff "$master" | grep "TODO"
+  git diff "$master" --name-only -S"TODO" | git diff
 }
 
 function parse_git_dirty() {
