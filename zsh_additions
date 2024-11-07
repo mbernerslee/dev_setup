@@ -36,9 +36,44 @@ function git_prune_branches() {
   fi
 }
 
+function master_branch() {
+  branches=$(git branch 2>&1)
+  if [[ $? -eq 0 ]]; then
+    echo "$branches" | grep -e "^  master$" -e "^\* master$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "master"
+      return 0
+    fi
+
+    echo "$branches" | grep -e "^  main$" -e "^\* main$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "main"
+      return 0
+    fi
+  fi
+
+  echo "Could not find master branch :-(. Maybe you're not in a git repo?" >&2
+  return 1
+}
+
 function todos() {
-  master=$(git branch | grep \* | sed 's/^\* //')
-  git diff "$master" --name-only -S"TODO" | git diff
+  master_branch_name=$(master_branch)
+  if [[ $? -eq 0 ]]; then
+    git diff "$master_branch_name" --name-only -S"TODO"
+    git diff "$master_branch_name" --name-only -S"TODO" | git diff | grep "^\+.*TODO"
+  else
+    return 1
+  fi
+}
+
+function ruby_p() {
+  master_branch_name=$(master_branch)
+  if [[ $? -eq 0 ]]; then
+    git diff "$master_branch_name" --name-only -S" p "
+    git diff "$master_branch_name" --name-only -S" p " | git diff | grep "^\+.* p "
+  else
+    return 1
+  fi
 }
 
 function parse_git_dirty() {
