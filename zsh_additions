@@ -59,8 +59,7 @@ function master_branch() {
 function todos() {
   master_branch_name=$(master_branch)
   if [[ $? -eq 0 ]]; then
-    git diff "$master_branch_name" --name-only -S"TODO"
-    git diff "$master_branch_name" --name-only -S"TODO" | git diff | grep "^\+.*TODO"
+    git diff "$master_branch_name" -S"TODO" | grep -e "\+.*TODO" -e '^\+\{3\}'
   else
     return 1
   fi
@@ -69,8 +68,7 @@ function todos() {
 function ruby_p() {
   master_branch_name=$(master_branch)
   if [[ $? -eq 0 ]]; then
-    git diff "$master_branch_name" --name-only -S" p "
-    git diff "$master_branch_name" --name-only -S" p " | git diff | grep "^\+.* p "
+    git diff "$master_branch_name" -S" p " | grep -e "\+.* p " -e '^\+\{3\}'
   else
     return 1
   fi
