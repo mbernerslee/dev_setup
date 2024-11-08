@@ -17,7 +17,7 @@ function next_meeting_warning_message() {
 
   if [[ $minutes_until_meeting -lt 2 ]]; then
     # https://willhbr.net/2023/02/07/dismissable-popup-shell-in-tmux/
-    popup_command="echo \"Meeting in \"$minutes_until_meeting\" min(s)\\n\"; $echo_new_lines; echo \"Title: $meeting_title\"; $echo_new_lines; echo \"Location: $meeting_location\"; $echo_new_lines; echo \"Description: $meeting_description\\n\""
+    popup_command="echo \"Meeting in \"$minutes_until_meeting\" min(s)\\n\"; echo \"Title: $meeting_title\"; echo \"Location: $meeting_location\"; echo \"Description: $meeting_description\\n\""
 
     tmux display-popup -E "$popup_command; echo 'Press Ctrl C to kill this popup...'; sleep 100"
 
