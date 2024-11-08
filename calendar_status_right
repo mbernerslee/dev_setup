@@ -6,23 +6,21 @@ function pretty_datetime() {
   date +"%a %d/%m/%y %H:%M"
 }
 
-function tmux_style_reset() {
-  tmux set -g status-right-style 'fg=black bg=#458588 dim'
-}
-
-function tmux_style_emphasised() {
-  tmux set -g status-right-style 'fg=#ff0000 bg=#ffffff bold'
-}
-
 function next_meeting_warning_message() {
   minutes_until_meeting="$1"
-  meeting_title="${@:2}"
+  meeting_title="$2"
+  meeting_location="$3"
+  meeting_description="$4"
 
   hours=$(($minutes_until_meeting / 60))
   minutes=$(($minutes_until_meeting % 60))
 
-  if [[ $minutes_until_meeting -lt 4 ]]; then
-    tmux_style_emphasised
+  if [[ $minutes_until_meeting -lt 2 ]]; then
+    # https://willhbr.net/2023/02/07/dismissable-popup-shell-in-tmux/
+    popup_command="echo \"Meeting in \"$minutes_until_meeting\" min(s)\\n\"; $echo_new_lines; echo \"Title: $meeting_title\"; $echo_new_lines; echo \"Location: $meeting_location\"; $echo_new_lines; echo \"Description: $meeting_description\\n\""
+
+    tmux display-popup -E "$popup_command; echo 'Press Ctrl C to kill this popup...'; sleep 100"
+
     echo "$minutes mins | $meeting_title"
   elif [[ $minutes_until_meeting -eq 60 ]]; then
     echo "1 hr | $meeting_title"
@@ -35,20 +33,23 @@ function next_meeting_warning_message() {
   fi
 }
 
+
 function next_meeting() {
-  next_event=$(gcalcli --nocolor agenda --nostarted --tsv | head -2 | tail -1)
+  next_event=$(gcalcli agenda --nostarted --nocolor --tsv --details=title --details=location --details=description | head -2 | tail -1)
 
   # 2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup
   #next_event="2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup"
 
   today=$(date +"%Y-%m-%d")
-  meeting_start_day=$(echo $next_event | awk '{print $1}')
-
-  tmux_style_reset
+  meeting_start_day=$(echo "$next_event" | cut -f1)
+  meeting_start_time=$(echo "$next_event" | cut -f2)
+  meeting_end_time=$(echo "$next_event" | cut -f4)
+  meeting_title=$(echo "$next_event" | cut -f5)
+  meeting_location=$(echo "$next_event" | cut -f6)
+  meeting_description=$(echo "$next_event" | cut -f7)
 
   if [[ "$meeting_start_day" == "$today" ]]; then
     meeting_start_time=$(echo $next_event | awk '{print $2}')
-    meeting_title=$(echo $next_event | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}')
 
     meeting_start_hour=$(echo $meeting_start_time | awk -F':' '{print $1}' | sed 's/^0//')
     meeting_start_minute=$(echo $meeting_start_time | awk -F':' '{print $2}' | sed 's/^0//')
@@ -61,7 +62,8 @@ function next_meeting() {
 
     minutes_until_meeting=$(($meeting_start_mins_since_day_start - $current_mins_since_day_start))
 
-    echo "$(next_meeting_warning_message $minutes_until_meeting $meeting_title) | $(pretty_datetime)"
+    warning_msg=$(next_meeting_warning_message "$minutes_until_meeting" "$meeting_title" "$meeting_location" "$meeting_description")
+    echo "$warning_msg | $(pretty_datetime)"
   else
     echo "No more meetings today | $(pretty_datetime)"
   fi
