@@ -35,7 +35,7 @@ function next_meeting_warning_message() {
 
 
 function next_meeting() {
-  next_event=$(gcalcli agenda --nostarted --nocolor --tsv --details=title --details=location --details=description | head -2 | tail -1)
+  next_event=$(gcalcli agenda --nostarted --nodeclined --nocolor --tsv --details=title --details=location --details=description | head -2 | tail -1)
 
   # 2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup
   #next_event="2024-11-05 09:05 2024-11-05 09:20 MTG Tuesday Standup"
