@@ -234,6 +234,11 @@ function configure_fzf() {
   fi
 }
 
+function increase_os_stack_size() {
+  # 2 ^ 14 = 16384
+  ulimit -n 16384
+}
+
 install_brew
 generate_ssh_keys
 
@@ -272,5 +277,7 @@ brew install gcalcli -q
 
 brew install zoxide -q
 brew install rg -q
+
+increase_os_stack_size
 
 configure_zshrc
