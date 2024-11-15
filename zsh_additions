@@ -169,7 +169,7 @@ eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/libexec/asdf.sh
 
 # Increase history size
-HISTFILESIZE=1000000000 HISTSIZE=1000000
+HISTFILESIZE=1000000000 HISTSIZE=1000000000
 
 # Share history between terminal sessions & reload it after each command
 # https://askubuntu.com/questions/23630/how-do-you-share-history-between-terminals-in-zsh
