@@ -234,11 +234,12 @@ function configure_fzf() {
   fi
 }
 
-function increase_os_stack_size() {
-  ulimit_setting="ulimit -n 16384"
-  if [[ `grep -c $ulimit_setting /etc/profile` -eq 0 ]]; then
-    echo "umilimit -n $ulimit_setting" | sudo tee -a /etc/profile
-  fi
+function increase_system_open_file_limit() {
+  #ulimit_setting="ulimit -n 16384"
+  #if [[ `grep -c $ulimit_setting /etc/profile` -eq 0 ]]; then
+  #  echo "umilimit -n $ulimit_setting" | sudo tee -a /etc/profile
+  #fi
+  append_to_zshrc_if_missing "ulimit -n 16384"
 }
 
 install_brew
@@ -280,6 +281,6 @@ brew install gcalcli -q
 brew install zoxide -q
 brew install rg -q
 
-increase_os_stack_size
+ncrease_system_open_file_limit
 
 configure_zshrc
