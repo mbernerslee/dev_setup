@@ -67,40 +67,36 @@ function master_branch() {
   return 1
 }
 
-#TODO delete these if diffhead and diffmaster
-#function inspects() {
-#  master_branch_name=$(master_branch)
-#  if [[ $? -eq 0 ]]; then
-#    git diff "$master_branch_name" -S"IO.inspect" -S"dbg(" | grep -e "\+.*IO\.inspect" -e "\+.*dbg(" -e '^\+\{3\}'
-#  else
-#    return 1
-#  fi
-#}
-#
-#function todos() {
-#  master_branch_name=$(master_branch)
-#  if [[ $? -eq 0 ]]; then
-#    git diff "$master_branch_name" -S"TODO" | grep -e "\+.*TODO" -e '^\+\{3\}'
-#  else
-#    return 1
-#  fi
-#}
-#
-#function ruby_p() {
-#  master_branch_name=$(master_branch)
-#  if [[ $? -eq 0 ]]; then
-#    git diff "$master_branch_name" -S" p " | grep -e "\+.* p " -e '^\+\{3\}'
-#  else
-#    return 1
-#  fi
-#}
+function any_unstaged_git_changes() {
+  if [[ -n "$(git status -s 2> /dev/null)" ]]; then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
 
 function parse_git_dirty() {
-  [[ -n "$(git status -s 2> /dev/null)" ]] && echo "*"
+  if [[ $(any_unstaged_git_changes) = "true" ]]; then
+    echo "*"
+  fi
 }
 
 function git_prune_branches() {
   git branch | grep -v \* | xargs git branch -D
+}
+
+function git_master_sync() {
+  if [[ $(any_unstaged_git_changes) = "true" ]]; then
+    echo "There are unstaged changes"
+  else
+    master=$(master_branch)
+    echo $master
+    if [[ $(git_branch) = "($master)" ]]; then
+      echo "You're already on $master"
+    else
+      git checkout $master && git pull && git checkout - && git merge $master
+    fi
+  fi
 }
 
 function git_branch() {
