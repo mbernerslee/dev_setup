@@ -90,7 +90,6 @@ function git_master_sync() {
     echo "There are unstaged changes"
   else
     master=$(master_branch)
-    echo $master
     if [[ $(git_branch) = "($master)" ]]; then
       echo "You're already on $master"
     else
