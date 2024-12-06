@@ -21,7 +21,7 @@ function next_meeting_warning_message() {
   now=$(date +%s)
   seconds_since_last_popup=$(( $now - $last_popup_time ))
 
-  if [[ $seconds_since_last_popup -lt 60 ]] && [[ $minutes_until_meeting -lt 2 ]]; then
+  if [[ $seconds_since_last_popup -gt 60 ]] && [[ $minutes_until_meeting -lt 2 ]]; then
     # https://willhbr.net/2023/02/07/dismissable-popup-shell-in-tmux/
     popup_command="echo \"Meeting in \"$minutes_until_meeting\" min(s)\\n\"; echo \"Title: $meeting_title\"; echo \"Location: $meeting_location\"; echo \"Description: $meeting_description\\n\""
 
