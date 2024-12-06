@@ -15,9 +15,17 @@ function next_meeting_warning_message() {
   hours=$(($minutes_until_meeting / 60))
   minutes=$(($minutes_until_meeting % 60))
 
-  if [[ $minutes_until_meeting -lt 2 ]]; then
+  mkdir -p /tmp/calendar_status_right
+  touch /tmp/calendar_status_right/last_popup_time
+  last_popup_time=$(cat /tmp/calendar_status_right/last_popup_time)
+  now=$(date +%s)
+  seconds_since_last_popup=$(( $now - $last_popup_time ))
+
+  if [[ $seconds_since_last_popup -lt 60 ]] && [[ $minutes_until_meeting -lt 2 ]]; then
     # https://willhbr.net/2023/02/07/dismissable-popup-shell-in-tmux/
     popup_command="echo \"Meeting in \"$minutes_until_meeting\" min(s)\\n\"; echo \"Title: $meeting_title\"; echo \"Location: $meeting_location\"; echo \"Description: $meeting_description\\n\""
+
+    date +%s > /tmp/calendar_status_right/last_popup_time
 
     tmux display-popup -E "$popup_command; echo 'Press Ctrl C to kill this popup...'; sleep 100"
 
