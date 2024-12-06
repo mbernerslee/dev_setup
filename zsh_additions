@@ -137,8 +137,6 @@ alias vim=~/nvim-macos-arm64/bin/nvim
 alias p='python3';
 alias vim=nvim
 
-ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
-
 export ERL_AFLAGS="-kernel shell_history enabled"
 export GOROOT=/usr/local/go
 export FZF_DEFAULT_COMMAND='rg --files'
