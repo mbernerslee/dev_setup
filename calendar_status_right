@@ -18,8 +18,12 @@ function next_meeting_warning_message() {
   mkdir -p /tmp/calendar_status_right
   touch /tmp/calendar_status_right/last_popup_time
   last_popup_time=$(cat /tmp/calendar_status_right/last_popup_time)
-  now=$(date +%s)
-  seconds_since_last_popup=$(( $now - $last_popup_time ))
+  if [[ "$last_popup_time" = "" ]]; then
+    seconds_since_last_popup=1000
+  else
+    now=$(date +%s)
+    seconds_since_last_popup=$(( $now - $last_popup_time ))
+  fi
 
   if [[ $seconds_since_last_popup -gt 60 ]] && [[ $minutes_until_meeting -lt 2 ]]; then
     # https://willhbr.net/2023/02/07/dismissable-popup-shell-in-tmux/
