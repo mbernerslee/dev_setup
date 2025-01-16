@@ -34,6 +34,13 @@ vim.api.nvim_set_keymap("n", "<leader>p", "_dP", { noremap = true })
 --don't jump to the next search when you hit *, stay where you are
 vim.api.nvim_set_keymap("n", "*", "*``", { noremap = true })
 
+-- set cp to copy the current file path to the main OS clipboard
+vim.keymap.set('n', 'cp', function()
+  local current_file = vim.fn.expand('%')
+  vim.fn.setreg('+', current_file)
+  print("Copied: " .. current_file)
+end, { noremap = true, silent = true, desc = "Copy current file path" })
+
 --Remove whitespace at the end ofthe line
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*" },
