@@ -102,6 +102,17 @@ function git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+#RED="\033[1;31m"
+#GREEN="\033[1;32m"
+#NOCOLOR="\033[0m"
+#MAGENTA="\033[35m"
+
+function last_command_exit_code() {
+  if [[ $? -ne 0 ]]; then
+    echo "\033[1;31m(!)\033[0m"
+  fi
+}
+
 
 # find and replace on macOS
 # find test \( -name "*.exs" -o -name "*.ex" \) -exec sed -i '' "s/DataCase/Support.DataCase/g" {} +
@@ -124,7 +135,10 @@ function kill_mix_test {
 }
 
 function set_prompt() {
-  PROMPT="%F{51}%n%f%F{51}@%m%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f %1 \$ "
+  exit_code=$(last_command_exit_code)
+  local username=$(whoami | cut -c1-5)
+  local hostname=$(hostname | cut -c1-5)
+  PROMPT="%F{51}$username%f%F{51}@$hostname%f:%F{33}%~%f%F{201}$(git_branch)$(parse_git_dirty)%f$exit_code %1 \$ "
 }
 
 precmd_functions+=(set_prompt)
