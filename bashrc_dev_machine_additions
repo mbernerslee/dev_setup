@@ -9,12 +9,6 @@ replaceex() {
 replacelm() {
   find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
 }
-diffmaster() {
-  git diff master $1 >> ~/diffmaster; vim ~/diffmaster; rm ~/diffmaster
-}
-diffhead() {
-  git diff HEAD >> ~/diffhead; vim ~/diffhead; rm ~/diffhead
-}
 rmswap() {
   find . -name "*.swp" -exec rm {} \;
 }
@@ -35,6 +29,42 @@ function git_prune_branches() {
   else
     git branch -D $branches
   fi
+}
+function diffhead() {
+  if [[ "$1" == "" ]]; then
+    git diff HEAD | nvim -
+  else
+    git diff HEAD -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
+  fi
+}
+function diffmaster() {
+  master_branch_name=$(master_branch)
+  if [[ $? -eq 0 ]]; then
+    if [[ "$1" == "" ]]; then
+      git diff $master_branch_name | nvim -
+    else
+      git diff "$master_branch_name" -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
+    fi
+  fi
+}
+function master_branch() {
+  branches=$(git branch 2>&1)
+  if [[ $? -eq 0 ]]; then
+    echo "$branches" | grep -e "^  master$" -e "^\* master$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "master"
+      return 0
+    fi
+
+    echo "$branches" | grep -e "^  main$" -e "^\* main$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "main"
+      return 0
+    fi
+  fi
+
+  echo "Could not find master branch :-(. Maybe you're not in a git repo?" >&2
+  return 1
 }
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf

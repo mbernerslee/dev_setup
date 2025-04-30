@@ -26,6 +26,13 @@ vim.o.autoindent = true
 vim.opt.completeopt = { "menu" }
 --vim.o.background = 'dark'
 
+-- Enable clipboard
+--vim.opt.clipboard = 'unnamedplus'
+--vim.opt.clipboard = 'unnamed'
+
+-- clipboard pain on windows solved by this & installing xclip
+-- https://rlc.vlinder.ca/blog/2016/04/setting-up-cygwin-for-x-forwarding/
+
 --in normal mode map <leader>d to delete without wrecking the regular 'yank' "buffer (and so on)
 vim.api.nvim_set_keymap("n", "<leader>d", "_d", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>p", "_dP", { noremap = true })
