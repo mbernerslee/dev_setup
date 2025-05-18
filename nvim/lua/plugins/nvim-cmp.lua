@@ -1,0 +1,113 @@
+return {
+  -- Autocompletion plugin
+  "hrsh7th/nvim-cmp",
+  dependencies = {
+    -- LSP source for nvim-cmp
+    "hrsh7th/cmp-nvim-lsp",
+
+    -- Buffer words source
+    "hrsh7th/cmp-buffer",
+
+    -- Path completion
+    "hrsh7th/cmp-path",
+
+    -- Command line completion
+    "hrsh7th/cmp-cmdline",
+
+    -- Snippets source and engine
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
+
+    -- VSCode-like pictograms
+    "onsails/lspkind.nvim",
+  },
+  config = function()
+    local cmp = require("cmp")
+    local luasnip = require("luasnip")
+    local lspkind = require("lspkind")
+
+    cmp.setup({
+      -- Enable snippet support
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      },
+
+      -- Completion window styling
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
+
+      -- Keybindings
+      mapping = cmp.mapping.preset.insert({
+        -- Scroll docs up/down
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+
+        -- Cancel completion
+        ['<C-e>'] = cmp.mapping.abort(),
+
+        -- Accept completion (with different behaviors)
+        ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Only confirm explicitly selected items
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Select first item if none selected
+
+        -- Trigger completion menu manually
+        ['<C-Space>'] = cmp.mapping.complete(),
+
+        -- Navigate between completion items
+        --['<Down>'] = cmp.mapping.select_next_item(),
+        --['<Up>'] = cmp.mapping.select_prev_item(),
+        --['<C-p>'] = cmp.mapping.select_next_item(),
+        --['<C-S-P>'] = cmp.mapping.select_next_item(),
+        ['<C-p>'] = cmp.mapping.select_next_item(),
+      }),
+
+      -- Sources for completion (in priority order)
+      sources = cmp.config.sources({
+        { name = 'buffer' },    -- Text in current buffer
+        { name = 'nvim_lsp' },  -- LSP completions
+        { name = 'luasnip' },   -- Snippets
+        { name = 'path' },      -- File paths
+      }),
+
+      -- Format completion menu with icons
+      formatting = {
+        format = lspkind.cmp_format({
+          mode = 'symbol_text',
+          maxwidth = 50,
+          ellipsis_char = '...',
+          menu = {
+            buffer = "[Buffer]",
+            nvim_lsp = "[LSP]",
+            luasnip = "[Snippet]",
+            path = "[Path]",
+          },
+        }),
+      },
+
+      -- Experimental features (disable if causing issues)
+      experimental = {
+        ghost_text = true,  -- Show ghost text while typing
+      },
+    })
+
+    -- Setup for command line completion
+    cmp.setup.cmdline(':', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = 'path' },
+        { name = 'cmdline' }
+      })
+    })
+
+    -- Setup for search completion
+    cmp.setup.cmdline('/', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = {
+        { name = 'buffer' }
+      }
+    })
+  end,
+}

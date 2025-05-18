@@ -10,6 +10,7 @@ vim.g.maplocalleader = " "
 
 vim.o.swapfile = false
 vim.api.nvim_set_keymap("i", "jj", "<ESC>", { noremap = true, silent = true })
+
 --vim.o.tapstop = 2
 vim.o.softtabstop = 2
 vim.o.expandtab = true
