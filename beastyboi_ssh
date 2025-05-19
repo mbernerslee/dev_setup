@@ -1,0 +1,27 @@
+#!/bin/bash
+
+ssh_attempt=1
+
+echo_overwriting_last_line() {
+  echo -e "\e[1A\e[K$1"
+}
+
+ssh_to_beastyboi() {
+  ssh -o ConnectTimeout=1 -Y berners@beastyboi 2> /dev/null
+  result=$?
+  if [[ $result == 0 ]]; then
+    exit 0
+  elif [[ $result == 130 ]]; then
+    exit 0
+  else
+    if [[ $ssh_attempt == 1 ]]; then
+      echo "Attempting to ssh...(attempt $ssh_attempt)"
+    else
+      echo_overwriting_last_line "Attempting to ssh...(attempt $ssh_attempt)"
+    fi
+    ssh_attempt=$(expr $ssh_attempt + 1)
+    ssh_to_beastyboi
+  fi
+}
+
+ssh_to_beastyboi
