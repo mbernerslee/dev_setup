@@ -3,24 +3,15 @@ alias c='tput reset'
 grepex() {
   grep -r "$1" . --include="*.ex" --include="*.exs" --include="*.html.eex" --include="*.html.leex"
 }
+
 replaceex() {
   find \( -name "*.ex" -o -name "*.exs" -o -name "*.eex" -o -name "*.leex" \) -exec sed -i "s/$1/$2/g" {} +
 }
-replacelm() {
-  find \( -name "*.elm" \) -exec sed -i "s/$1/$2/g" {} +
-}
-rmswap() {
-  find . -name "*.swp" -exec rm {} \;
-}
+
 killslack() {
   for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 }
-whitehat_wifi() {
-  sudo cat /etc/NetworkManager/system-connections/WhiteHat | grep psk=
-}
-constant_testing() {
-  ~/src/constant_testing/constant_testing $@
-}
+
 function git_prune_branches() {
   branches=$(git branch | grep -v \*)
 
@@ -30,6 +21,7 @@ function git_prune_branches() {
     git branch -D $branches
   fi
 }
+
 function diffhead() {
   if [[ "$1" == "" ]]; then
     git diff HEAD | nvim -
@@ -37,6 +29,7 @@ function diffhead() {
     git diff HEAD -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
   fi
 }
+
 function diffmaster() {
   master_branch_name=$(master_branch)
   if [[ $? -eq 0 ]]; then
@@ -47,6 +40,7 @@ function diffmaster() {
     fi
   fi
 }
+
 function master_branch() {
   branches=$(git branch 2>&1)
   if [[ $? -eq 0 ]]; then
@@ -67,12 +61,23 @@ function master_branch() {
   return 1
 }
 
+function echo_magenta() {
+  echo -e "\e[35m$1\e[39m"
+}
+
+function run_and_log_command() {
+  echo_magenta "********************************************"
+  echo_magenta "$1"
+  echo_magenta "********************************************"
+  eval "$1"
+}
+
 function gg() {
-  git grep "$1"
+  run_and_log_command "git grep $@"
 }
 
 function ge() {
-  grep -r "$1" lib/ test/ config/
+  run_and_log_command "grep -r $@ lib/ test/ config/"
 }
 
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
