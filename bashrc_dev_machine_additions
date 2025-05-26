@@ -67,6 +67,14 @@ function master_branch() {
   return 1
 }
 
+function gg() {
+  git grep "$1"
+}
+
+function ge() {
+  grep -r "$1" lib/ test/ config/
+}
+
 ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
 ln -sf ~/src/dev_setup/.vimrc ~/.vimrc
 export ERL_AFLAGS="-kernel shell_history enabled"
