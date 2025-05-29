@@ -7,7 +7,13 @@ parse_git_dirty() {
 }
 
 git_prune_branches() {
-  git branch | grep -v \* | xargs git branch -D
+  branches=$(git branch | grep -v \*)
+
+  if [[ "$branches" == "" ]]; then
+    echo "No branches to prune"
+  else
+    git branch -D $branches
+  fi
 }
 
 kill_mix_test() {
@@ -38,20 +44,61 @@ trunk_branch_name() {
 }
 
 diffhead() {
-  git diff HEAD | nvim -
-}
-
-difftrunc() {
-  my_trunc_branch_name=$(trunk_branch_name)
-  echo $my_trunc_branch_name
-
-  if [[ ! "$my_trunc_branch_name" == "" ]]; then
-    git diff "$my_trunc_branch_name" HEAD | nvim -
+  if [[ "$1" == "" ]]; then
+    git diff HEAD | nvim -
+  else
+    git diff HEAD -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
   fi
 }
 
+function master_branch() {
+  branches=$(git branch 2>&1)
+  if [[ $? -eq 0 ]]; then
+    echo "$branches" | grep -e "^  master$" -e "^\* master$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "master"
+      return 0
+    fi
+
+    echo "$branches" | grep -e "^  main$" -e "^\* main$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "main"
+      return 0
+    fi
+  fi
+
+  echo "Could not find master branch :-(. Maybe you're not in a git repo?" >&2
+  return 1
+}
+
 diffmaster() {
-  difftrunc
+  master_branch_name=$(master_branch)
+  if [[ $? -eq 0 ]]; then
+    if [[ "$1" == "" ]]; then
+      git diff $master_branch_name | nvim -
+    else
+      git diff "$master_branch_name" -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
+    fi
+  fi
+}
+
+function echo_magenta() {
+  echo -e "\e[35m$1\e[39m"
+}
+
+function run_and_log_command() {
+  echo_magenta "********************************************"
+  echo_magenta "$1"
+  echo_magenta "********************************************"
+  eval "$1"
+}
+
+function gg() {
+  run_and_log_command "git grep $@"
+}
+
+function ge() {
+  run_and_log_command "grep -r $@ lib/ test/ config/"
 }
 
 # there's no slack on fatboi, but leaving this here commented anyway
@@ -78,3 +125,4 @@ export PATH=~/.local/bin:$PATH
 eval "$(zoxide init bash)"
 . "$HOME/.asdf/asdf.sh"
 . "$HOME/.asdf/completions/asdf.bash"
+source /usr/share/doc/fzf/examples/key-bindings.bash
