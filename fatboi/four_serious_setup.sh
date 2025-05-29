@@ -85,7 +85,9 @@ install_nerdfont() {
 }
 
 sudo_apt_install_packages() {
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf"
+  # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
+  # libssl-dev needed for erlang?
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
@@ -219,6 +221,51 @@ install_asdf_packages() {
   asdf install
 }
 
+install_mob() {
+  echo_in_magenta "mob - checking"
+  if [ -d ~/src/mob ]; then
+    echo_in_green "mob - already in place!"
+  else
+    echo_in_magenta "mob - git cloning..."
+    git clone git@github.com:mbernerslee/mob.git ~/src/mob
+    if [ $? -eq 0 ]; then
+      echo_in_magenta "mob - installing..."
+      cd ~/src/mob
+      ./install
+      if [ $? -eq 0 ]; then
+        echo_in_green "mob - installed successfully!"
+      else
+        echo_in_red "mob - install failed"
+      fi
+    else
+      echo_in_red "mob - failed"
+    fi
+  fi
+}
+
+install_polyglot_watcher() {
+  echo_in_magenta "polyglot_watcher_v2 - checking"
+  which polyglot_watcher_v2 >/dev/null
+  if [[ $? -eq 0 ]]; then
+    echo_in_green "polyglot_watcher_v2 - already in place!"
+  else
+    echo_in_magenta "polyglot_watcher_v2 - git cloning..."
+    git clone git@github.com:mbernerslee/polyglot_watcher_v2.git ~/src/polyglot_watcher_v2
+    if [ $? -eq 0 ]; then
+      echo_in_magenta "polyglot_watcher_v2 - installing..."
+      cd ~/src/polyglot_watcher_v2
+      ./install
+      if [ $? -eq 0 ]; then
+        echo_in_green "polyglot_watcher_v2 - installed successfully!"
+      else
+        echo_in_red "polyglot_watcher_v2 - install failed"
+      fi
+    else
+      echo_in_red "polyglot_watcher_v2 - failed"
+    fi
+  fi
+}
+
 sudo_apt_update
 sudo_apt_install_packages
 install_nerdfont
@@ -232,3 +279,5 @@ install_asdf_packages
 configure_neovim
 configure_tmux
 add_bashrc_additions
+install_mob
+install_polyglot_watcher
