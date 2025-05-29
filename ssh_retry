@@ -21,7 +21,7 @@ ssh_retry() {
       echo_overwriting_last_line "Attempting to ssh $ssh_args...(attempt $ssh_attempt)"
     fi
     ssh_attempt=$(expr $ssh_attempt + 1)
-    ssh_retry
+    ssh_retry "$ssh_args"
   fi
 }
 
