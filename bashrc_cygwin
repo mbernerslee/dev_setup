@@ -35,3 +35,4 @@ alias p='python3';
 export GOROOT=/usr/local/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export DISPLAY=127.0.0.1:0.0
+. /etc/bash_completion.d/ssh
