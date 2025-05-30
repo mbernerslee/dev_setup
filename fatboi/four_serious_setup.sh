@@ -266,6 +266,29 @@ install_polyglot_watcher() {
   fi
 }
 
+# https://dev.to/ahmedmusallam/how-to-autocomplete-ssh-hosts-1hob
+setup_ssh_bash_autocomplete() {
+  echo_in_magenta "ssh autocomplete - checking"
+
+  path=/etc/bash_completion.d/ssh
+
+  dest=$(realpath ~/src/dev_setup/fatboi/ssh_bash_autocomplete)
+  link=$(readlink $path 2>&1)
+
+  if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
+    echo_in_green "ssh autocomplete - already in place!"
+  else
+    echo_in_magenta "ssh autocomplete - setting up..."
+    sudo ln -sf $dest $path
+
+    if [ $? -eq 0 ]; then
+      echo_in_green "ssh autocomplete - setup complete!"
+    else
+      echo_in_red "ssh autocomplete - setup failed"
+    fi
+  fi
+}
+
 sudo_apt_update
 sudo_apt_install_packages
 install_nerdfont
@@ -281,3 +304,4 @@ configure_tmux
 add_bashrc_additions
 install_mob
 install_polyglot_watcher
+etup_ssh_bash_autocomplete
