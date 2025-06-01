@@ -80,7 +80,7 @@ return {
           ellipsis_char = '...',
           menu = {
             buffer = "[Buffer]",
-            nvim_lsp = "[LSP]",
+            --nvim_lsp = "[LSP]",
             luasnip = "[Snippet]",
             path = "[Path]",
           },
