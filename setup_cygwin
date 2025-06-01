@@ -1,5 +1,9 @@
 #! /bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source "$SCRIPT_DIR/fatboi/coloured_echos.sh"
+
 function configure_bashrc {
   touch ~/.bashrc
   source_bashrc_additions="source ~/src/dev_setup/bashrc_cygwin"
@@ -17,7 +21,6 @@ function configure_vim {
     curl https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim --output solarized.vim
   fi
   if [ ! -f ~/.vim/autoload/plug.vim ]; then
-    echo "HELLO DAVE"
     mkdir -p ~/.vim/autoload
     pushd .
     cd ~/.vim/autoload
@@ -28,5 +31,30 @@ function configure_vim {
   vim +'PlugInstall --sync' +qa
 }
 
+setup_ssh_bash_autocomplete() {
+  echo_in_magenta "ssh autocomplete - checking"
+
+  path=/etc/bash_completion.d/ssh
+
+  dest=$(realpath ~/src/dev_setup/fatboi/ssh_bash_autocomplete)
+  link=$(readlink $path 2>&1)
+
+  if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
+    echo_in_green "ssh autocomplete - already in place!"
+  else
+    echo_in_magenta "ssh autocomplete - setting up..."
+    echo $dest
+    echo $link
+    ln -sf $dest $path
+
+    if [ $? -eq 0 ]; then
+      echo_in_green "ssh autocomplete - setup complete!"
+    else
+      echo_in_red "ssh autocomplete - setup failed"
+    fi
+  fi
+}
+
 configure_bashrc
 configure_vim
+setup_ssh_bash_autocomplete
