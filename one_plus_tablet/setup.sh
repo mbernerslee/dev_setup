@@ -14,30 +14,17 @@ add_line_if_missing() {
   fi
 }
 
-  #wget -P ~/.termux/font.ttf https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
 
 install_nerdfont() {
-  #  curl -fLo ~/.termux/font.ttf --create-dirs https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf && termux-reload-settings
-#  echo_in_magenta "nerdfont - checking"
-#  if [ -f ~/.termux/font.ttf ]; then
-#    echo_in_green "nerdfont - already installed"
-#  else
-#    echo_in_magenta "nerdfont - installing.."
-#    wget -P ~/.termux https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
-#    && cd ~/.termux/ \
-#    && unzip JetBrainsMono.zip \
-#    && rm JetBrainsMono.zip \
-#    && fc-cache -fv
-
+  if [[ -f ~/.termux/font.ttf ]]; then
+    echo_in_green "Nerdfont already installed"
+  else
+    echo_in_magenta "Dowloading & Installing nerd font..."
     mkdir -p ~/.termux
     cd ~/.termux && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf && mv JetBrainsMonoNerdFont-Regular.ttf font.ttf
 
     termux-reload-settings
-
-
-    #patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf
-
-#  fi
+  fi
 }
 
 add_bashrc_additions() {
@@ -72,8 +59,8 @@ configure_neovim() {
   fi
 }
 
-#mkdir -p ~/src
-#pkg install tmux neovim git zoxide clang wget curl -y
-#add_bashrc_additions
-#configure_neovim
+mkdir -p ~/src
+pkg install tmux neovim git zoxide clang wget curl -y
+add_bashrc_additions
+configure_neovim
 install_nerdfont
