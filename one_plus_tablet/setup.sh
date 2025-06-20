@@ -14,7 +14,6 @@ add_line_if_missing() {
   fi
 }
 
-
 install_nerdfont() {
   if [[ -f ~/.termux/font.ttf ]]; then
     echo_in_green "Nerdfont already installed"
@@ -45,6 +44,7 @@ configure_neovim() {
         exit 1
       fi
     else
+      mkdir ~/.config
       ln -sf ~/src/dev_setup/nvim ~/.config/nvim
       if [ $? -eq 0 ]; then
         echo_in_green "neovim symlink - created successfully!"
@@ -59,8 +59,36 @@ configure_neovim() {
   fi
 }
 
+configure_termux() {
+  echo_in_magenta "termux symlink - checking"
+  if [ -d ~/src/dev_setup ]; then
+    dest=$(realpath ~/src/dev_setup/one_plus_tablet/termux.properties)
+    link=$(readlink ~/.termux/termux.properties 2>&1)
+    if [ $? -eq 0 ]; then
+      if [ "$link" = "$dest" ]; then
+        echo_in_green "termux symlink - already in place!"
+      else
+        echo_in_red "termux symlink - broken!"
+        exit 1
+      fi
+    else
+      mkdir ~/.config
+      ln -sf ~/src/dev_setup/one_plus_tablet/termux.properties ~/.termux/termux.properties
+      if [ $? -eq 0 ]; then
+        echo_in_green "termux symlink - created successfully!"
+      else
+        echo_in_red "termux symlink - creation failed!"
+        exit 1
+      fi
+    fi
+  else
+    exit 1
+  fi
+}
+
 mkdir -p ~/src
 pkg install tmux neovim git zoxide clang wget curl -y
 add_bashrc_additions
 configure_neovim
 install_nerdfont
+configure_termux
