@@ -110,7 +110,7 @@ install_mob() {
 }
 
 mkdir -p ~/src
-pkg install tmux neovim git zoxide clang wget curl ncurses-utils which -y
+pkg install tmux neovim git zoxide clang wget curl ncurses-utils which fzf -y
 add_bashrc_additions
 configure_neovim
 install_nerdfont

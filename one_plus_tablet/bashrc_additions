@@ -125,6 +125,6 @@ export PATH=~/.local/bin:$PATH
 eval "$(zoxide init bash)"
 #. "$HOME/.asdf/asdf.sh"
 #. "$HOME/.asdf/completions/asdf.bash"
-#source /usr/share/doc/fzf/examples/key-bindings.bash
+source /data/data/com.termux/files/usr/share/fzf/key-bindings.bash
 export ERL_AFLAGS="-kernel shell_history enabled"
 #. /etc/bash_completion.d/ssh
