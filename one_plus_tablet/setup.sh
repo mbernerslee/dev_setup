@@ -27,7 +27,7 @@ install_nerdfont() {
 }
 
 add_bashrc_additions() {
-  bashrc_line="source $SCRIPT_DIR/../fatboi/bashrc_additions"
+  bashrc_line="source $SCRIPT_DIR/bashrc_additions"
   add_line_if_missing "$bashrc_line" ~/.bashrc
 }
 
