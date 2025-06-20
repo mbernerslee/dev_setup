@@ -86,9 +86,33 @@ configure_termux() {
   fi
 }
 
+install_mob() {
+  mkdir -p ~/.local/bin
+  echo_in_magenta "mob - checking"
+  if [ -d ~/src/mob ]; then
+    echo_in_green "mob - already in place!"
+  else
+    echo_in_magenta "mob - git cloning..."
+    git clone git@github.com:mbernerslee/mob.git ~/src/mob
+    if [ $? -eq 0 ]; then
+      echo_in_magenta "mob - installing..."
+      cd ~/src/mob
+      ./install
+      if [ $? -eq 0 ]; then
+        echo_in_green "mob - installed successfully!"
+      else
+        echo_in_red "mob - install failed"
+      fi
+    else
+      echo_in_red "mob - failed"
+    fi
+  fi
+}
+
 mkdir -p ~/src
-pkg install tmux neovim git zoxide clang wget curl -y
+pkg install tmux neovim git zoxide clang wget curl ncurses-utils which -y
 add_bashrc_additions
 configure_neovim
 install_nerdfont
 configure_termux
+install_mob
