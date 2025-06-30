@@ -101,6 +101,10 @@ function ge() {
   run_and_log_command "grep -r $@ lib/ test/ config/"
 }
 
+f() {
+  ~/src/dev_setup/ssh_retry berners@fatboi
+}
+
 # there's no slack on fatboi, but leaving this here commented anyway
 #killslack() {
 #  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
@@ -128,3 +132,4 @@ eval "$(zoxide init bash)"
 source /data/data/com.termux/files/usr/share/fzf/key-bindings.bash
 export ERL_AFLAGS="-kernel shell_history enabled"
 #. /etc/bash_completion.d/ssh
+export MIX_OS_CONCURRENCY_LOCK=0
