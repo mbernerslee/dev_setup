@@ -101,8 +101,12 @@ function ge() {
   run_and_log_command "grep -r $@ lib/ test/ config/"
 }
 
-f() {
+function f() {
   ~/src/dev_setup/ssh_retry berners@fatboi
+}
+
+function fii() {
+  ~/src/dev_setup/ssh_retry berners@fatboiInternet
 }
 
 # there's no slack on fatboi, but leaving this here commented anyway
