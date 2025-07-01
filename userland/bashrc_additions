@@ -129,4 +129,4 @@ eval "$(zoxide init bash)"
 . "$HOME/.asdf/completions/asdf.bash"
 source /usr/share/doc/fzf/examples/key-bindings.bash
 export ERL_AFLAGS="-kernel shell_history enabled"
-#. /etc/bash_completion.d/ssh
+. /etc/bash_completion.d/ssh

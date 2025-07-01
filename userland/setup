@@ -265,7 +265,7 @@ setup_ssh_bash_autocomplete() {
 
   path=/etc/bash_completion.d/ssh
 
-  dest=$(realpath ~/src/dev_setup/fatboi/ssh_bash_autocomplete)
+  dest=$(realpath $SCRIPT_DIR/../fatboi/ssh_bash_autocomplete)
   link=$(readlink $path 2>&1)
 
   if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
@@ -282,18 +282,18 @@ setup_ssh_bash_autocomplete() {
   fi
 }
 
-sudo_apt_update
-sudo_apt_install_packages
+#sudo_apt_update
+#sudo_apt_install_packages
 #install_nerdfont
-install_neovim
+#install_neovim
 #install_zoxide
 #install_asdf
 #install_asdf_plugins
 #configure_asdf
 #install_asdf_packages
-configure_neovim
+#configure_neovim
 #configure_tmux
 #add_bashrc_additions
 #install_mob
 #install_polyglot_watcher
-#setup_ssh_bash_autocomplete
+setup_ssh_bash_autocomplete
