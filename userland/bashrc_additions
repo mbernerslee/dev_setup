@@ -113,7 +113,9 @@ LAVENDER="\033[01;34m"
 
 # https://unix.stackexchange.com/questions/140610/using-variables-to-store-terminal-color-codes-for-ps1
 
-PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
+# For some reason the colour codes are known to cause the crappy "terminal lines end before max width and then overwrite the current line" problem!
+#PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
+PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(git_branch)\$(parse_git_dirty) \$ "
 
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
@@ -127,4 +129,4 @@ eval "$(zoxide init bash)"
 . "$HOME/.asdf/completions/asdf.bash"
 source /usr/share/doc/fzf/examples/key-bindings.bash
 export ERL_AFLAGS="-kernel shell_history enabled"
-. /etc/bash_completion.d/ssh
+#. /etc/bash_completion.d/ssh
