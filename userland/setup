@@ -16,23 +16,24 @@ add_line_if_missing() {
 }
 
 install_neovim() {
-	echo "nope"
-  #echo_in_magenta "neovim - checking"
-  #which nvim >/dev/null
-  #if [[ $? -eq 0 ]]; then
-  #  echo_in_green "neovim - already installed"
-  #  nvim --version
-  #else
-  #  echo_in_magenta "neovim - installing.."
-  #  wget https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-arm64.appimage
-  #  mv nvim-linux-arm64.appimage nvim.appimage
-  #  chmod +x ./nvim.appimage
-  #  sudo mv nvim.appimage /usr/local/bin/nvim
-  #fi
+ sudo apt install neovim -y
+ # echo_in_magenta "neovim - checking"
+ # which nvim >/dev/null
+ # if [[ $? -eq 0 ]]; then
+ #   echo_in_green "neovim - already installed"
+ #   nvim --version
+ # else
+ #   echo_in_magenta "neovim - installing.."
+ #   wget https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-arm64.appimage
+ #   mv nvim-linux-arm64.appimage nvim.appimage
+ #   chmod +x ./nvim.appimage
+ #   sudo mv nvim.appimage /usr/local/bin/nvim
+ # fi
 }
 
 configure_neovim() {
   echo_in_magenta "neovim symlink - checking"
+  mkdir -p ~/.config
   if [ -d ~/src/dev_setup ]; then
     dest=$(realpath ~/src/dev_setup/nvim)
     link=$(readlink ~/.config/nvim 2>&1)
@@ -67,19 +68,24 @@ install_nerdfont() {
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
     && cd ~/.local/share/fonts \
     && unzip JetBrainsMono.zip \
+    && echo "hi"
     #&& rm JetBrainsMono.zip \
     #&& fc-cache -fv
+  fi
 }
 
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-udo ssdfsudo adcon packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev snapd"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
 
 sudo_apt_update() {
+  sudo apt update
+  sudo apt install software-properties-common
+  sudo add-apt-repository ppa:neovim-ppa/stable
   echo_in_magenta "Running sudo apt update"
   sudo apt update
 }
@@ -276,7 +282,7 @@ setup_ssh_bash_autocomplete() {
   fi
 }
 
-#sudo_apt_update
+sudo_apt_update
 sudo_apt_install_packages
 #install_nerdfont
 install_neovim
@@ -285,7 +291,7 @@ install_neovim
 #install_asdf_plugins
 #configure_asdf
 #install_asdf_packages
-#configure_neovim
+configure_neovim
 #configure_tmux
 #add_bashrc_additions
 #install_mob
