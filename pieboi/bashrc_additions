@@ -1,6 +1,125 @@
-GREEN="\033[1;32m"
-MAGENTA="\033[35m"
-WHITE="\033[00m"
-LAVENDER="\033[01;34m"
+git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
 
-PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
+parse_git_dirty() {
+  [[ -n "$(git status -s 2> /dev/null)" ]] && echo "*"
+}
+
+git_prune_branches() {
+  branches=$(git branch | grep -v \*)
+
+  if [[ "$branches" == "" ]]; then
+    echo "No branches to prune"
+  else
+    git branch -D $branches
+  fi
+}
+
+kill_mix_test() {
+  mix_test_pids=$(ps aux | grep -v "grep" | grep "mix test" | awk '{print $2}')
+
+  if [[ "$mix_test_pids" -eq "" ]]; then
+    echo "mix test is not running"
+  else
+    while IFS= read -r mix_test_pid
+      do
+        echo "killing mix test pid $mix_test_pid"
+        kill -9 $mix_test_pid
+    done <<< "$mix_test_pids"
+  fi
+}
+
+trunk_branch_name() {
+  git_branch_name=""
+  git_branches=$(git branch 2> /dev/null)
+
+  if [[ ! "$git_branches" = "" ]]; then
+    git_branch_name=$(echo "$git_branches" | sed -nr 's/^\* (.+)$/\1/p')
+  else
+    echo "I couldn't determine the name of the main branch (master, main, tunk... other?)"
+  fi
+
+  echo $git_branch_name
+}
+
+diffhead() {
+  if [[ "$1" == "" ]]; then
+    git diff HEAD | vim -
+  else
+    git diff HEAD -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
+  fi
+}
+
+function master_branch() {
+  branches=$(git branch 2>&1)
+  if [[ $? -eq 0 ]]; then
+    echo "$branches" | grep -e "^  master$" -e "^\* master$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "master"
+      return 0
+    fi
+
+    echo "$branches" | grep -e "^  main$" -e "^\* main$" > /dev/null
+    if [[ $? -eq 0 ]]; then
+      echo "main"
+      return 0
+    fi
+  fi
+
+  echo "Could not find master branch :-(. Maybe you're not in a git repo?" >&2
+  return 1
+}
+
+diffmaster() {
+  master_branch_name=$(master_branch)
+  if [[ $? -eq 0 ]]; then
+    if [[ "$1" == "" ]]; then
+      git diff $master_branch_name | vim -
+    else
+      git diff "$master_branch_name" -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
+    fi
+  fi
+}
+
+function echo_magenta() {
+  echo -e "\e[35m$1\e[39m"
+}
+
+function run_and_log_command() {
+  echo_magenta "********************************************"
+  echo_magenta "$1"
+  echo_magenta "********************************************"
+  eval "$1"
+}
+
+function gg() {
+  run_and_log_command "git grep $@"
+}
+
+function ge() {
+  run_and_log_command "grep -r $@ lib/ test/ config/"
+}
+
+#find and replace across multiple files
+#find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
+
+alias c='tput reset'
+#export FZF_DEFAULT_COMMAND='rg --files'
+export PATH=~/.local/bin:$PATH
+#eval "$(zoxide init bash)"
+#. "$HOME/.asdf/asdf.sh"
+#. "$HOME/.asdf/completions/asdf.bash"
+#source /usr/share/doc/fzf/examples/key-bindings.bash
+export ERL_AFLAGS="-kernel shell_history enabled"
+#. /etc/bash_completion.d/ssh
+
+# https://unix.stackexchange.com/questions/140610/using-variables-to-store-terminal-color-codes-for-ps1
+
+GREEN="\[\033[1;32m\]"
+MAGENTA="\[\033[35m\]"
+WHITE="\[\033[00m\]"
+LAVENDER="\[\033[01;34m\]"
+RASPBERRY_PI_RED="\[\033[38;5;1m\]"
+
+PS1="${debian_chroot:+($debian_chroot)}${RASPBERRY_PI_RED}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "

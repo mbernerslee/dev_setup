@@ -66,6 +66,6 @@ mkdir -p ~/.ssh/keys
 touch ~/.ssh/config
 touch ~/.ssh/authorized_keys
 
-add_line_if_missing "source $SCRIPT_DIR/../base_bashrc_additions" ~/.bashrc
+add_line_if_missing "source $SCRIPT_DIR/bashrc_additions" ~/.bashrc
 install_minimal_vimrc_dependencies
 symlink_minimal_vimrc
