@@ -24,7 +24,6 @@ install_nerdfont() {
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
     && cd ~/.local/share/fonts \
     && unzip JetBrainsMono.zip \
-    && echo "hi"
     #&& rm JetBrainsMono.zip \
     #&& fc-cache -fv
   fi
@@ -235,8 +234,50 @@ setup_ssh_bash_autocomplete() {
   fi
 }
 
-sudo_apt_update
-sudo_apt_install_packages
+install_minimal_vimrc_dependencies() {
+  pushd .
+  mkdir -p ~/.vim/colors
+  cd ~/.vim/colors
+  if [ ! -f solarized.vim ]; then
+    wget https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+  fi
+  if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+  popd
+
+  sudo apt-get install ack -y
+  vim +'PlugInstall --sync' +qa
+}
+
+symlink_minimal_vimrc() {
+  echo_in_magenta "checking vimrc symlink"
+
+  path=~/.vimrc
+
+  dest=$(realpath ~/src/dev_setup/.minimal_vimrc)
+  link=$(readlink $path 2>&1)
+
+  if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
+    echo_in_green "vimrc symlink - already in place!"
+  else
+    echo_in_magenta "vimrc symlink - setting up..."
+    sudo ln -sf $dest $path
+
+    if [ $? -eq 0 ]; then
+      echo_in_green "vimrc symlink - setup complete!"
+    else
+      echo_in_red "vimrc symlink - setup failed"
+      exit 1
+    fi
+  fi
+}
+
+#sudo_apt_update
+#sudo_apt_install_packages
+install_minimal_vimrc_dependencies
+symlink_minimal_vimrc
 #install_nerdfont
 #install_zoxide
 #install_asdf

@@ -45,7 +45,7 @@ trunk_branch_name() {
 
 diffhead() {
   if [[ "$1" == "" ]]; then
-    git diff HEAD | nvim -
+    git diff HEAD | vim -
   else
     git diff HEAD -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
   fi
@@ -75,7 +75,7 @@ diffmaster() {
   master_branch_name=$(master_branch)
   if [[ $? -eq 0 ]]; then
     if [[ "$1" == "" ]]; then
-      git diff $master_branch_name | nvim -
+      git diff $master_branch_name | vim -
     else
       git diff "$master_branch_name" -S"$1" | grep -e "\+.*$1" -e '^\+\{3\}'
     fi
@@ -120,7 +120,6 @@ PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(git_branch)\$(parse_git_dirty)
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 
-#alias vim=nvim
 alias c='tput reset'
 export FZF_DEFAULT_COMMAND='rg --files'
 export PATH=~/.local/bin:$PATH
