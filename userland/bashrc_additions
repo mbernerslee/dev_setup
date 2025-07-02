@@ -106,16 +106,14 @@ function ge() {
 #  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 #}
 
-GREEN="\033[1;32m"
-MAGENTA="\033[35m"
-WHITE="\033[00m"
-LAVENDER="\033[01;34m"
+GREEN="\[\033[1;32m\]"
+MAGENTA="\[\033[35m\]"
+WHITE="\[\033[00m\]"
+LAVENDER="\[\033[01;34m\]"
 
 # https://unix.stackexchange.com/questions/140610/using-variables-to-store-terminal-color-codes-for-ps1
 
-# For some reason the colour codes are known to cause the crappy "terminal lines end before max width and then overwrite the current line" problem!
-#PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
-PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(git_branch)\$(parse_git_dirty) \$ "
+PS1="${debian_chroot:+($debian_chroot)}${GREEN}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
 
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
