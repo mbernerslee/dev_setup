@@ -59,6 +59,18 @@ function install_minimal_vimrc_dependencies {
   vim +'PlugInstall --sync' +qa
 }
 
+install_zoxide() {
+  echo_in_magenta "zoxide - checking"
+  which zoxide >/dev/null
+  if [[ $? -eq 0 ]]; then
+    echo_in_green "zoxide - already installed"
+    zoxide --version
+  else
+    echo_in_magenta "zoxide - installing.."
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  fi
+}
+
 sudo apt update
 sudo apt install vim tree wakeonlan git tmux -y
 mkdir -p ~/src
@@ -69,3 +81,4 @@ touch ~/.ssh/authorized_keys
 add_line_if_missing "source $SCRIPT_DIR/bashrc_additions" ~/.bashrc
 install_minimal_vimrc_dependencies
 symlink_minimal_vimrc
+install_zoxide
