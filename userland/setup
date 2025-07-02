@@ -118,6 +118,7 @@ install_asdf_plugins() {
   plugins=$(asdf plugin list)
   [[ ! -n $(echo $plugins | grep "erlang") ]] && need_plugins=true
   [[ ! -n $(echo $plugins | grep "elixir") ]] && need_plugins=true
+  [[ ! -n $(echo $plugins | grep "nodejs") ]] && need_plugins=true
 
   if [[ "$need_plugins" = "false" ]]; then
     echo_in_green "asdf plugins - already installed"
@@ -125,6 +126,7 @@ install_asdf_plugins() {
     echo_in_magenta "asdf plugins - installing.."
     asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
     asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+    asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
     if [[ $? -eq 0 ]]; then
       echo_in_green "asdf plugins - install successful"
     else
@@ -137,7 +139,7 @@ install_asdf_plugins() {
 configure_asdf() {
   echo_in_magenta "asdf tool-versions symlink - checking"
   if [ -d ~/src/dev_setup ]; then
-    dest=$(realpath ~/src/dev_setup/fatboi/.tool-versions)
+    dest=$(realpath ~/src/dev_setup/.tool-versions)
     link=$(readlink ~/.tool-versions 2>&1)
     if [ $? -eq 0 ]; then
       if [ "$link" = "$dest" ]; then
@@ -147,7 +149,7 @@ configure_asdf() {
         exit 1
       fi
     else
-      ln -sf ~/src/dev_setup/fatboi/.tool-versions ~/.tool-versions
+      ln -sf ~/src/dev_setup/.tool-versions ~/.tool-versions
       if [ $? -eq 0 ]; then
         echo_in_green "asdf tool-versions symlink - created successfully!"
       else
@@ -274,6 +276,29 @@ symlink_minimal_vimrc() {
   fi
 }
 
+symlink_tool_versions() {
+  echo_in_magenta "checking vimrc symlink"
+
+  path=~/.vimrc
+
+  dest=$(realpath ~/src/dev_setup/.minimal_vimrc)
+  link=$(readlink $path 2>&1)
+
+  if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
+    echo_in_green "vimrc symlink - already in place!"
+  else
+    echo_in_magenta "vimrc symlink - setting up..."
+    sudo ln -sf $dest $path
+
+    if [ $? -eq 0 ]; then
+      echo_in_green "vimrc symlink - setup complete!"
+    else
+      echo_in_red "vimrc symlink - setup failed"
+      exit 1
+    fi
+  fi
+}
+
 #sudo_apt_update
 #sudo_apt_install_packages
 install_minimal_vimrc_dependencies
@@ -281,8 +306,8 @@ symlink_minimal_vimrc
 #install_nerdfont
 #install_zoxide
 #install_asdf
-#install_asdf_plugins
-#configure_asdf
+install_asdf_plugins
+configure_asdf
 #install_asdf_packages
 #configure_tmux
 #add_bashrc_additions
