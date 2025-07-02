@@ -109,10 +109,38 @@ install_mob() {
   fi
 }
 
+configure_tmux() {
+  echo_in_magenta "tmux config symlink - checking"
+  if [ -d ~/src/dev_setup ]; then
+    dest=$(realpath ~/src/dev_setup/.tmux.conf)
+    link=$(readlink ~/.tmux.conf 2>&1)
+    if [ $? -eq 0 ]; then
+      if [ "$link" = "$dest" ]; then
+        echo_in_green "tmux config symlink - already in place!"
+      else
+        echo_in_red "tmux config symlink - broken!"
+        exit 1
+      fi
+    else
+      ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
+      if [ $? -eq 0 ]; then
+        echo_in_green "tmux config symlink - created successfully!"
+      else
+        echo_in_red "tmux config symlink - creation failed!"
+        exit 1
+      fi
+    fi
+  else
+    echo_in_red "tmux config symlink - ~/src/dev_setup does not exist, so bailing"
+    exit 1
+  fi
+}
+
 mkdir -p ~/src
-pkg install tmux neovim git zoxide clang wget curl ncurses-utils which fzf tree elixir -y
+pkg install tmux neovim git zoxide clang wget curl ncurses-utils which fzf tree elixir inotify-tools bc python -y
 add_bashrc_additions
 configure_neovim
+configure_tmux
 install_nerdfont
 configure_termux
 install_mob
