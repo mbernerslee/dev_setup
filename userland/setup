@@ -15,50 +15,6 @@ add_line_if_missing() {
   fi
 }
 
-install_neovim() {
- sudo apt install neovim -y
- # echo_in_magenta "neovim - checking"
- # which nvim >/dev/null
- # if [[ $? -eq 0 ]]; then
- #   echo_in_green "neovim - already installed"
- #   nvim --version
- # else
- #   echo_in_magenta "neovim - installing.."
- #   wget https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-arm64.appimage
- #   mv nvim-linux-arm64.appimage nvim.appimage
- #   chmod +x ./nvim.appimage
- #   sudo mv nvim.appimage /usr/local/bin/nvim
- # fi
-}
-
-configure_neovim() {
-  echo_in_magenta "neovim symlink - checking"
-  mkdir -p ~/.config
-  if [ -d ~/src/dev_setup ]; then
-    dest=$(realpath ~/src/dev_setup/nvim)
-    link=$(readlink ~/.config/nvim 2>&1)
-    if [ $? -eq 0 ]; then
-      if [ "$link" = "$dest" ]; then
-        echo_in_green "neovim symlink - already in place!"
-      else
-        echo_in_red "neovim symlink - broken!"
-        exit 1
-      fi
-    else
-      ln -sf ~/src/dev_setup/nvim ~/.config/nvim
-      if [ $? -eq 0 ]; then
-        echo_in_green "neovim symlink - created successfully!"
-      else
-        echo_in_red "neovim symlink - creation failed!"
-        exit 1
-      fi
-    fi
-  else
-    echo_in_red "neovim symlink - ~/src/dev_setup does not exist, so bailing"
-    exit 1
-  fi
-}
-
 install_nerdfont() {
   echo_in_magenta "nerdfont - checking"
   if [ -f ~/.local/share/fonts/JetBrainsMonoNerdFont-Medium.ttf ]; then
@@ -77,15 +33,12 @@ install_nerdfont() {
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1 vim"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
 
 sudo_apt_update() {
-  sudo apt update
-  sudo apt install software-properties-common
-  sudo add-apt-repository ppa:neovim-ppa/stable
   echo_in_magenta "Running sudo apt update"
   sudo apt update
 }
@@ -282,17 +235,15 @@ setup_ssh_bash_autocomplete() {
   fi
 }
 
-#sudo_apt_update
-#sudo_apt_install_packages
+sudo_apt_update
+sudo_apt_install_packages
 #install_nerdfont
-#install_neovim
 #install_zoxide
-install_asdf
-install_asdf_plugins
+#install_asdf
+#install_asdf_plugins
 #configure_asdf
 #install_asdf_packages
-#configure_neovim
-configure_tmux
+#configure_tmux
 #add_bashrc_additions
 #install_mob
 #install_polyglot_watcher

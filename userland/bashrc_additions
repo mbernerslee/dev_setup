@@ -120,7 +120,7 @@ PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(git_branch)\$(parse_git_dirty)
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 
-alias vim=nvim
+#alias vim=nvim
 alias c='tput reset'
 export FZF_DEFAULT_COMMAND='rg --files'
 export PATH=~/.local/bin:$PATH
