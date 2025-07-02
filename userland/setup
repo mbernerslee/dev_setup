@@ -110,7 +110,7 @@ add_bashrc_additions() {
 configure_tmux() {
   echo_in_magenta "tmux config symlink - checking"
   if [ -d ~/src/dev_setup ]; then
-    dest=$(realpath ~/src/dev_setup/.tmux.conf)
+    dest=$(realpath $SCRIPT_DIR/.tmux.conf)
     link=$(readlink ~/.tmux.conf 2>&1)
     if [ $? -eq 0 ]; then
       if [ "$link" = "$dest" ]; then
@@ -120,7 +120,7 @@ configure_tmux() {
         exit 1
       fi
     else
-      ln -sf ~/src/dev_setup/.tmux.conf ~/.tmux.conf
+      ln -sf $dest ~/.tmux.conf
       if [ $? -eq 0 ]; then
         echo_in_green "tmux config symlink - created successfully!"
       else
@@ -154,7 +154,7 @@ install_asdf() {
     asdf --version
   else
     echo_in_magenta "asdf - installing.."
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
   fi
 }
 
@@ -287,13 +287,13 @@ setup_ssh_bash_autocomplete() {
 #install_nerdfont
 #install_neovim
 #install_zoxide
-#install_asdf
-#install_asdf_plugins
+install_asdf
+install_asdf_plugins
 #configure_asdf
 #install_asdf_packages
 #configure_neovim
-#configure_tmux
+configure_tmux
 #add_bashrc_additions
 #install_mob
 #install_polyglot_watcher
-setup_ssh_bash_autocomplete
+#setup_ssh_bash_autocomplete
