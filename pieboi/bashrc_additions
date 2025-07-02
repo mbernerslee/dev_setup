@@ -120,6 +120,7 @@ GREEN="\[\033[1;32m\]"
 MAGENTA="\[\033[35m\]"
 WHITE="\[\033[00m\]"
 LAVENDER="\[\033[01;34m\]"
-RASPBERRY_PI_RED="\[\033[38;5;1m\]"
+#RASPBERRY_PI_RED="\[\033[38;5;1m\]"
+RASPBERRY_PI_RED="\[\033[38;5;161m\]"
 
 PS1="${debian_chroot:+($debian_chroot)}${RASPBERRY_PI_RED}\u@\h${WHITE}:${LAVENDER}\w${MAGENTA}\$(git_branch)\$(parse_git_dirty)${WHITE} \$ "
