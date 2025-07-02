@@ -71,6 +71,29 @@ install_zoxide() {
   fi
 }
 
+# https://dev.to/ahmedmusallam/how-to-autocomplete-ssh-hosts-1hob
+setup_ssh_bash_autocomplete() {
+  echo_in_magenta "ssh autocomplete - checking"
+
+  path=/etc/bash_completion.d/ssh
+
+  dest=$(realpath $SCRIPT_DIR/../ssh_bash_autocomplete)
+  link=$(readlink $path 2>&1)
+
+  if [ $? -eq 0 ] && [ "$link" = "$dest" ]; then
+    echo_in_green "ssh autocomplete - already in place!"
+  else
+    echo_in_magenta "ssh autocomplete - setting up..."
+    sudo ln -sf $dest $path
+
+    if [ $? -eq 0 ]; then
+      echo_in_green "ssh autocomplete - setup complete!"
+    else
+      echo_in_red "ssh autocomplete - setup failed"
+    fi
+  fi
+}
+
 sudo apt update
 sudo apt install vim tree wakeonlan git tmux -y
 mkdir -p ~/src
@@ -82,3 +105,4 @@ add_line_if_missing "source $SCRIPT_DIR/bashrc_additions" ~/.bashrc
 install_minimal_vimrc_dependencies
 symlink_minimal_vimrc
 install_zoxide
+setup_ssh_bash_autocomplete
