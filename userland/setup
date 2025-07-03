@@ -15,24 +15,10 @@ add_line_if_missing() {
   fi
 }
 
-install_nerdfont() {
-  echo_in_magenta "nerdfont - checking"
-  if [ -f ~/.local/share/fonts/JetBrainsMonoNerdFont-Medium.ttf ]; then
-    echo_in_green "nerdfont - already installed"
-  else
-    echo_in_magenta "nerdfont - installing.."
-    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
-    && cd ~/.local/share/fonts \
-    && unzip JetBrainsMono.zip \
-    #&& rm JetBrainsMono.zip \
-    #&& fc-cache -fv
-  fi
-}
-
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1 vim"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1 vim autoconf erlang elixir"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
@@ -98,76 +84,6 @@ install_zoxide() {
   fi
 }
 
-install_asdf() {
-  echo_in_magenta "asdf - checking"
-  which asdf >/dev/null
-  if [[ $? -eq 0 ]]; then
-    echo_in_green "asdf - already installed"
-    asdf --version
-  else
-    echo_in_magenta "asdf - installing.."
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
-  fi
-}
-
-install_asdf_plugins() {
-  echo_in_magenta "asdf plugins - checking"
-
-  need_plugins=false
-
-  plugins=$(asdf plugin list)
-  [[ ! -n $(echo $plugins | grep "erlang") ]] && need_plugins=true
-  [[ ! -n $(echo $plugins | grep "elixir") ]] && need_plugins=true
-  [[ ! -n $(echo $plugins | grep "nodejs") ]] && need_plugins=true
-
-  if [[ "$need_plugins" = "false" ]]; then
-    echo_in_green "asdf plugins - already installed"
-  else
-    echo_in_magenta "asdf plugins - installing.."
-    asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
-    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-    asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-    if [[ $? -eq 0 ]]; then
-      echo_in_green "asdf plugins - install successful"
-    else
-      echo_in_red "asdf plugins - install failed"
-      exit 1
-    fi
-  fi
-}
-
-configure_asdf() {
-  echo_in_magenta "asdf tool-versions symlink - checking"
-  if [ -d ~/src/dev_setup ]; then
-    dest=$(realpath ~/src/dev_setup/.tool-versions)
-    link=$(readlink ~/.tool-versions 2>&1)
-    if [ $? -eq 0 ]; then
-      if [ "$link" = "$dest" ]; then
-        echo_in_green "asdf tool-versions symlink - already in place!"
-      else
-        echo_in_red "asdf tool-versions symlink - broken!"
-        exit 1
-      fi
-    else
-      ln -sf ~/src/dev_setup/.tool-versions ~/.tool-versions
-      if [ $? -eq 0 ]; then
-        echo_in_green "asdf tool-versions symlink - created successfully!"
-      else
-        echo_in_red "asdf tool-versions symlink - creation failed!"
-        exit 1
-      fi
-    fi
-  else
-    echo_in_red "asdf tool-versions symlink - ~/src/dev_setup does not exist, so bailing"
-    exit 1
-  fi
-}
-
-install_asdf_packages() {
-  echo_in_magenta "Running asdf install"
-  asdf install
-}
-
 install_mob() {
   echo_in_magenta "mob - checking"
   if [ -d ~/src/mob ]; then
@@ -186,29 +102,6 @@ install_mob() {
       fi
     else
       echo_in_red "mob - failed"
-    fi
-  fi
-}
-
-install_polyglot_watcher() {
-  echo_in_magenta "polyglot_watcher_v2 - checking"
-  which polyglot_watcher_v2 >/dev/null
-  if [[ $? -eq 0 ]]; then
-    echo_in_green "polyglot_watcher_v2 - already in place!"
-  else
-    echo_in_magenta "polyglot_watcher_v2 - git cloning..."
-    git clone git@github.com:mbernerslee/polyglot_watcher_v2.git ~/src/polyglot_watcher_v2
-    if [ $? -eq 0 ]; then
-      echo_in_magenta "polyglot_watcher_v2 - installing..."
-      cd ~/src/polyglot_watcher_v2
-      ./install
-      if [ $? -eq 0 ]; then
-        echo_in_green "polyglot_watcher_v2 - installed successfully!"
-      else
-        echo_in_red "polyglot_watcher_v2 - install failed"
-      fi
-    else
-      echo_in_red "polyglot_watcher_v2 - failed"
     fi
   fi
 }
@@ -299,18 +192,12 @@ symlink_tool_versions() {
   fi
 }
 
-#sudo_apt_update
-#sudo_apt_install_packages
+sudo_apt_update
+sudo_apt_install_packages
 install_minimal_vimrc_dependencies
 symlink_minimal_vimrc
-#install_nerdfont
-#install_zoxide
-#install_asdf
-install_asdf_plugins
-configure_asdf
-#install_asdf_packages
-#configure_tmux
-#add_bashrc_additions
-#install_mob
-#install_polyglot_watcher
-#setup_ssh_bash_autocomplete
+install_zoxide
+configure_tmux
+add_bashrc_additions
+install_mob
+setup_ssh_bash_autocomplete
