@@ -107,7 +107,7 @@ function ge() {
 alias c='tput reset'
 #export FZF_DEFAULT_COMMAND='rg --files'
 export PATH=~/.local/bin:$PATH
-#eval "$(zoxide init bash)"
+eval "$(zoxide init bash)"
 #. "$HOME/.asdf/asdf.sh"
 #. "$HOME/.asdf/completions/asdf.bash"
 #source /usr/share/doc/fzf/examples/key-bindings.bash

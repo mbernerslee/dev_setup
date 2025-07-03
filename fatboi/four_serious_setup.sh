@@ -87,7 +87,7 @@ install_nerdfont() {
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev ethtool wakeonlan"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
@@ -289,6 +289,22 @@ setup_ssh_bash_autocomplete() {
   fi
 }
 
+setup_wake_on_lan() {
+  #TODO see https://claude.ai/chat/1b0a5053-56fb-46f2-a493-8a5f91e5957e
+  ethernet_network_interface=$(ip link show | grep -E '^[0-9]+: e' | grep 'state UP' | head -1 | cut -d: -f2 | tr -d ' ')
+
+  echo_in_magenta "Attempting to setup up wake on LAN (wol)"
+  ip link show $ethernet_network_interface &>/dev/null;
+  if [[ $? -eq 0 ]]; then
+    echo_in_green "found ethernnet cable network interface"
+    echo $ethernet_network_interface
+    sudo ethtool -s $ethernet_network_interface wol g
+    echo $?
+  else
+    echo_in_red "failed to find ethernnet cable network interface"
+  fi
+}
+
 sudo_apt_update
 sudo_apt_install_packages
 install_nerdfont
@@ -304,4 +320,6 @@ configure_tmux
 add_bashrc_additions
 install_mob
 install_polyglot_watcher
-etup_ssh_bash_autocomplete
+setup_ssh_bash_autocomplete
+#TODO make this work
+#setup_wake_on_lan

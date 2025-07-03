@@ -72,7 +72,7 @@ set_ignore_laptop_lid_switch() {
 
 set_autosleep_off() {
   echo_in_magenta "auto sleep - Turning off auto sleep"
-  systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+  systemctl mask sleep.target hibernate.target hybrid-sleep.target
   if [[ $? -eq 0 ]]; then
     echo_in_green "auto sleep - Turned off successfully"
   else
