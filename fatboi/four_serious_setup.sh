@@ -87,7 +87,7 @@ install_nerdfont() {
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev ethtool wakeonlan"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev ethtool wakeonlan shfmt"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
