@@ -70,21 +70,6 @@ set_ignore_laptop_lid_switch() {
   fi
 }
 
-set_autosleep_off() {
-  echo_in_magenta "auto sleep - Turning off auto sleep"
-  systemctl mask sleep.target hibernate.target hybrid-sleep.target
-  if [[ $? -eq 0 ]]; then
-    echo_in_green "auto sleep - Turned off successfully"
-  else
-    echo_in_red "auto sleep - Turn off failed"
-    exit 1
-  fi
-
-  # turned off auto sleep etc
-  ## systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-  ## check status with
-  ## systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
-}
 
 configure_ssh() {
 # https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
@@ -111,7 +96,6 @@ configure_ssh() {
 }
 
 set_ignore_laptop_lid_switch
-set_autosleep_off
 configure_ssh
 add_to_sudoers
 install_git
