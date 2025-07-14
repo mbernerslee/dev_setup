@@ -44,6 +44,8 @@ install_ripgrep() {
 }
 
 configure_neovim() {
+  git config --global core.editor "nvim"
+
   echo_in_magenta "neovim symlink - checking"
   if [ -d ~/src/dev_setup ]; then
     dest=$(realpath ~/src/dev_setup/nvim)

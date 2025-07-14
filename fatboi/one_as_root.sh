@@ -55,36 +55,8 @@ set_ignore_laptop_lid_switch() {
   echo_in_magenta "laplop lid action - checking if config change required"
   add_line_if_missing HandleLidSwitch=ignore /etc/systemd/logind.conf systemd_logind_restart_required
   add_line_if_missing HandleLidSwitchExternalPower=ignore /etc/systemd/logind.conf systemd_logind_restart_required
-
-  if [[ $systemd_logind_restart_required = "true" ]]; then
-    echo_in_magenta "laplop lid action - Restarting systemd-logind"
-    systemctl restart systemd-logind
-
-    if [[ $? -eq 0 ]]; then
-      echo_in_green "laplop lid action - systemd-logind restart successful"
-    else
-      echo_in_ren "laplop lid action - systemd-logind restart failed"
-    fi
-  else
-    echo_in_green "laplop lid action - already set ok"
-  fi
 }
 
-set_autosleep_off() {
-  echo_in_magenta "auto sleep - Turning off auto sleep"
-  systemctl mask sleep.target hibernate.target hybrid-sleep.target
-  if [[ $? -eq 0 ]]; then
-    echo_in_green "auto sleep - Turned off successfully"
-  else
-    echo_in_red "auto sleep - Turn off failed"
-    exit 1
-  fi
-
-  # turned off auto sleep etc
-  ## systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-  ## check status with
-  ## systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
-}
 
 configure_ssh() {
 # https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
@@ -94,26 +66,49 @@ configure_ssh() {
 
   add_line_if_missing "PasswordAuthentication no" /etc/ssh/sshd_config ssh_restart_required
   add_line_if_missing "PermitRootLogin no" /etc/ssh/sshd_config ssh_restart_required
+}
 
-  if [[ $ssh_restart_required = "true" ]]; then
-    echo_in_magenta "SSH config - changes made, restarting SSH.."
+turn_off_automatic_suspension() {
+  add_line_if_missing IdleAction=ignore /etc/systemd/logind.conf systemd_logind_restart_required
+  add_line_if_missing IdleActionSec=0 /etc/systemd/logind.conf systemd_logind_restart_required
+}
+
+restart_systemd_logind_if_necessary() {
+  if [[ $systemd_logind_restart_required = "true" ]]; then
+    echo_in_magenta "Restarting systemd-logind"
     systemctl restart systemd-logind
 
     if [[ $? -eq 0 ]]; then
-      echo_in_green "SSH config - SSH restart successful"
+      echo_in_green "systemd-logind restart successful"
     else
-      echo_in_green "SSH config - SSH restart failed"
-      exit 1
+      echo_in_ren "systemd-logind restart failed"
     fi
   else
-    echo_in_green "SSH config - already configured"
+    echo_in_magenta "systemd-logind restart not required"
+  fi
+}
+
+restart_ssh_if_necessary() {
+  if [[ $ssh_restart_required = "true" ]]; then
+    echo_in_magenta "SSH config - changes made, restarting SSH.."
+    systemctl restart ssh
+
+    if [[ $? -eq 0 ]]; then
+      echo_in_green "SSH restart successful"
+    else
+      echo_in_green "SSH restart failed"
+      exit 1
+    fi
   fi
 }
 
 set_ignore_laptop_lid_switch
-set_autosleep_off
+turn_off_automatic_suspension
 configure_ssh
 add_to_sudoers
 install_git
+
+restart_systemd_logind_if_necessary
+restart_ssh_if_necessary
 
 echo_in_green "All good!"

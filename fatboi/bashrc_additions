@@ -106,6 +106,10 @@ function ge() {
 #  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 #}
 
+die() {
+  sudo systemctl suspend
+}
+
 GREEN="\[\033[1;32m\]"
 MAGENTA="\[\033[35m\]"
 WHITE="\[\033[00m\]"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# https://my.noip.com/dynamic-dns/duc
+
+which noip-duc >/dev/null
+
+if [[ $? -eq 0 ]]; then
+  echo "Already setup"
+else
+  echo "Setting up no ip..."
+  wget --content-disposition https://www.noip.com/download/linux/latest
+  tar xf noip-duc_3.1.1.tar.gz
+  sudo apt install ./noip-duc_3.1.1/binaries/noip-duc_3.1.1_amd64.deb -y
+  rm -rf noip-duc/3.1.1*
+fi
+
+
+
+
+#cd /home/$USER/noip-duc_3.1.1/binaries && sudo apt install ./noip-duc_3.1.1_amd64.deb
