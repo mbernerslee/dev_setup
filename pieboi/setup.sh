@@ -103,6 +103,7 @@ touch ~/.ssh/authorized_keys
 
 add_line_if_missing "source $SCRIPT_DIR/bashrc_additions" ~/.bashrc
 install_minimal_vimrc_dependencies
+git config --global core.editor "vim"
 symlink_minimal_vimrc
 install_zoxide
 setup_ssh_bash_autocomplete
