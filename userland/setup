@@ -18,7 +18,7 @@ add_line_if_missing() {
 sudo_apt_install_packages() {
   # https://elixirforum.com/t/wsl-mix-deps-get-the-application-crypto-could-not-be-found/57916/7
   # libssl-dev needed for erlang?
-  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1 vim autoconf erlang elixir"
+  packages="build-essential libreadline-dev unzip curl wget gcc tmux fzf tree libssl-dev fontconfig ripgrep fuse libfuse-dev lua5.1 vim autoconf erlang elixir iputils-ping"
   echo_in_magenta "Running 'sudo apt install $packages -y'"
   eval "sudo apt install $packages -y"
 }
