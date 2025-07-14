@@ -101,6 +101,18 @@ function ge() {
   run_and_log_command "grep -r $@ lib/ test/ config/"
 }
 
+function wake_fatboi() {
+  wakeonlan $FATBOI_MAC_ADDRESS
+  echo "Waiting until fatboi replies to a ping..."
+
+  while ! ping -c 1 -i 0.1 -w 1 fatboi >/dev/null 2>&1; do
+      echo "no response, pinging again..."
+      sleep 1
+  done
+  echo "ping replied!"
+  ~/src/dev_setup/ssh_retry berners@fatboi
+}
+
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 
