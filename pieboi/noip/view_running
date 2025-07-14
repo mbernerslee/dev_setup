@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sessions=$(tmux ls)
+echo $sessions
+
+if [[ $sessions == *"noip"* ]]; then
+  tmux a -t noip
+else
+  echo "not running"
+fi
