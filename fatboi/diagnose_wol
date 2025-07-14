@@ -1,0 +1,28 @@
+#!/bin/bash
+
+run() {
+  echo "Running \"$1\""
+  eval "$1"
+  echo "-------------------------------------------"
+}
+
+
+sudo "echo a prompt for sudo" 2>/dev/null
+
+#sudo ip link set enx00e04c681571 down
+#sudo ip link set enx00e04c681571 up
+#echo 'disabled' | sudo tee /sys/class/net/enx00e04c681571/device/power/runtime_enabled
+
+run "readlink -f /sys/class/net/enx00e04c681571/device"
+run "cat /sys/bus/usb/devices/2-1/product 2>/dev/null || echo \"No product name\""
+run "cat /sys/bus/usb/devices/2-1/manufacturer 2>/dev/null || echo \"No manufacturer\""
+run "cat /sys/bus/usb/devices/2-1/idVendor"
+run "cat /sys/bus/usb/devices/2-1/idProduct"
+run "cat /sys/bus/usb/devices/2-1/power/control"
+run "cat /sys/bus/usb/devices/2-1/power/runtime_status"
+run "cat /sys/class/net/enx00e04c681571/device/power/runtime_status"
+run "cat /sys/class/net/enx00e04c681571/device/power/runtime_enabled"
+run "sudo ethtool enx00e04c681571 | grep -i wake"
+run "cat /sys/bus/usb/devices/2-1/power/wakeup"
+run "cat /sys/class/net/enx00e04c681571/device/power/wakeup"
+run "cat /proc/acpi/wakeup | grep XHC"

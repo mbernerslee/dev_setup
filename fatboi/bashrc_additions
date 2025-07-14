@@ -106,10 +106,10 @@ function ge() {
 #  for pid in $(ps -ef | grep "slack" | awk '{print $2}'); do kill -9 $pid; done
 #}
 
-GREEN="\033[1;32m"
-MAGENTA="\033[35m"
-WHITE="\033[00m"
-LAVENDER="\033[01;34m"
+GREEN="\[\033[1;32m\]"
+MAGENTA="\[\033[35m\]"
+WHITE="\[\033[00m\]"
+LAVENDER="\[\033[01;34m\]"
 
 # https://unix.stackexchange.com/questions/140610/using-variables-to-store-terminal-color-codes-for-ps1
 
@@ -128,5 +128,3 @@ eval "$(zoxide init bash)"
 source /usr/share/doc/fzf/examples/key-bindings.bash
 export ERL_AFLAGS="-kernel shell_history enabled"
 . /etc/bash_completion.d/ssh
-source
-source
