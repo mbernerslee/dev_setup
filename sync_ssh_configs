@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+# Meant to be run from the "source" (probably cygwin) which is synced with the others
+
+scp ~/.ssh/config berners@pieboi:~/.ssh/config
+scp ~/.ssh/config berners@fatboi:~/.ssh/config
+
+echo "worked!"
