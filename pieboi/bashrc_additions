@@ -113,6 +113,10 @@ function wake_fatboi() {
   ~/src/dev_setup/ssh_retry berners@fatboi
 }
 
+function wake_beasty() {
+  wakeonlan $BEASTY_MAC_ADDRESS
+}
+
 #find and replace across multiple files
 #find . -type f -name '*.ex' -exec sed -i '' 's/@behaviour Platform.Seeds.ModuleBehaviour/@behaviour Platform.Seeds.Inserter/g' {} +
 
